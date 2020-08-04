@@ -1,5 +1,7 @@
+from mpl_toolkits.mplot3d import Axes3D
 import math
 import pyrealsense2 as rs
+import matplotlib.pyplot as plt
 
 # Depth Field of View -- 86 * 57 * 94 (horizontal * vertical * diagonal)
 
@@ -26,6 +28,26 @@ class maze:
     def set_wall(self, a, b, c):
         #set the wall ax+by+cz=1
         pass
+
+    def draw_model(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_xlabel('X-axis')
+        ax.set_ylabel('Y-axis')
+        ax.set_zlabel('Z-axis')
+        xs = list()
+        ys = list()
+        zs = list()
+        for i in range(self.rangex):
+            for j in range(self.rangey):
+                for k in range(self.rangez):
+                    if self.maze[i][j][k] == True:
+                        xs.append(i)
+                        ys.append(j)
+                        zs.append(k)
+        ax.scatter(xs, ys, zs)
+        plt.show()
+        
 
 
 class robot:
@@ -136,5 +158,6 @@ def degree_to_arc(degree):
 
 
 if __name__ == "__main__":
-    print(get_location((320, 240), 10))
-
+    mz = maze(10, 10, 10)
+    mz.set_thing(1, 6, 8)
+    mz.draw_model()
