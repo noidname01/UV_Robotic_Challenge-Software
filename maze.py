@@ -159,5 +159,5 @@ def degree_to_arc(degree):
 
 if __name__ == "__main__":
     mz = maze(10, 10, 10)
-    mz.set_thing(1, 6, 8)
+    mz.set_thing((1, 6, 8))
     mz.draw_model()
