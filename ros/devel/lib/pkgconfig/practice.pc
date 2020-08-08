@@ -1,0 +1,8 @@
+prefix=/home/noidname/桌面/UV_Robotic_Challenge-Software/ros/devel
+
+Name: practice
+Description: Description of practice
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
