@@ -1,89 +1,104 @@
-import serial
-from time import sleep
-import sys
+
+
+# import socket
+# import time
+# import sys
+# import pyrealsense2 as rs
+
+# #RPi's IP
+# SERVER_IP = "192.168.43.194"
+# SERVER_PORT = 8888
+
+# # Create a context object. This object owns the handles to all connected realsense devices
+# pipeline = rs.pipeline()
+# pipeline.start()
+
+# print("Starting socket: TCP...")
+# server_addr = (SERVER_IP, SERVER_PORT)
+# socket_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# while True:
+#     try:
+#         print("Connecting to server @ %s:%d..." %(SERVER_IP, SERVER_PORT))
+#         socket_tcp.connect(server_addr)
+#         break
+#     except Exception:
+#         print("Can't connect to server,try it latter!")
+#         time.sleep(1)
+#         continue
+# # print("Please input gogo or stop to turn on/off the motor!")
+# while True:
+#     try:
+#         frames = pipeline.wait_for_frames()
+#         depth = frames.get_depth_frame()
+#         if not depth: continue
+    
+#         coverage = [0]*64
+#         for y in range(480):
+#             for x in range(640):
+#                 dist = depth.get_distance(x, y)
+#                 if 0 < dist and dist < 1:
+#                     coverage[x//10] += 1
+
+#             if y%20 is 19:
+#                 line = ""
+#                 for c in coverage:
+#                     line += " .:45678W"[c//25]
+#                 coverage = [0]*64
+                
+#                 # print(line)
+                
+#                 data = socket_tcp.recv(4096)
+#                 if len(data)>0:
+#                     print("Received: %s" % data)
+#                     socket_tcp.send(bytes(line,'utf-8'))
+#                     time.sleep(0.01)
+#                     continue
+                
+    
+        
+#     except Exception as e:
+#         print(e)
+#         socket_tcp.close()
+#         socket_tcp=None
+#         sys.exit(1)
+
 import socket
 import time
+import sys
+#RPi's IP
+SERVER_IP = "192.168.43.35"
+SERVER_PORT = 8888
 
-HOST_IP = "192.168.43.35"
-HOST_PORT = 8888
-
-
-COM_PORT = 'COM8'  # 請自行修改序列埠名稱
-BAUD_RATES = 9600
-ser = serial.Serial(COM_PORT, BAUD_RATES, timeout = 5) #5秒內沒有傳回訊息將回傳false
 
 print("Starting socket: TCP...")
-
-#1.create socket object:socket=socket.socket(family,type)
+server_addr = (SERVER_IP, SERVER_PORT)
 socket_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print("TCP server listen @ %s:%d!" %(HOST_IP, HOST_PORT) )
-host_addr = (HOST_IP, HOST_PORT)
 
-#2.bind socket to addr:socket.bind(address)
-socket_tcp.bind(host_addr)
+while True:
+    try:
+        print("Connecting to server @ %s:%d..." %(SERVER_IP, SERVER_PORT))
+        socket_tcp.connect(server_addr)
+        break
+    except Exception:
+        print("Can't connect to server,try it latter!")
+        time.sleep(1)
+        continue
 
-#3.listen connection request:socket.listen(backlog)
-socket_tcp.listen(1)
-
-#4.wait for client:connection,address=socket.accept()
-socket_con, (client_ip, client_port) = socket_tcp.accept()
-print("Connection accepted from %s." %client_ip)
-socket_con.send("Welcome to RPi TCP server!")
-
-try:
-    data=socket_con.recv(512)
-    while True:
-        try:
-            if len(data)>0:
-                print("Received:%s"%data)
-                if data== 'f':
-                    print('forward')
-                    ser.write(b'f\n')  # 訊息必須是位元組類型
-                    sleep(0.5)              # 暫停0.5秒，再執行底下接收回應訊息的迴圈
-                elif data== 'b':
-                    print('backward')
-                    ser.write(b'b\n')
-                    sleep(0.5)
-                elif data== 'l':
-                    print('left shift')
-                    ser.write(b'l\n')
-                    sleep(0.5)
-                elif data== 'r':
-                    print('right shift')
-                    ser.write(b'r\n')
-                    sleep(0.5)
-                elif data== '1':
-                    print('left spin')
-                    ser.write(b'1\n')
-                    sleep(0.5)
-                elif data== '2':
-                    print('right spin')
-                    ser.write(b'2\n')
-                    sleep(0.5)
-                elif data == 'h':
-                    print('halt')
-                    ser.write(b'h\n')
-                    sleep(0.5)
-                elif data == 'e':
-                    ser.close()
-                    print('exit')
-                    sys.exit()
-                    
-                socket_con.send(data) #傳回給client相同訊息已示收到
-                time.sleep(1)
-                while ser.in_waiting:
-                    mcu_feedback = ser.readline().decode()  # 接收arduino回應訊息並解碼
-                    print('控制板回應：', mcu_feedback)
-                    break
-                
-                continue
-        
-        except KeyboardInterrupt:
-            ser.close()
-            print('再見！')
-        
-except Exception:
-    socket_tcp.close()
-    sys.exit(1)
-            
-
+while True:
+    try:
+        data = socket_tcp.recv(512)
+        if len(data)>0:
+            print("Received: %s" % data.decode())
+            command = input()
+            while len(command) == 0:
+                command = input()
+            socket_tcp.send(command.encode())
+            print("Command sent")
+            time.sleep(0.01)
+            continue
+    except Exception as e:
+        print(e)
+        socket_tcp.close()
+        socket_tcp=Noneff
+        sys.exit(1)
