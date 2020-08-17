@@ -1,8 +1,12 @@
 import pcl
 '''
 input: .pcd file, z=0
-output: .pgm file
+output: .pgm file*2
+(1) test_pgm.pgm
+(2) test_pgm_smooth.pgm
 '''
+
+thres = 5
 
 with open('new.pcd', 'r') as f:
     lines = [line.strip().split() for line in f.readlines()]
@@ -49,12 +53,73 @@ for i in range(range_x):
 for d in data:
     dot_dict[(int(d[0]*10//1),int(d[1]*10//1))] += 1
 
+
 with open('test_pgm.pgm', 'w') as f:
     f.write('P2\n')
     f.write(str(range_x)+' '+str(range_y)+'\n')
     f.write('15\n')
     for j in range(range_y):
         for i in range(range_x):
-            f.write(str(dot_dict[(i, j)]))
+            if dot_dict[(i, j)] > 0:
+                f.write(str('30'))
+            else:
+                f.write(str('0'))
+            #print(dot_dict[(i, j('0')])
+            f.write(' ')
+        f.write('\n')
+
+#smooth
+for i in range(range_x):
+    for j in range(range_y):
+        count = 0
+        if i>0 and j>0 and i<range_x-2 and j<range_y-2:
+            if dot_dict[((i-1), (j-1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[((i-1), j)] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[(i, (j-1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[((i+1), (j+1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[((i+1), j)] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[(i, (j+1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[((i-1), (j+1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            if dot_dict[((i+1), (j-1))] > thres:
+                count += 1
+            else:
+                count -= 1
+            dot_dict[(i, j)] += count*5
+
+
+#/smooth
+
+with open('test_pgm_smooth.pgm', 'w') as f:
+    f.write('P2\n')
+    f.write(str(range_x)+' '+str(range_y)+'\n')
+    f.write('15\n')
+    for j in range(range_y):
+        for i in range(range_x):
+            if dot_dict[(i, j)] > 0:
+                f.write(str('30'))
+            else:
+                f.write(str('0'))
+            #print(dot_dict[(i, j('0')])
             f.write(' ')
         f.write('\n')
