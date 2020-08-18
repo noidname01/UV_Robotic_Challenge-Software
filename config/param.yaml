@@ -1,0 +1,6 @@
+robot:
+  size: [20.,20.,80.]              #size of UV robot (*2cm)
+  r_detect: 20.                    #the radious in which robot checks if any obstacle (*2cm)
+  angle: 36.                       #the angle range of obstacle detection
+  point_split: 7                   #(int), the num of checkpoint to detect obstacle (must be odd numbers)
+  height_check: 90                 #(int), the min height robot can pass 

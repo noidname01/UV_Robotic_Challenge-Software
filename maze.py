@@ -3,10 +3,24 @@ import math
 import pyrealsense2 as rs
 import matplotlib.pyplot as plt
 
+from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
+import yaml
+
 # Depth Field of View -- 86 * 57 * 94 (horizontal * vertical * diagonal)
 
 pipeline = rs.pipeline()
 pipeline.start()
+
+#load parameters
+#if __name__=='__main__':
+with open('config/params.yaml') as F:
+    params = yaml.load(F, Loader=yaml.FullLoader)
+    size = params['robot']['size']                   #(float,float,float): robot's size given the unit of length = 2cm
+    r_detect = params['robot']['d_detect']           
+    #pass_size = params['robot']['pass_size']         #(float,float): the range [width,height] robot checks if any obstacle d_detect ahead
+    angle = params['robot']['angle']
+    point_split = params['robot']['point_split']
+    height_check = params['robot']['height_check']
 
 class maze:
     def __init__(self, length, width, height):
@@ -51,7 +65,7 @@ class maze:
 
 
 class robot:
-    def __init__(self, mz, pos=(0, 0, 0), direc=0):
+    def __init__(self, mz, pos=(0, 0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90):
         '''
         mz: the room model
         pos: (double, double, double), the initial position of the robot
@@ -60,6 +74,14 @@ class robot:
         self.mz = mz
         self.pos = pos
         self.direc = direc
+        self.size=size
+        self.r_detect=r_detect
+        self.r2_detect = (self.r_detect+self.size[0]/2)/2
+        self.angle=3angle
+        self.point_split=point_split
+        self.height_check=height_check
+        self.split_angle = self.angle/((self.point_split-1)//2)
+        
 
     def get_pixel_set_maze(self, pixel, distance, direc):
         '''
@@ -80,6 +102,46 @@ class robot:
             for x in range(640):
                 distance = depth.get_distance(x, y)
                 get_pixel_set_maze((x, y), distance, self.direc)
+    
+    def left_navi(self):
+        '''
+        input:
+        output:
+            action: (string), 'move_forward' or 'turn_left'
+        '''
+        #get the loc of checkpoints
+        loc_array = [[self.pos[0], self.pos[1]]for i in range(self.point_split)]
+
+        #1.first half of checkpoints at distance r_detect (outer arc)
+        x_comp, y_comp = polar_to_cartesian(self.r_detect,self.direc)
+        loc_array[0][0] += round(x_comp)
+        loc_array[0][1] += round(y_comp)
+        for i in range(1,(self.point_split-1)//2+1):
+            x_comp, y_comp = polar_to_cartesian(self.r_detect,self.direc+i*self.split_angle)
+            loc_array[i][0] += round(x_comp)
+            loc_array[i][1] += round(y_comp)
+            x_comp, y_comp = polar_to_cartesian(self.r_detect,self.direc-i*self.split_angle)
+            loc_array[i+(self.point_split-1)//2][0] += round(x_comp)
+            loc_array[i+(self.point_split-1)//2][1] += round(y_comp)
+
+        #2.second half of checkpoints at distance (r_detect+'width_of_robot')/2  (inner arc)
+        x_comp, y_comp = polar_to_cartesian(self.r2_detect,self.direc)
+        loc_array[self.point_split][0] += round(x_comp)
+        loc_array[self.point_split][1] += round(y_comp)
+        for i in range(1,(self.point_split-1)//2+1):
+            x_comp, y_comp = polar_to_cartesian(self.r2_detect,self.direc+i*self.split_angle)
+            loc_array[self.point_split+i][0] += round(x_comp)
+            loc_array[self.point_split+i][1] += round(y_comp)
+            x_comp, y_comp = polar_to_cartesian(self.r2_detect,self.direc-i*self.split_angle)
+            loc_array[self.point_split+i+(self.point_split-1)//2][0] += round(x_comp)
+            loc_array[self.point_split+i+(self.point_split-1)//2][1] += round(y_comp)
+
+        #check if any obstacle at these checkpoints
+        for i in range(self.point_split*2):
+            for k in range(1,self.height_check):
+                if self.maze[loc_array[i][0],loc_array[i][1],k]:
+                    return 'turn_left'
+        return 'move_forward'
 
 
 
