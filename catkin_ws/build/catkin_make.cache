@@ -1,0 +1,2 @@
+practice:sd-ros-class/assignment_2:sd-ros-class/assignment_3:sd-ros-class/assignment_4/motion_detector
+-DCATKIN_DEVEL_PREFIX=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install -G Unix Makefiles
