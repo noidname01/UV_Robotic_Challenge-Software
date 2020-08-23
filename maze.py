@@ -77,7 +77,7 @@ class robot:
         self.size=size
         self.r_detect=r_detect
         self.r2_detect = (self.r_detect+self.size[0]/2)/2
-        self.angle=3angle
+        self.angle=angle
         self.point_split=point_split
         self.height_check=height_check
         self.split_angle = self.angle/((self.point_split-1)//2)
@@ -91,7 +91,7 @@ class robot:
         '''
         loc = get_location(pixel, distance)
         abs_loc = get_absolute_location(self.pos, self.direc, loc)
-        self.mz = set_thing(abs_loc)
+        self.mz.set_thing(abs_loc)
 
     def get_frame_set_maze(self):
         depth = False
@@ -101,13 +101,104 @@ class robot:
         for y in range(480):
             for x in range(640):
                 distance = depth.get_distance(x, y)
-                get_pixel_set_maze((x, y), distance, self.direc)
+                self.get_pixel_set_maze((x, y), distance, self.direc)
     
     def left_navi(self):
+
+        while(True): # need to fix to follow the map
+
+            # step1. go straight until the following check return true
+            self.go_straight()
+
+            # check1. check if going to crush
+            if self.crush_check():
+                # turn right 90 degree
+                self.turn_right()
+
+                # turn left to find the way to move forward
+                self.turn_to_find_path("left")
+                
+            # check2. check if it's time to turn left
+            if self.turn_check():
+
+                inch = self.get_specific_distance() // 10 
+                rest = self.get_specific_distance() % 10
+                
+                # go straight a little bit
+                self.go_straight(rest)
+
+                for i in range(inch):
+                    self.go_straight()
+
+                    # set a variable to let inner loop can pass outward
+                    shouldCrush = False
+                    # check will crush or not
+                    if self.crush_check():
+                        
+                        shouldCrush = True
+
+                        # turn right 90 degree
+                        self.turn_right()
+
+                        # turn left to find the way to move forward
+                        self.turn_to_find_path("left")
+
+                        #jump out the loop
+                        break
+                
+                
+                if shouldCrush:
+                    #  jump out of loop
+                    continue
+
+                # turn left 90 degree
+                self.turn_left()
+
+                # turn right and find the way to move forward
+                self.turn_to_find_path("right")
+            
+        """  """
+
+    def go_straight(self, dist = 0.1):
+        '''
+        input:
+            dist: distance, the distance you want the robot to move forward, it will keep move continuously in default
+        output:
+            none
+        '''
+
+    def turn_left(self, deg = 90):
+        '''
+        input:
+            deg: degree, the degree you want the robot to turn left, default would be 90 degree
+        output:
+            none
+        '''
+
+    def turn_right(self, deg = 90):
+        '''
+        input:
+            deg: degree, the degree you want the robot to turn right, default would be 90 degree
+        output:
+            none
+        '''
+
+    def crush_check(self):
+        '''
+        description:
+            crush_check is to check whether to get the crush on something. It should use the depth camera and check the frame it sends,
+
+            if there are points or area in ""specific"" distance, it will return true, which means it will crush if we don't stop it.
+
+            the specific distance will be the robot-safe-dist, which is a safety distance for the robot as the cushion, prevents it from the 
+
+            affection of deviation 
+        '''
+
         '''
         input:
         output:
-            action: (string), 'move_forward' or 'turn_left'
+            shouldStop: bool, means that robot should stop move forward
         '''
         #get the loc of checkpoints
         loc_array = [[self.pos[0], self.pos[1]]for i in range(self.point_split)]
@@ -139,84 +230,64 @@ class robot:
         #check if any obstacle at these checkpoints
         for i in range(self.point_split*2):
             for k in range(1,self.height_check):
-                if self.maze[loc_array[i][0],loc_array[i][1],k]:
-                    return 'turn_left'
-        return 'move_forward'
+                if self.mz[loc_array[i][0],loc_array[i][1],k]:
+                    return True
+        return False
 
+    def turn_check(self):
+        '''
+        description:
+            turn_check is to check whether is the time to turn, prevents it from missing the right turning time.
 
+            It will track the ""specific"" point in the frame of depth camera, uses it to determine when to turn.
 
-def get_location(pixel, distance):
-    '''
-    input: 
-        pixel: (int, int), the location of this pixel in the picture
-        distance: double, the distance from the camera to the thing (detected by the camera)
-    output:
-        loc: (double, double, double), the location of this pixel, given the origin = (0, 0)
-    '''
-    x, y = pixel[0], pixel[1]
-    if x > 320 and y > 240:
-        x = x - 320
-        y = y - 240
-        theta = math.atan(x/(320*math.sin(degree_to_arc(43)/math.cos(degree_to_arc(43)))))
-        phi = math.atan(y/(240*math.sin(degree_to_arc(28.5)/math.cos(degree_to_arc(28.5)))))
-        r = math.sqrt(pow(distance, 2)/(pow(1/math.cos(theta), 2)+pow(math.sin(phi)/math.cos(phi), 2)))
-        a = r * math.sin(theta) / math.cos(theta)
-        b = r
-        c = r * math.sin(phi) / math.cos(phi)
-        return (a, b, c)
-    elif x < 320 and y > 240:
-        x = 320 - x
-        y = y - 240
-        theta = math.atan(x/(320*math.sin(degree_to_arc(43)/math.cos(degree_to_arc(43)))))
-        phi = math.atan(y/(240*math.sin(degree_to_arc(28.5)/math.cos(degree_to_arc(28.5)))))
-        r = math.sqrt(pow(distance, 2)/(pow(1/math.cos(theta), 2)+pow(math.sin(phi)/math.cos(phi), 2)))
-        a = r * math.sin(theta) / math.cos(theta)
-        b = r
-        c = r * math.sin(phi) / math.cos(phi)
-        return (-a, b, c)
-    elif x < 320 and y < 240:
-        x = 320 - x
-        y = 240 - y
-        theta = math.atan(x/(320*math.sin(degree_to_arc(43)/math.cos(degree_to_arc(43)))))
-        phi = math.atan(y/(240*math.sin(degree_to_arc(28.5)/math.cos(degree_to_arc(28.5)))))
-        r = math.sqrt(pow(distance, 2)/(pow(1/math.cos(theta), 2)+pow(math.sin(phi)/math.cos(phi), 2)))
-        a = r * math.sin(theta) / math.cos(theta)
-        b = r
-        c = r * math.sin(phi) / math.cos(phi)
-        return (-a, b, -c)
-    elif x > 320 and y > 240:
-        x = x - 320
-        y = 240 - y
-        theta = math.atan(x/(320*math.sin(degree_to_arc(43)/math.cos(degree_to_arc(43)))))
-        phi = math.atan(y/(240*math.sin(degree_to_arc(28.5)/math.cos(degree_to_arc(28.5)))))
-        r = math.sqrt(pow(distance, 2)/(pow(1/math.cos(theta), 2)+pow(math.sin(phi)/math.cos(phi), 2)))
-        a = r * math.sin(theta) / math.cos(theta)
-        b = r
-        c = r * math.sin(phi) / math.cos(phi)
-        return (a, b, -c)
+            the specific point is the translation of the position of camera/robot, I think the coordinate should be 
 
+            ( self.pos.x - ( robot-width / 2 + robot-safe-dist ) , self.pos.y + ( robot-width / 2 + robot-safe-dist ) * tan(90 - robot-vision-angle / 2) ) 
+            
+            in cartesian coordinate system
 
-def get_absolute_location(pos, direc, loc):
-    '''
-    input:
-        pos: (double, double, double), the location of the robot
-        direc: double, the direction of the camera (or the direction of the robot) in degree
-        loc: (double, double, double), the location of this pixel, given the origin = (0, 0)
-    output:
-        abs_loc: (double, double, double), the location of this pixel, given the origin = pos
-    '''    
-    arc = degree_to_arc(direc)
-    x = loc[0]
-    y = loc[1]
-    z = loc[2]
-    a = x * math.cos(arc) - y * math.sin(arc)
-    b = x * math.sin(arc) + y * math.cos(arc)
-    c = z
-    return (a+pos[1], b+pos[2], c+pos[3])
+            when it found this point becoming empty, it will return true, which means that it can turn "" left ""
+ 
+        '''
 
+    def turn_to_find_path(self, direction):
+        '''
+        input:
+            direction: left or right, which will be applied to different check
+        
+        description:
+            turn_to_find_path is to turn left or right to find the ""specific point"" of camera frame
+            when it found this point becoming empty, it will return true, which means that it can "" go forward ""
 
-def degree_to_arc(degree):
-    return degree*2*math.pi/360
+        '''
+    def specific_point_coord(self):
+        '''
+        input:
+            none
+        output:
+            coord: tuple, (x,y)
+        description:
+            it will return a tuple that indicate the coordintate of specific point
+        '''
+
+    def specific_point_depth(self):
+        '''
+        input:
+            none
+        output:
+            depth: float, the depth of the point
+            
+        '''
+    
+    def get_specific_distance(self):
+        '''
+        input:
+            none
+        output:
+            distance: float, the distance that the robot would move forward before turning
+        '''
+
 
 
 if __name__ == "__main__":
