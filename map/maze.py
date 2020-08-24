@@ -84,6 +84,9 @@ class robot:
         self.safe_dist = safe_dist
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}                          #type:dict
         assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
+        # open and set Serial
+        self.ser=serial.Serial(“/dev/ttyUSB0”,9600,timeout=None)
+        self.ser.open()
         
 
     def get_pixel_set_maze(self, pixel, distance, direc):
@@ -169,6 +172,11 @@ class robot:
         output:
             none
         '''
+        self.ser.write('f ')
+        self.ser.write(dist)
+        self.ser.write('\n')
+        sleep(0.1)
+        self.ser.read_until('c')
 
     def turn_left(self, deg = 90):
         '''
@@ -177,6 +185,11 @@ class robot:
         output:
             none
         '''
+        self.ser.write('l ')
+        self.ser.write(deg)
+        self.ser.write('\n')
+        sleep(0.1)
+        self.ser.read_until('c')
 
     def turn_right(self, deg = 90):
         '''
@@ -185,7 +198,39 @@ class robot:
         output:
             none
         '''
+        self.ser.write('r ')
+        self.ser.write(deg)
+        self.ser.write('\n')
+        sleep(0.1)
+        self.ser.read_until('c')
 
+        
+    def infinite_turn(self, direction):
+        '''
+        input:
+            direction: string "left" or "right"
+        output:
+            none
+        '''
+        if direction == 'right':
+            self.ser.write('r ')
+            self.ser.write('i')
+            self.ser.write('\n')
+         elif direction == 'left':
+            self.ser.write('l ')
+            self.ser.write('i')
+            self.ser.write('\n')
+            
+    def halt(self):
+        '''
+        HALT.
+        '''
+        self.ser.write('h')
+        self.ser.write('\n')
+        sleep(0.1)
+        self.ser.read_until('c')
+        
+        
     def crush_check(self):
         '''
         description:
@@ -268,6 +313,24 @@ class robot:
             when it found this point becoming empty, it will return true, which means that it can "" go forward ""
 
         '''
+        if direction == 'right':
+            sp = self.specific_point_coord('right')
+            if self.mz[sp[0],sp[1],0]:
+                self.infinite_turn('right')
+            while  self.mz[sp[0],sp[1],0]:
+                sp = self.specific_point_coord('right')
+            self.halt()
+            return True
+        elif direction == 'left':
+            sp = self.specific_point_coord('left')
+            if self.mz[sp[0],sp[1],0]:
+                self.infinite_turn('left')
+            while  self.mz[sp[0],sp[1],0]:
+                sp = self.specific_point_coord('left')
+            self.halt()
+            return True
+        
+  
     def specific_point_coord(self, direction):
         '''
         input:
