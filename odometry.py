@@ -20,8 +20,10 @@ odometry_map2 = np.full((x_size, y_size), False) # containing path
 
 def odom(x, y):
     """ Update odometry_pt.txt, containing only discrete pts.
-            input: newly visited point  coordinate x, y (float) 
-            output: None
+            input:    
+                    x, y (float) newly visited point  coordinate
+            output: 
+                    None
     """
     global origin_set, origin_x, origin_y
     if origin_set:
@@ -36,8 +38,10 @@ def odom(x, y):
 
 def grid_through_line(x1,y1,x2,y2):
     """ Connect given two grids and select grids to pass through.
-            input: starting grid (x1, y1) and ending grid (x2, y2) (int)
-            output: selected grid coordinate list including starting grid and ending grid (list of tuples)
+            input: 
+                    starting grid (x1, y1) and ending grid (x2, y2) (int)
+            output: 
+                    selected grid coordinate list including starting grid and ending grid (list of tuples)
     """
     steep = False
     pts = []
@@ -68,8 +72,10 @@ def grid_through_line(x1,y1,x2,y2):
 
 def odom_path(x,y):
     """ Update odometry_path.txt, connecting the new pt and the previous one.
-            input: newly visited point coordinate x, y (float)
-            output: None
+            input:
+                    newly visited point coordinate x, y (float)
+            output: 
+                    None
     """
     global origin_set2, origin_x, origin_y, last_x, last_y
     if origin_set2:
@@ -77,7 +83,7 @@ def odom_path(x,y):
         y_g =int(((y-origin_y)*100) //2)
         for (x_p, y_p) in grid_through_line(last_x, last_y, x_g, y_g):
             odometry_map2[int(x_p + 0.5*x_size)][int(y_p + 0.5*y_size)] = True
-        np.savetxt('odometry_path.txt', odometry_map2, fmt = '%d')
+        np.savetxt('odometry_path.txt', odometry_map2, fmt = '%d', delimiter="")
         last_x, last_y = x_g, y_g
         return None
     origin_x, origin_y =x,  y
@@ -87,21 +93,30 @@ def odom_path(x,y):
 
 def callback(data):
     """ Callback function, executed whenever odometry node receives new data.
+            print(x,y), update two odometry file, then count visited grids.
+            input:
+                    data ("/rtabmap/localization_pose")
+            output:
+                    None
     """
-    print 'x:', data.pose.pose.position.x
-    print 'y:', data.pose.pose.position.y
+    print ('x:', data.pose.pose.position.x)
+    print ('y:', data.pose.pose.position.y)
     odom(data.pose.pose.position.x, data.pose.pose.position.y)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
-    print(np.count_nonzero(odometry_map))
-    print(np.count_nonzero(odometry_map2))
+    print(np.count_nonzero(odometry_map)) # only counts visited pt
+    print(np.count_nonzero(odometry_map2)) # counts pt and path
 
 
-def catch_odom():
+def odom_odom():
+    """ Setup. 
+            Create a new node 'odometry',
+            Subscribe topic "/rtabmap/localization_pose"
+    """
     rospy.init_node('odometry', anonymous = True)
     print('ready')
     rospy.Subscriber("/rtabmap/localization_pose", PoseWithCovarianceStamped, callback)
-    rospy.spin()
+    rospy.spin() # I refuse to leave.
 
 if __name__ == "__main__":
-    catch_odom()
+    odom_odom()
     
