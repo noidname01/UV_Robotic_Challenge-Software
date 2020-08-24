@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
@@ -117,6 +118,12 @@ def odom_odom():
     rospy.Subscriber("/rtabmap/localization_pose", PoseWithCovarianceStamped, callback)
     rospy.spin() # I refuse to leave.
 
+def gen_img(data):
+    
+    odom_map = np.genfromtxt('odometry_path.txt', dtype=float)
+    odom_map = 255*odom_map
+    cv2.imwrite('odom.jpg',odom_map)
+    
 if __name__ == "__main__":
     odom_odom()
     
