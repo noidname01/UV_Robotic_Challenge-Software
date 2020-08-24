@@ -3,4 +3,9 @@ robot:
   r_detect: 20.                    #the radious in which robot checks if any obstacle (*2cm)
   angle: 36.                       #the angle range of obstacle detection
   point_split: 7                   #(int), the num of checkpoint to detect obstacle (must be odd numbers)
-  height_check: 90                 #(int), the min height robot can pass 
+  height_check: 90                 #(int), the min height robot can pass
+  safe_turn_distance: 5            #(int), the min distance between Robot and obstacle before it start to turn
+  angle_of_view: 
+    horizonal: 86.
+    vertical: 57.
+    diagonal: 94.
