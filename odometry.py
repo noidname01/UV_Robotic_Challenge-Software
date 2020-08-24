@@ -2,25 +2,26 @@ import numpy as np
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
-origin_set = False
-origin_set2 = False
-last_x = 0 # grid
+origin_set = False      # for odom(x,y)
+origin_set2 = False    # for odm_path(x,y)
+# grid
+last_x = 0 
 last_y = 0 
-origin_x = None # real coordinate
+# real coordinate
+origin_x = None 
 origin_y = None
 
 # set map size (even int)
 # each grid width 2(cm)
-x_size = 100
-y_size = 100
-odometry_map = np.full((x_size, y_size), False)
-odometry_map2 = np.full((x_size, y_size), False)
-print(odometry_map)
-
+x_size = 1000
+y_size = 1000
+odometry_map = np.full((x_size, y_size), False)  # pts only
+odometry_map2 = np.full((x_size, y_size), False) # containing path
 
 def odom(x, y):
-    """ Update the odometry matrix.
-            input: newly visited point  
+    """ Update odometry_pt.txt, containing only discrete pts.
+            input: newly visited point  coordinate x, y (float) 
+            output: None
     """
     global origin_set, origin_x, origin_y
     if origin_set:
@@ -34,6 +35,10 @@ def odom(x, y):
     odom(origin_x, origin_y)
 
 def grid_through_line(x1,y1,x2,y2):
+    """ Connect given two grids and select grids to pass through.
+            input: starting grid (x1, y1) and ending grid (x2, y2) (int)
+            output: selected grid coordinate list including starting grid and ending grid (list of tuples)
+    """
     steep = False
     pts = []
     dx = abs(x2 - x1)
@@ -62,8 +67,9 @@ def grid_through_line(x1,y1,x2,y2):
     return pts
 
 def odom_path(x,y):
-    """ Update the odometry matrix, connecting the new pt and the previous one.
-            input: newly visited point 
+    """ Update odometry_path.txt, connecting the new pt and the previous one.
+            input: newly visited point coordinate x, y (float)
+            output: None
     """
     global origin_set2, origin_x, origin_y, last_x, last_y
     if origin_set2:
@@ -80,6 +86,8 @@ def odom_path(x,y):
 
 
 def callback(data):
+    """ Callback function, executed whenever odometry node receives new data.
+    """
     print 'x:', data.pose.pose.position.x
     print 'y:', data.pose.pose.position.y
     odom(data.pose.pose.position.x, data.pose.pose.position.y)
