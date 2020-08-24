@@ -65,7 +65,7 @@ class maze:
 
 
 class robot:
-    def __init__(self, mz, pos=(0, 0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90):
+    def __init__(self, mz, pos=(0, 0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
         '''
         mz: the room model
         pos: (double, double, double), the initial position of the robot
@@ -81,6 +81,9 @@ class robot:
         self.point_split=point_split
         self.height_check=height_check
         self.split_angle = self.angle/((self.point_split-1)//2)
+        self.safe_dist = safe_dist
+        self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}                          #type:dict
+        assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
         
 
     def get_pixel_set_maze(self, pixel, distance, direc):
@@ -241,7 +244,7 @@ class robot:
 
             It will track the ""specific"" point in the frame of depth camera, uses it to determine when to turn.
 
-            the specific point is the translation of the position of camera/robot, I think the coordinate should be 
+            the specific point is the translation of the position of camera/robot, I think the coordinate of the 'specific point'should be 
 
             ( self.pos.x - ( robot-width / 2 + robot-safe-dist ) , self.pos.y + ( robot-width / 2 + robot-safe-dist ) * tan(90 - robot-vision-angle / 2) ) 
             
@@ -250,6 +253,10 @@ class robot:
             when it found this point becoming empty, it will return true, which means that it can turn "" left ""
  
         '''
+        x,y = self.specific_point_coord('left')
+
+        return not self.mz[x][y]
+            
 
     def turn_to_find_path(self, direction):
         '''
@@ -261,15 +268,22 @@ class robot:
             when it found this point becoming empty, it will return true, which means that it can "" go forward ""
 
         '''
-    def specific_point_coord(self):
+    def specific_point_coord(self, direction):
         '''
         input:
-            none
+            direction: str, 'left' or 'right'
         output:
             coord: tuple, (x,y)
         description:
             it will return a tuple that indicate the coordintate of specific point
         '''
+        assert direction in ['left','right'], 'direction(type:str) should be left or right'
+        if direction=='left':
+            return (round(self.pos[0]-(self.size[0]/2+self.safe_dist))\
+            ,round(self.pos[1]+(self.size[1]/2+self.safe_dist)*math.tan(90-self.vision_angle['hor']/2)))
+        elif direction=='right':
+            return (round(self.pos[0]+(self.size[0]/2+self.safe_dist))\
+            ,round(self.pos[1]+(self.size[1]/2+self.safe_dist)*math.tan(90-self.vision_angle['hor']/2)))
 
     def specific_point_depth(self):
         '''
@@ -279,6 +293,7 @@ class robot:
             depth: float, the depth of the point
             
         '''
+        
     
     def get_specific_distance(self):
         '''
@@ -287,7 +302,7 @@ class robot:
         output:
             distance: float, the distance that the robot would move forward before turning
         '''
-
+        return math.tan(self.vision_angle['hor']/2)*(self.safe_dist+0.5*(self.size[0]))
 
 
 if __name__ == "__main__":
