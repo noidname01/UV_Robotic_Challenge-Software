@@ -122,7 +122,7 @@ def gen_img(data):
     
     odom_map = np.genfromtxt('odometry_path.txt', dtype=float)
     odom_map = 255*odom_map
-    cv2.imwrite('odom.jpg',odom_map)
+    cv2.imwrite('../uv-robotic-web/src/image/odom.jpg',odom_map) #temporarily, need to change to build directory
     
 if __name__ == "__main__":
     odom_odom()
