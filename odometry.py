@@ -28,7 +28,7 @@ def odom(x, y):
         x_g =int(((x-origin_x)*100) //2)
         y_g =int(((y-origin_y)*100) //2)
         odometry_map[int(x_g + 0.5*x_size)][int(y_g + 0.5*y_size)] = True
-        np.savetxt('odometry_pt.txt', odometry_map, fmt = '%d')
+        np.savetxt('odometry_pt.txt', odometry_map, fmt = '%d', delimiter="")
         return None
     origin_x, origin_y = x, y
     origin_set = True
