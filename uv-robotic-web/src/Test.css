@@ -1,0 +1,98 @@
+
+
+#combined-map{
+    width: var(--combinedmap-width);
+    height: var(--combinedmap-height);
+}
+
+#camera-stream{
+    width: var(--camerastream-width);
+    height: var(--camerastream-height);
+}
+
+#remote-controler{
+    height: var(--remotecontroler-height);
+ 
+}
+
+#map-and-camera{
+    height: var(--mapandcamera-height);
+}
+
+@media screen and (min-width: 300px){
+    :root{
+        --combinedmap-width: 12.5rem;
+        --combinedmap-height: 12.5rem;
+        --camerastream-width: 12.5rem;
+        --camerastream-height: 12.5rem;
+        --remotecontroler-height: calc(100vh - var(--combinedmap-height) - var(--camerastream-height));
+        --mapandcamera-height: calc( var(--combinedmap-height) + var(--camerastream-height));
+    }
+    
+}
+
+@media screen and (min-width: 400px){
+    :root{
+        --combinedmap-width: 13rem;
+        --combinedmap-height: 13rem;
+        --camerastream-width: 13rem;
+        --camerastream-height: 13rem;
+    }
+}
+
+@media screen and (min-width: 500px){
+    :root{
+        /* --combinedmap-width: 15rem;
+        --combinedmap-height: 15rem;
+        --camerastream-width: 15rem;
+        --camerastream-height: 13rem; */
+    }
+}
+
+@media screen and (min-width: 600px){
+    :root{
+        --remotecontroler-height: 100vh;
+        --mapandcamera-height: 100vh;
+        --combinedmap-width: 50vh;
+        --combinedmap-height: 50vh;
+        --camerastream-width: 50vh;
+        --camerastream-height: 50vh;
+    }
+}
+
+@media screen and (min-width: 700px){
+    :root{
+        
+    }
+}
+
+@media screen and (min-width: 800px){
+    :root{
+        /* --combinedmap-width: 25rem;
+        --combinedmap-height: 25rem;
+        --camerastream-width: 25rem;
+        --camerastream-height: 25rem; */
+    }
+}
+
+@media screen and (min-width: 900px){
+    :root{
+        
+    }
+}
+
+@media screen and (min-width: 1000px){
+    :root{
+        /* --combinedmap-width: 30rem;
+        --combinedmap-height: 30rem;
+        --camerastream-width: 30rem;
+        --camerastream-height: 30rem; */
+    }
+}
+
+@media screen and (min-width: 1100px){
+    :root{
+        
+    }
+}
+
