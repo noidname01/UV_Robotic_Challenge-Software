@@ -21,15 +21,15 @@ const Test = (props) => {
   });
 
   ros.on("connection", () => {
-    // alert("Connected to websocket server.");
+    alert("Connected to websocket server.");
   });
 
   ros.on("error", (error) => {
-    // alert("Error connecting to websocket server: ", error);
+    alert("Error connecting to websocket server: ", error);
   });
 
   ros.on("close", () => {
-    // alert("Connection to websocket server closed.");
+    alert("Connection to websocket server closed.");
   });
 
   let cmdVel = new ROSLIB.Service({
