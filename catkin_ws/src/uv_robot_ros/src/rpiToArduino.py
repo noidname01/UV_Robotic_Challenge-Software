@@ -1,4 +1,4 @@
-#!/udsr/bin/env python2.7
+#!/usr/bin/env python2.7
 import serial
 from time import sleep
 import sys
@@ -12,9 +12,9 @@ from uv_robot_ros.srv import cmdToRpi, cmdToRpiResponse
 #HOST_PORT = 8888
 
 
-COM_PORT = '/dev/ttyUSB0'  # 請自行修改序列埠名稱
+COM_PORT = '/dev/ttyUSB0' 
 BAUD_RATES = 9600
-ser = serial.Serial(COM_PORT, BAUD_RATES, timeout = 5) #5秒內沒有傳回訊息將回傳false
+ser = serial.Serial(COM_PORT, BAUD_RATES, timeout = 5) 
 
 def handle_cmd_to_arduino(req):
 
@@ -78,62 +78,8 @@ if __name__ == "__main__":
 #            data = data.decode()
 #            if len(data)>0:
 #                print("Received:%s"%data)
-                '''
-                if data== 'f':
-                    print('forward')
-                    ser.write(b'f')  # 訊息必須是位元組類型
-                    #sleep(0.5)              # 暫停0.5秒，再執行底下接收回應訊息的迴圈
-                elif data== 'b':
-                    print('backward')
-                    ser.write(b'b')
-                    #sleep(0.5)
-                elif data== 'l':
-                    print('left spin')
-                    ser.write(b'l')
-                    #sleep(0.5)
-                elif data== 'r':
-                    print('right spin')
-                    ser.write(b'r')
-                    #sleep(0.5)
-                elif data== 'm':
-                    print('left shift')
-                    ser.write(b'm')
-                elif data== 'n':
-                    print('right shift')
-                    ser.write(b'n')
-                elif data== '1':
-                    #print('left spin')
-                    print('adjust 1')
-                    ser.write(b'1')
-                    #sleep(0.5)
-                elif data== '2':
-                    #print('right spin')
-                    print('adjust 2')
-                    ser.write(b'2')
-                    #sleep(0.5)
-                elif data== '3':
-                    #print('left spin')
-                    print('adjust 3')
-                    ser.write(b'3')
-                    #sleep(0.5)
-                elif data== '4':
-                    #print('right spin')
-                    print('adjust 4')
-                    ser.write(b'4')
-                    #sleep(0.5)
-                elif data == 'h':
-                    print('halt')
-                    ser.write(b'h')
-                    #sleep(0.5)
-                elif data == 'e':
-                    ser.close()
-                    print('exit')
-                    sys.exit()
-                else:
-                    data = "Not Recognized"
-                '''
 #               ser.write(data.encode())
-#               socket_con.send(data.encode()) #傳回給client相同訊息已示收到
+#               socket_con.send(data.encode()) 
                 #time.sleep(1)
                 
 #               recv = ser.readline().strip()
@@ -143,7 +89,7 @@ if __name__ == "__main__":
 #                
 #        except KeyboardInterrupt:
 #            ser.close()
-#            print('再見！')
+#            print("bye")
 #            sys.exit(1)
         
 #except Exception as e:

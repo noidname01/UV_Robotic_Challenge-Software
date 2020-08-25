@@ -3,6 +3,6 @@ prefix=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install
 Name: uv_robot_ros
 Description: Description of uv_robot_ros
 Version: 0.0.0
-Cflags: 
+Cflags: -I${prefix}/include
 Libs: -L${prefix}/lib 
 Requires: 
