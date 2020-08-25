@@ -47,8 +47,8 @@ void MotorWriting(double vLF, double vRF, double vLB, double vRB){
 
 void forward(double v){MotorWriting(v, v, v, v);}
 void backward(double v){MotorWriting(-v, -v, -v, -v);}
-void leftturn(double v){MotorWriting(v, -v, -v, v);}
-void rightturn(double v){MotorWriting(-v, v, v, -v);}
+void leftturn(double v){MotorWriting(-v, v, v, -v);}
+void rightturn(double v){MotorWriting(v, -v, -v, v);}
 void leftshift(double v){MotorWriting(v, -v, v, -v);}
 void rightshift(double v){MotorWriting(-v, v, -v, v);}
 void halt(){ MotorWriting(0, 0, 0, 0); }
