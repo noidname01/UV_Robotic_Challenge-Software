@@ -5,7 +5,7 @@ import time
 import sys
 
 import rospy
-from uv-robot-ros.srv import cmdToRpi
+from uv_robot_ros.srv import cmdToRpi
 
 #RPi's IP
 #SERVER_IP = "192.168.43.35"
