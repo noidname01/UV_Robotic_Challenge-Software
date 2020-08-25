@@ -49,6 +49,7 @@ const Test = (props) => {
 
 
   const robotAction = (e) => {
+    e.preventDefault()
     let action = e.target.name;
 
     // alert(action);
