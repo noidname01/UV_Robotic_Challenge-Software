@@ -405,1079 +405,547 @@ clean: gtest/googlemock/gtest/CMakeFiles/gtest.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory practice
+# Directory level rules for directory uv_robot_ros
 
 # Convenience name for "all" pass in the directory.
-practice/all: practice/CMakeFiles/practice_generate_messages.dir/all
-practice/all: practice/CMakeFiles/talker.dir/all
-practice/all: practice/CMakeFiles/hello.exe.dir/all
-practice/all: practice/CMakeFiles/listener.dir/all
+uv_robot_ros/all:
 
-.PHONY : practice/all
+.PHONY : uv_robot_ros/all
 
 # Convenience name for "clean" pass in the directory.
-practice/clean: practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages_eus.dir/clean
-practice/clean: practice/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
-practice/clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-practice/clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
-practice/clean: practice/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages_py.dir/clean
-practice/clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-practice/clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
-practice/clean: practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-practice/clean: practice/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-practice/clean: practice/CMakeFiles/practice_genlisp.dir/clean
-practice/clean: practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
-practice/clean: practice/CMakeFiles/roscpp_generate_messages_eus.dir/clean
-practice/clean: practice/CMakeFiles/roscpp_generate_messages_py.dir/clean
-practice/clean: practice/CMakeFiles/practice_gennodejs.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages.dir/clean
-practice/clean: practice/CMakeFiles/talker.dir/clean
-practice/clean: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages_cpp.dir/clean
-practice/clean: practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-practice/clean: practice/CMakeFiles/practice_gencpp.dir/clean
-practice/clean: practice/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
-practice/clean: practice/CMakeFiles/practice_geneus.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-practice/clean: practice/CMakeFiles/practice_genpy.dir/clean
-practice/clean: practice/CMakeFiles/practice_generate_messages_lisp.dir/clean
-practice/clean: practice/CMakeFiles/hello.exe.dir/clean
-practice/clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
-practice/clean: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/clean
-practice/clean: practice/CMakeFiles/listener.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
+uv_robot_ros/clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 
-.PHONY : practice/clean
+.PHONY : uv_robot_ros/clean
 
 # Convenience name for "preinstall" pass in the directory.
-practice/preinstall:
+uv_robot_ros/preinstall:
 
-.PHONY : practice/preinstall
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir
-
-# All Build rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/depend
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_nodejs"
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_nodejs: practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : std_msgs_generate_messages_nodejs
-
-# clean rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
-
-.PHONY : clean
+.PHONY : uv_robot_ros/preinstall
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages_eus.dir
+# Target rules for target uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir
 
 # All Build rule for target.
-practice/CMakeFiles/practice_generate_messages_eus.dir/all: practice/CMakeFiles/std_msgs_generate_messages_eus.dir/all
-practice/CMakeFiles/practice_generate_messages_eus.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-practice/CMakeFiles/practice_generate_messages_eus.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_eus.dir/build.make practice/CMakeFiles/practice_generate_messages_eus.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_eus.dir/build.make practice/CMakeFiles/practice_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=18,19,20 "Built target practice_generate_messages_eus"
-.PHONY : practice/CMakeFiles/practice_generate_messages_eus.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages_eus.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-practice_generate_messages_eus: practice/CMakeFiles/practice_generate_messages_eus.dir/rule
-
-.PHONY : practice_generate_messages_eus
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages_eus.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_eus.dir/build.make practice/CMakeFiles/practice_generate_messages_eus.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages_eus.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages_eus.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/std_msgs_generate_messages_eus.dir
-
-# All Build rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_eus.dir/all:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_eus.dir/depend
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_eus"
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_eus.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/std_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/std_msgs_generate_messages_eus.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_eus: practice/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-.PHONY : std_msgs_generate_messages_eus
-
-# clean rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_eus.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir
-
-# All Build rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/depend
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_py"
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_py: practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_py
-
-# clean rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir
-
-# All Build rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/depend
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_nodejs"
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# clean rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/std_msgs_generate_messages_py.dir
-
-# All Build rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_py.dir/all:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_py.dir/depend
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_py"
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_py.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/std_msgs_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/std_msgs_generate_messages_py.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_py: practice/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-.PHONY : std_msgs_generate_messages_py
-
-# clean rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_py.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages_py.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_generate_messages_py.dir/all: practice/CMakeFiles/std_msgs_generate_messages_py.dir/all
-practice/CMakeFiles/practice_generate_messages_py.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-practice/CMakeFiles/practice_generate_messages_py.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_py.dir/build.make practice/CMakeFiles/practice_generate_messages_py.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_py.dir/build.make practice/CMakeFiles/practice_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=25,26,27,28 "Built target practice_generate_messages_py"
-.PHONY : practice/CMakeFiles/practice_generate_messages_py.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages_py.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages_py.dir/rule
-
-# Convenience name for target.
-practice_generate_messages_py: practice/CMakeFiles/practice_generate_messages_py.dir/rule
-
-.PHONY : practice_generate_messages_py
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages_py.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_py.dir/build.make practice/CMakeFiles/practice_generate_messages_py.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages_py.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages_py.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_lisp"
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_lisp: practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_lisp
-
-# clean rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir
-
-# All Build rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_eus"
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_eus: practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# clean rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/std_msgs_generate_messages_lisp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_lisp"
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_lisp: practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : std_msgs_generate_messages_lisp
-
-# clean rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/roscpp_generate_messages_lisp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/roscpp_generate_messages_lisp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_lisp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_lisp"
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_lisp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/roscpp_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/roscpp_generate_messages_lisp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_lisp: practice/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-.PHONY : roscpp_generate_messages_lisp
-
-# clean rule for target.
-practice/CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_genlisp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_genlisp.dir/all: practice/CMakeFiles/practice_generate_messages_lisp.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_genlisp.dir/build.make practice/CMakeFiles/practice_genlisp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_genlisp.dir/build.make practice/CMakeFiles/practice_genlisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_genlisp"
-.PHONY : practice/CMakeFiles/practice_genlisp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_genlisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_genlisp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_genlisp.dir/rule
-
-# Convenience name for target.
-practice_genlisp: practice/CMakeFiles/practice_genlisp.dir/rule
-
-.PHONY : practice_genlisp
-
-# clean rule for target.
-practice/CMakeFiles/practice_genlisp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_genlisp.dir/build.make practice/CMakeFiles/practice_genlisp.dir/clean
-.PHONY : practice/CMakeFiles/practice_genlisp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_genlisp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/roscpp_generate_messages_nodejs.dir
-
-# All Build rule for target.
-practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/all:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/depend
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_nodejs"
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_nodejs: practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-.PHONY : roscpp_generate_messages_nodejs
-
-# clean rule for target.
-practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/roscpp_generate_messages_eus.dir
-
-# All Build rule for target.
-practice/CMakeFiles/roscpp_generate_messages_eus.dir/all:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_eus.dir/build.make practice/CMakeFiles/roscpp_generate_messages_eus.dir/depend
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_eus.dir/build.make practice/CMakeFiles/roscpp_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_eus"
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_eus.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/roscpp_generate_messages_eus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/roscpp_generate_messages_eus.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_eus: practice/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-.PHONY : roscpp_generate_messages_eus
-
-# clean rule for target.
-practice/CMakeFiles/roscpp_generate_messages_eus.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_eus.dir/build.make practice/CMakeFiles/roscpp_generate_messages_eus.dir/clean
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_eus.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/roscpp_generate_messages_eus.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/roscpp_generate_messages_py.dir
-
-# All Build rule for target.
-practice/CMakeFiles/roscpp_generate_messages_py.dir/all:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_py.dir/build.make practice/CMakeFiles/roscpp_generate_messages_py.dir/depend
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_py.dir/build.make practice/CMakeFiles/roscpp_generate_messages_py.dir/build
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_py"
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_py.dir/all
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/roscpp_generate_messages_py.dir/rule: cmake_check_build_system
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/roscpp_generate_messages_py.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_py.dir/rule
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_py: practice/CMakeFiles/roscpp_generate_messages_py.dir/rule
+roscpp_generate_messages_py: uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/rule
 
 .PHONY : roscpp_generate_messages_py
 
 # clean rule for target.
-practice/CMakeFiles/roscpp_generate_messages_py.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_py.dir/build.make practice/CMakeFiles/roscpp_generate_messages_py.dir/clean
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_py.dir/clean
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/clean
 
 # clean rule for target.
-clean: practice/CMakeFiles/roscpp_generate_messages_py.dir/clean
+clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_py.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/practice_gennodejs.dir
+# Target rules for target uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir
 
 # All Build rule for target.
-practice/CMakeFiles/practice_gennodejs.dir/all: practice/CMakeFiles/practice_generate_messages_nodejs.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_gennodejs.dir/build.make practice/CMakeFiles/practice_gennodejs.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_gennodejs.dir/build.make practice/CMakeFiles/practice_gennodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_gennodejs"
-.PHONY : practice/CMakeFiles/practice_gennodejs.dir/all
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_eus"
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_gennodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_gennodejs.dir/all
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_gennodejs.dir/rule
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-practice_gennodejs: practice/CMakeFiles/practice_gennodejs.dir/rule
+roscpp_generate_messages_eus: uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/rule
 
-.PHONY : practice_gennodejs
-
-# clean rule for target.
-practice/CMakeFiles/practice_gennodejs.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_gennodejs.dir/build.make practice/CMakeFiles/practice_gennodejs.dir/clean
-.PHONY : practice/CMakeFiles/practice_gennodejs.dir/clean
+.PHONY : roscpp_generate_messages_eus
 
 # clean rule for target.
-clean: practice/CMakeFiles/practice_gennodejs.dir/clean
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_eus.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages.dir
+# Target rules for target uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir
 
 # All Build rule for target.
-practice/CMakeFiles/practice_generate_messages.dir/all: practice/CMakeFiles/practice_generate_messages_eus.dir/all
-practice/CMakeFiles/practice_generate_messages.dir/all: practice/CMakeFiles/practice_generate_messages_py.dir/all
-practice/CMakeFiles/practice_generate_messages.dir/all: practice/CMakeFiles/practice_generate_messages_cpp.dir/all
-practice/CMakeFiles/practice_generate_messages.dir/all: practice/CMakeFiles/practice_generate_messages_nodejs.dir/all
-practice/CMakeFiles/practice_generate_messages.dir/all: practice/CMakeFiles/practice_generate_messages_lisp.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages.dir/build.make practice/CMakeFiles/practice_generate_messages.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages.dir/build.make practice/CMakeFiles/practice_generate_messages.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_generate_messages"
-.PHONY : practice/CMakeFiles/practice_generate_messages.dir/all
-
-# Include target in all.
-all: practice/CMakeFiles/practice_generate_messages.dir/all
-
-.PHONY : all
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_lisp"
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 13
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages.dir/all
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages.dir/rule
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-practice_generate_messages: practice/CMakeFiles/practice_generate_messages.dir/rule
+roscpp_generate_messages_lisp: uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 
-.PHONY : practice_generate_messages
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages.dir/build.make practice/CMakeFiles/practice_generate_messages.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages.dir/clean
+.PHONY : roscpp_generate_messages_lisp
 
 # clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages.dir/clean
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/talker.dir
+# Target rules for target uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir
 
 # All Build rule for target.
-practice/CMakeFiles/talker.dir/all:
-	$(MAKE) -f practice/CMakeFiles/talker.dir/build.make practice/CMakeFiles/talker.dir/depend
-	$(MAKE) -f practice/CMakeFiles/talker.dir/build.make practice/CMakeFiles/talker.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=29,30 "Built target talker"
-.PHONY : practice/CMakeFiles/talker.dir/all
-
-# Include target in all.
-all: practice/CMakeFiles/talker.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/talker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/talker.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/talker.dir/rule
-
-# Convenience name for target.
-talker: practice/CMakeFiles/talker.dir/rule
-
-.PHONY : talker
-
-# clean rule for target.
-practice/CMakeFiles/talker.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/talker.dir/build.make practice/CMakeFiles/talker.dir/clean
-.PHONY : practice/CMakeFiles/talker.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/talker.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir
-
-# All Build rule for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all:
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/depend
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target _practice_generate_messages_check_deps_my_msg"
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/rule
-
-# Convenience name for target.
-_practice_generate_messages_check_deps_my_msg: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/rule
-
-.PHONY : _practice_generate_messages_check_deps_my_msg
-
-# clean rule for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/clean
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages_cpp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_generate_messages_cpp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-practice/CMakeFiles/practice_generate_messages_cpp.dir/all: practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
-practice/CMakeFiles/practice_generate_messages_cpp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_cpp.dir/build.make practice/CMakeFiles/practice_generate_messages_cpp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_cpp.dir/build.make practice/CMakeFiles/practice_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=16,17 "Built target practice_generate_messages_cpp"
-.PHONY : practice/CMakeFiles/practice_generate_messages_cpp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages_cpp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-practice_generate_messages_cpp: practice/CMakeFiles/practice_generate_messages_cpp.dir/rule
-
-.PHONY : practice_generate_messages_cpp
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages_cpp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_cpp.dir/build.make practice/CMakeFiles/practice_generate_messages_cpp.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages_cpp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages_cpp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/std_msgs_generate_messages_cpp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_cpp"
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_cpp: practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : std_msgs_generate_messages_cpp
-
-# clean rule for target.
-practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-.PHONY : practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_gencpp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_gencpp.dir/all: practice/CMakeFiles/practice_generate_messages_cpp.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_gencpp.dir/build.make practice/CMakeFiles/practice_gencpp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_gencpp.dir/build.make practice/CMakeFiles/practice_gencpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_gencpp"
-.PHONY : practice/CMakeFiles/practice_gencpp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_gencpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_gencpp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_gencpp.dir/rule
-
-# Convenience name for target.
-practice_gencpp: practice/CMakeFiles/practice_gencpp.dir/rule
-
-.PHONY : practice_gencpp
-
-# clean rule for target.
-practice/CMakeFiles/practice_gencpp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_gencpp.dir/build.make practice/CMakeFiles/practice_gencpp.dir/clean
-.PHONY : practice/CMakeFiles/practice_gencpp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_gencpp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/roscpp_generate_messages_cpp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/roscpp_generate_messages_cpp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_cpp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_cpp"
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/roscpp_generate_messages_cpp.dir/rule: cmake_check_build_system
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_cpp: practice/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+roscpp_generate_messages_cpp: uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
 
 .PHONY : roscpp_generate_messages_cpp
 
 # clean rule for target.
-practice/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make practice/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
-.PHONY : practice/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 
 # clean rule for target.
-clean: practice/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/practice_geneus.dir
+# Target rules for target uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir
 
 # All Build rule for target.
-practice/CMakeFiles/practice_geneus.dir/all: practice/CMakeFiles/practice_generate_messages_eus.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_geneus.dir/build.make practice/CMakeFiles/practice_geneus.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_geneus.dir/build.make practice/CMakeFiles/practice_geneus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_geneus"
-.PHONY : practice/CMakeFiles/practice_geneus.dir/all
+uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/build.make uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/build.make uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target _catkin_empty_exported_target"
+.PHONY : uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_geneus.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_geneus.dir/all
+uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_geneus.dir/rule
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/rule
 
 # Convenience name for target.
-practice_geneus: practice/CMakeFiles/practice_geneus.dir/rule
+_catkin_empty_exported_target: uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/rule
 
-.PHONY : practice_geneus
-
-# clean rule for target.
-practice/CMakeFiles/practice_geneus.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_geneus.dir/build.make practice/CMakeFiles/practice_geneus.dir/clean
-.PHONY : practice/CMakeFiles/practice_geneus.dir/clean
+.PHONY : _catkin_empty_exported_target
 
 # clean rule for target.
-clean: practice/CMakeFiles/practice_geneus.dir/clean
+uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/build.make uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages_nodejs.dir
+# Target rules for target uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir
 
 # All Build rule for target.
-practice/CMakeFiles/practice_generate_messages_nodejs.dir/all: practice/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-practice/CMakeFiles/practice_generate_messages_nodejs.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-practice/CMakeFiles/practice_generate_messages_nodejs.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=23,24 "Built target practice_generate_messages_nodejs"
-.PHONY : practice/CMakeFiles/practice_generate_messages_nodejs.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages_nodejs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages_nodejs.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-practice_generate_messages_nodejs: practice/CMakeFiles/practice_generate_messages_nodejs.dir/rule
-
-.PHONY : practice_generate_messages_nodejs
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_genpy.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_genpy.dir/all: practice/CMakeFiles/practice_generate_messages_py.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_genpy.dir/build.make practice/CMakeFiles/practice_genpy.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_genpy.dir/build.make practice/CMakeFiles/practice_genpy.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target practice_genpy"
-.PHONY : practice/CMakeFiles/practice_genpy.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_genpy.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_genpy.dir/rule
-
-# Convenience name for target.
-practice_genpy: practice/CMakeFiles/practice_genpy.dir/rule
-
-.PHONY : practice_genpy
-
-# clean rule for target.
-practice/CMakeFiles/practice_genpy.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_genpy.dir/build.make practice/CMakeFiles/practice_genpy.dir/clean
-.PHONY : practice/CMakeFiles/practice_genpy.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_genpy.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/practice_generate_messages_lisp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/practice_generate_messages_lisp.dir/all: practice/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-practice/CMakeFiles/practice_generate_messages_lisp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_msg.dir/all
-practice/CMakeFiles/practice_generate_messages_lisp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_lisp.dir/build.make practice/CMakeFiles/practice_generate_messages_lisp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_lisp.dir/build.make practice/CMakeFiles/practice_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=21,22 "Built target practice_generate_messages_lisp"
-.PHONY : practice/CMakeFiles/practice_generate_messages_lisp.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/practice_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice_generate_messages_lisp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/practice_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-practice_generate_messages_lisp: practice/CMakeFiles/practice_generate_messages_lisp.dir/rule
-
-.PHONY : practice_generate_messages_lisp
-
-# clean rule for target.
-practice/CMakeFiles/practice_generate_messages_lisp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_lisp.dir/build.make practice/CMakeFiles/practice_generate_messages_lisp.dir/clean
-.PHONY : practice/CMakeFiles/practice_generate_messages_lisp.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/practice_generate_messages_lisp.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/hello.exe.dir
-
-# All Build rule for target.
-practice/CMakeFiles/hello.exe.dir/all:
-	$(MAKE) -f practice/CMakeFiles/hello.exe.dir/build.make practice/CMakeFiles/hello.exe.dir/depend
-	$(MAKE) -f practice/CMakeFiles/hello.exe.dir/build.make practice/CMakeFiles/hello.exe.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=12,13 "Built target hello.exe"
-.PHONY : practice/CMakeFiles/hello.exe.dir/all
-
-# Include target in all.
-all: practice/CMakeFiles/hello.exe.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/hello.exe.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/hello.exe.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/hello.exe.dir/rule
-
-# Convenience name for target.
-hello.exe: practice/CMakeFiles/hello.exe.dir/rule
-
-.PHONY : hello.exe
-
-# clean rule for target.
-practice/CMakeFiles/hello.exe.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/hello.exe.dir/build.make practice/CMakeFiles/hello.exe.dir/clean
-.PHONY : practice/CMakeFiles/hello.exe.dir/clean
-
-# clean rule for target.
-clean: practice/CMakeFiles/hello.exe.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir
-
-# All Build rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/depend
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_cpp"
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_cpp: practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+rosgraph_msgs_generate_messages_cpp: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
 
 .PHONY : rosgraph_msgs_generate_messages_cpp
 
 # clean rule for target.
-practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
-.PHONY : practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
 
 # clean rule for target.
-clean: practice/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir
+# Target rules for target uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir
 
 # All Build rule for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all:
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/depend
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target _practice_generate_messages_check_deps_my_srv"
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_lisp"
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/rule: cmake_check_build_system
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/rule
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-_practice_generate_messages_check_deps_my_srv: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/rule
+std_msgs_generate_messages_lisp: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
 
-.PHONY : _practice_generate_messages_check_deps_my_srv
-
-# clean rule for target.
-practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/build.make practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/clean
-.PHONY : practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/clean
+.PHONY : std_msgs_generate_messages_lisp
 
 # clean rule for target.
-clean: practice/CMakeFiles/_practice_generate_messages_check_deps_my_srv.dir/clean
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target practice/CMakeFiles/listener.dir
+# Target rules for target uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir
 
 # All Build rule for target.
-practice/CMakeFiles/listener.dir/all:
-	$(MAKE) -f practice/CMakeFiles/listener.dir/build.make practice/CMakeFiles/listener.dir/depend
-	$(MAKE) -f practice/CMakeFiles/listener.dir/build.make practice/CMakeFiles/listener.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num=14,15 "Built target listener"
-.PHONY : practice/CMakeFiles/listener.dir/all
-
-# Include target in all.
-all: practice/CMakeFiles/listener.dir/all
-
-.PHONY : all
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_eus"
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
-practice/CMakeFiles/listener.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/listener.dir/all
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/listener.dir/rule
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-listener: practice/CMakeFiles/listener.dir/rule
+rosgraph_msgs_generate_messages_eus: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
 
-.PHONY : listener
-
-# clean rule for target.
-practice/CMakeFiles/listener.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/listener.dir/build.make practice/CMakeFiles/listener.dir/clean
-.PHONY : practice/CMakeFiles/listener.dir/clean
+.PHONY : rosgraph_msgs_generate_messages_eus
 
 # clean rule for target.
-clean: practice/CMakeFiles/listener.dir/clean
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_lisp"
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_lisp: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_lisp
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_eus"
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_eus: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+
+.PHONY : std_msgs_generate_messages_eus
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_nodejs"
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_nodejs: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_nodejs
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target rosgraph_msgs_generate_messages_py"
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_py: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_py
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_cpp"
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_cpp: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : std_msgs_generate_messages_cpp
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_nodejs"
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_nodejs: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : std_msgs_generate_messages_nodejs
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target roscpp_generate_messages_nodejs"
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+roscpp_generate_messages_nodejs: uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
+
+.PHONY : roscpp_generate_messages_nodejs
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/roscpp_generate_messages_nodejs.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir
+
+# All Build rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/all:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/depend
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles --progress-num= "Built target std_msgs_generate_messages_py"
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/all
+
+# Build rule for subdir invocation for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/CMakeFiles 0
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_py: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+
+.PHONY : std_msgs_generate_messages_py
+
+# clean rule for target.
+uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
+	$(MAKE) -f uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/build.make uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+.PHONY : uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+
+# clean rule for target.
+clean: uv_robot_ros/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 
 .PHONY : clean
 

@@ -373,7 +373,7 @@ gtest_hide_internal_symbols:BOOL=OFF
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 
 //Path to a library.
-lib:FILEPATH=/opt/ros/melodic/lib/librostime.so
+lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
 
 //The directory containing a CMake configuration file for message_generation.
 message_generation_DIR:PATH=/opt/ros/melodic/share/message_generation/cmake
@@ -413,6 +413,18 @@ rostime_DIR:PATH=/opt/ros/melodic/share/rostime/cmake
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
+
+//Value Computed by CMake
+uv-robot-ros_BINARY_DIR:STATIC=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv-robot-ros
+
+//Value Computed by CMake
+uv-robot-ros_SOURCE_DIR:STATIC=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv-robot-ros
+
+//Value Computed by CMake
+uv_robot_ros_BINARY_DIR:STATIC=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros
+
+//Value Computed by CMake
+uv_robot_ros_SOURCE_DIR:STATIC=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros
 
 //The directory containing a CMake configuration file for xmlrpcpp.
 xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
@@ -527,7 +539,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=7
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

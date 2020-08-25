@@ -1,3 +1,76 @@
+#!/usr/bin/env python2.7
+
+import socket
+import time
+import sys
+
+import rospy
+from uv-robot-ros.srv import cmdToRpi
+
+#RPi's IP
+#SERVER_IP = "192.168.43.35"
+
+def cmd_to_rpi_client(actionType, dist_or_deg):
+    rospy.wait_for_service('cmdToRpiService')
+    try:
+        cmd_to_rpi = rospy.ServiceProxy('cmdToRpiService',cmdToRpi)
+        res = cmd_to_rpi(actionType, dist_or_deg)
+        return res.isComplete, res.errorMsg
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+        return False, ""
+
+def for_test():
+    while True:
+        cmd = input()
+        params = cmd.split(' ')
+        actionType, dist_or_deg = params[0], params[1]
+        isComplete, errorMsg = cmd_to_rpi_client(actionType, dist_or_deg)
+        if not isComplete:
+            print(errorMsg)
+            break
+
+if __name__ == "__main__":
+    for_test()
+
+
+# SERVER_IP = "192.168.0.203"
+# SERVER_PORT = 8888
+
+
+# print("Starting socket: TCP...")
+# server_addr = (SERVER_IP, SERVER_PORT)
+# socket_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# while True:
+#     try:
+#         print("Connecting to server @ %s:%d..." %(SERVER_IP, SERVER_PORT))
+#         socket_tcp.connect(server_addr)
+#         break
+#     except Exception:
+#         print("Can't connect to server,try it latter!")
+#         time.sleep(1)
+#         continue
+
+# while True:
+#     try:
+#         data = socket_tcp.recv(512)
+#         if len(data)>0:
+#             print("Received: %s" % data.decode())
+#             command = input()
+#             while len(command) == 0:
+#                 command = input()
+#             socket_tcp.send(command.encode())
+#             print("Command sent")
+#             time.sleep(0.01)
+#             continue
+#     except Exception as e:
+#         print(e)
+#         socket_tcp.close()
+#         socket_tcp=None
+#         sys.exit(1)
+
+
 
 
 # import socket
@@ -62,43 +135,3 @@
 #         socket_tcp.close()
 #         socket_tcp=None
 #         sys.exit(1)
-
-import socket
-import time
-import sys
-#RPi's IP
-SERVER_IP = "192.168.43.35"
-SERVER_PORT = 8888
-
-
-print("Starting socket: TCP...")
-server_addr = (SERVER_IP, SERVER_PORT)
-socket_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-while True:
-    try:
-        print("Connecting to server @ %s:%d..." %(SERVER_IP, SERVER_PORT))
-        socket_tcp.connect(server_addr)
-        break
-    except Exception:
-        print("Can't connect to server,try it latter!")
-        time.sleep(1)
-        continue
-
-while True:
-    try:
-        data = socket_tcp.recv(512)
-        if len(data)>0:
-            print("Received: %s" % data.decode())
-            command = input()
-            while len(command) == 0:
-                command = input()
-            socket_tcp.send(command.encode())
-            print("Command sent")
-            time.sleep(0.01)
-            continue
-    except Exception as e:
-        print(e)
-        socket_tcp.close()
-        socket_tcp=Noneff
-        sys.exit(1)

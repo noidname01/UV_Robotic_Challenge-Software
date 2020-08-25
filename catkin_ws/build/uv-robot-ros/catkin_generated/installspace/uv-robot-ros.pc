@@ -1,0 +1,8 @@
+prefix=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install
+
+Name: uv-robot-ros
+Description: Description of uv-robot-ros
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

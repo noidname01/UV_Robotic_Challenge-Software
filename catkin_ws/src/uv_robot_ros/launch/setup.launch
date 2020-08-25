@@ -6,13 +6,13 @@
     <include file="$(realsense2_camera)/launch/opensource_tracking.launch" />
 
     <!-- pcd to our map format -->
-    <node pkg="uv-robot-ros" type="pcd_python.py" name="pcd_python" respawn="true"/>
+    <node pkg="uv_robot_ros" type="pcd_python.py" name="pcd_python" respawn="true"/>
 
     <!-- odom map -->
-    <node pkg="uv-robot-ros" type="odometry.py" name="odemetry" respawn="true"/>
+    <node pkg="uv_robot_ros" type="odometry.py" name="odemetry" respawn="true"/>
     
     <!-- run main.py -->
-    <node pkg="uv-robot-ros" type="main.py" name="main" respawn="true"/>
+    <node pkg="uv_robot_ros" type="main.py" name="main" respawn="true"/>
 
 
     </master>
