@@ -367,6 +367,22 @@ class robot:
         '''
         return math.tan(self.vision_angle['hor']/2)*(self.safe_dist+0.5*(self.size[0]))
 
+    def find_unknown_area(self):
+        '''
+        input:
+            none
+        output:
+            (int,int), the coor of the nearest point located in the unknown area
+            It'll return 'all done!' if the whole room is checked
+        '''
+        for d in range(1,self.mz.rangex+self.mz.rangey-1):   #d: distance(L1 norm) from robot
+            for x in range(-d-1,d+1):              #x+y=d
+                y = d-abs(x)
+                if 0<=self.pos[0]+x<=self.mz.rangex and 0<=self.pos[1]+y<=self.mz.rangey and not self.mz[self.pos[0]+x][self.pos[1]+y]:
+                    return self.pos[0]+x, self.pos[1]+y
+                elif 0<=self.pos[0]-x<=self.mz.rangex and 0<=self.pos[1]-y<=self.mz.rangey and not self.mz[self.pos[0]-x][self.pos[1]-y]:
+                    return self.pos[0]-x, self.pos[1]-y
+        return 'all done!'
 
 if __name__ == "__main__":
     mz = maze(10, 10, 10)
