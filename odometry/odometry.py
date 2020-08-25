@@ -1,41 +1,31 @@
+# In the output txt file (odometry_path.txt),
+# order: map_array, origin coordinates,  array size
+# 2 means the grid has been visited
+# 1 means the grid has been cleaned but not visited
+# 0 means the grid hasn't been visited or cleaned
+
 import numpy as np
 import cv2
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
-origin_set = False      # for odom(x,y)
-origin_set2 = False    # for odm_path(x,y)
-# grid
-last_x = 0 
-last_y = 0 
-# real coordinate
-origin_x = None 
-origin_y = None
+# set initial map info
+unit_width = 2  # grid width per unit (cm)
+x_size, y_size = 10, 10 # array size
+odom_map = np.zeros((x_size, y_size), dtype = int)
+odom_map[int(x_size*0.5)][int(y_size*0.5)] = 2 # set origin visited
 
-# set map size (even int)
-# each grid width 2(cm)
-x_size = 1000
-y_size = 1000
-odometry_map = np.full((x_size, y_size), False)  # pts only
-odometry_map2 = np.full((x_size, y_size), False) # containing path
+# set variables for critical pts coordinate
+origin_set = False                           # whether (o_lx, o_ly) has been recorded
+o_lx, o_ly = None, None                 # absolute location of the origin (initial position): float
+o_gx, o_gy = int(x_size*0.5), int(y_size*0.5)     # origin coordinate in odom_map: int
+last_x, last_y = o_gx, o_gy             # record the previous grid's coordinates: int
 
-def odom(x, y):
-    """ Update odometry_pt.txt, containing only discrete pts.
-            input:    
-                    x, y (float) newly visited point  coordinate
-            output: 
-                    None
-    """
-    global origin_set, origin_x, origin_y
-    if origin_set:
-        x_g =int(((x-origin_x)*100) //2)
-        y_g =int(((y-origin_y)*100) //2)
-        odometry_map[int(x_g + 0.5*x_size)][int(y_g + 0.5*y_size)] = True
-        np.savetxt('odometry_pt.txt', odometry_map, fmt = '%d', delimiter="")
-        return None
-    origin_x, origin_y = x, y
-    origin_set = True
-    odom(origin_x, origin_y)
+# output initial odometry_path.txt
+np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")
+with open("odometry_path.txt", "a") as f:
+    f.write(str(o_gx)+' '+str(o_gy)+'\n' )
+    f.write(str(x_size)+' '+str(y_size)+'\n' )
 
 def grid_through_line(x1,y1,x2,y2):
     """ Connect given two grids and select grids to pass through.
@@ -71,26 +61,59 @@ def grid_through_line(x1,y1,x2,y2):
     pts.append((x2,y2))
     return pts
 
-def odom_path(x,y):
-    """ Update odometry_path.txt, connecting the new pt and the previous one.
+def gen_img(file_name, arr):
+    """ Generate image from given array.
+            input: 
+                    file_name: output jpg's name or location
+                    arr:  np.array, source array
+            output:
+                    None
+    """
+    odometry_map = 255*arr
+    cv2.imwrite (file_name, odometry_map) 
+    
+def odom_path(x, y):
+    """Update odometry_path.txt, connecting the new pt and the previous one.
             input:
-                    newly visited point coordinate x, y (float)
+                    newly visited point coordinate x, y (float, float)
             output: 
                     None
     """
-    global origin_set2, origin_x, origin_y, last_x, last_y
-    if origin_set2:
-        x_g =int(((x-origin_x)*100) //2)
-        y_g =int(((y-origin_y)*100) //2)
-        for (x_p, y_p) in grid_through_line(last_x, last_y, x_g, y_g):
-            odometry_map2[int(x_p + 0.5*x_size)][int(y_p + 0.5*y_size)] = True
-        np.savetxt('odometry_path.txt', odometry_map2, fmt = '%d', delimiter="")
-        last_x, last_y = x_g, y_g
-        return None
-    origin_x, origin_y =x,  y
-    origin_set2 = True
-    odom_path(origin_x, origin_y)
+    global o_lx, o_ly, o_gx, o_gy, origin_set, last_x, last_y,  x_size, y_size, odom_map
+    if origin_set:
+        gx, gy = int(o_gx + ((x - o_lx)*100)//2), int(o_gy + ((y - o_ly)*100)//2)       # present grid coordinate in the array
+        #print(gx, gy)
+        # check if the data would overflow (i.e.  array is too small)
+        if -1 < gx < x_size:
+            pass
+        elif gx < 0:
+            odom_map = np.pad(odom_map, ((-gx,0),(0,0)),'constant',constant_values = (0,0))
+            o_gx,   last_x,    gx  =   o_gx - gx,   last_x - gx,     0 
+        else:
+            odom_map = np.pad(odom_map, ((0, gx + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
 
+        if -1 < gy < y_size:
+            pass
+        elif gy < 0:
+            odom_map = np.pad(odom_map, ((0,0),(-gy,0)),'constant',constant_values = (0,0))
+            o_gy,   last_y,    gy  =   o_gy - gy,   last_y - gy,     0 
+        else:
+            odom_map = np.pad(odom_map, ((0, 0),(0,gy + 1 - y_size)),'constant',constant_values = (0,0))
+        # update odometry path
+        for (x_p, y_p) in grid_through_line(last_x, last_y, gx, gy):
+            odom_map[x_p][y_p] = 2
+        x_size, y_size = len(odom_map), len(odom_map[0])
+        np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")
+        with open("odometry_path.txt", "a") as f:
+            f.write(str(o_gx)+' '+str(o_gy)+'\n' )
+            f.write(str(x_size)+' '+str(y_size)+'\n' )
+        gen_img('odom.jpg', odom_map)
+        last_x, last_y = gx, gy
+        
+    else:
+        o_lx, o_ly = x, y
+        origin_set = True
+        gen_img('odom.jpg', odom_map)
 
 def callback(data):
     """ Callback function, executed whenever odometry node receives new data.
@@ -102,14 +125,11 @@ def callback(data):
     """
     print ('x:', data.pose.pose.position.x)
     print ('y:', data.pose.pose.position.y)
-    odom(data.pose.pose.position.x, data.pose.pose.position.y)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
-    print(np.count_nonzero(odometry_map)) # only counts visited pt
-    print(np.count_nonzero(odometry_map2)) # counts pt and path
-
+    print(np.count_nonzero(odom_map)) 
 
 def odom_odom():
-    """ Setup. 
+    """  Main. 
             Create a new node 'odometry',
             Subscribe topic "/rtabmap/localization_pose"
     """
@@ -118,12 +138,13 @@ def odom_odom():
     rospy.Subscriber("/rtabmap/localization_pose", PoseWithCovarianceStamped, callback)
     rospy.spin() # I refuse to leave.
 
-def gen_img(data):
-    
-    odom_map = np.genfromtxt('odometry_path.txt', dtype=float)
-    odom_map = 255*odom_map
-    cv2.imwrite('../uv-robotic-web/src/image/odom.jpg',odom_map) #temporarily, need to change to build directory
-    
+def test():
+    """ for testing."""
+    x = input('x: ')
+    y = input('y: ')
+    odom_path(x, y)
+    print (x_size, y_size)
+    print(np.count_nonzero(odom_map))
+
 if __name__ == "__main__":
     odom_odom()
-    
