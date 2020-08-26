@@ -68,8 +68,8 @@ def odom_path(x, y):
         if -1 < (gy-w_sterilized) and (gy+w_sterilized) < y_size:
             pass
         elif (gy-w_sterilized) < 0:
-            odom_map1 = np.pad(odom_map1, ((0,-gy+w_sterilized),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((0,-gy+w_sterilized),(0,0)),'constant',constant_values = (0,0))
+            odom_map1 = np.pad(odom_map1, ((0,0),(-gy+w_sterilized,0)),'constant',constant_values = (0,0))
+            odom_map2 = np.pad(odom_map2, ((0,0),(-gy+w_sterilized,0)),'constant',constant_values = (0,0))
             o_gy,   last_y,    gy  =   o_gy - gy + w_sterilized,   last_y - gy + w_sterilized,     w_sterilized
         else:
             odom_map1 = np.pad(odom_map1, ((0, 0),(0,gy + w_sterilized + 1 - y_size)),'constant',constant_values = (0,0))
@@ -107,7 +107,7 @@ def callback(data):
 
 def odom_odom():
     """  Main. 
-            Create a new node 'odometry'.
+            Create a new node 'UVbot_odometry'.
             Subscribe topic "/rtabmap/localization_pose".
     """
     rospy.init_node('UVbot_odometry', anonymous = True)
@@ -125,3 +125,4 @@ def test():
 
 if __name__ == "__main__":
     odom_odom()
+    
