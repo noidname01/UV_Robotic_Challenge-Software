@@ -1,4 +1,6 @@
 import os
+import cv2
+
 
 filename = None
 def pcd_exist():
@@ -32,7 +34,7 @@ while pcd_exist():
                 line[2] = str(0)
                 newlines.append(line)
     count = len(newlines)
-    with open('obstacle.pcd', 'w') as f:
+    with open('obstacle_tmp.txt', 'w') as f:
         for line in data:
             for element in line:
                 if element == 'POINTS' or element == 'WIDTH':
@@ -50,7 +52,7 @@ while pcd_exist():
             f.write('\n')
     
     thres = 5
-    with open('obstacle.pcd', 'r') as f:
+    with open('obstacle_tmp.txt', 'r') as f:
         lines = [line.strip().split() for line in f.readlines()]
     info = []
     data = []
@@ -148,7 +150,7 @@ while pcd_exist():
                     count -= 1
                 dot_dict[(i, j)] += count*5
 
-
+                
 #/smooth
 
     with open('obstacle_smooth.txt', 'w') as f:
@@ -164,3 +166,55 @@ while pcd_exist():
             f.write('\n')
         f.write(str(int(-min_x*10//1))+' '+str(int(-min_y*10//1))+'\n')
         f.write(str(range_x)+' '+str(range_y))
+    
+#fill
+    fill_dict = dict()
+    for i in range(range_x):
+        for j in range(range_y):
+            fill_dict[(i, j)] = dot_dict[(i, j)]
+    for i in range(range_x):
+        for j in range(range_y-1):
+            if dot_dict[(i, j)] <= 0:
+                fill_dict[(i, j)] = 1
+                if dot_dict[(i, j+1)] > 0:
+                    break
+    for i in range(range_x):
+        for j in reversed(range(1, range_y)):
+            if dot_dict[(i, j)] <= 0:
+                fill_dict[(i, j)] = 1
+                if dot_dict[(i, j-1)] > 0:
+                    break
+            else:
+                break
+    for j in range(range_y):
+        for i in range(range_x-1):
+            if dot_dict[(i, j)] <= 0:
+                fill_dict[(i, j)] = 1
+                if dot_dict[(i+1, j)] > 0:
+                    break
+            else:
+                break
+    for j in range(range_y):
+        for i in reversed(range(1, range_x)):
+            if dot_dict[(i, j)] <= 0:
+                fill_dict[(i, j)] = 1
+                if dot_dict[(i-1, j)] > 0:
+                    break
+            else:
+                break
+    with open('obstacle_smooth_fill.txt', 'w') as f:
+        #f.write('P2\n')
+        #f.write('15\n')
+        for i in range(range_x):
+            for j in range(range_y):
+                if fill_dict[(i, j)] > 0:
+                    f.write(str('3'))
+                else:
+                    f.write(str('0'))
+                #print(dot_dict[(i, j('0')])
+            f.write('\n')
+        f.write(str(int(-min_x*10//1))+' '+str(int(-min_y*10//1))+'\n')
+        f.write(str(range_x)+' '+str(range_y))
+
+#/fill
+    print('done')
