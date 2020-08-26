@@ -309,7 +309,7 @@ class robot:
     def turn_to_find_path(self, direction):
         '''
         input:
-            direction: left or right, which will be applied to different check
+            direction: left or right, which will be applied to different check.
         
         description:
             turn_to_find_path is to turn left or right to find the ""specific point"" of camera frame
