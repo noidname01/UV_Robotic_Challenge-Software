@@ -24,7 +24,7 @@ const Test = (props) => {
   )
 
   let ros = new ROSLIB.Ros({
-    url: "ws://0.0.0.0:9090",
+    url: "ws://192.168.0.203:8080",
   });
 
   ros.on("connection", () => {

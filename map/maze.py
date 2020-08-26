@@ -2,7 +2,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import math
 import pyrealsense2 as rs
 import matplotlib.pyplot as plt
-
+import serial
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
 import yaml
 
@@ -23,7 +23,7 @@ with open('config/params.yaml') as F:
     height_check = params['robot']['height_check']
 
 class maze:
-    def __init__(self, length, width, height):
+    def __init__(self, length=10, width=10, height=10):
         self.maze = [[[False for k in range(height)] for j in range(width)] for i in range(length)]
         self.rangex = length
         self.rangey = width
@@ -111,8 +111,10 @@ class robot:
     
     def left_navi(self):
 
-        while(True): # need to fix to follow the map
-
+        while(not self.is_trapped()): # need to fix to follow the map
+            # update self.mz and self.loc
+            self.combine_map_reader()
+            self.update_loc()
             # step1. go straight until the following check return true
             self.go_straight()
 
@@ -306,7 +308,7 @@ class robot:
     def turn_to_find_path(self, direction):
         '''
         input:
-            direction: left or right, which will be applied to different check
+            direction: left or right, which will be applied to different check.
         
         description:
             turn_to_find_path is to turn left or right to find the ""specific point"" of camera frame
@@ -369,6 +371,7 @@ class robot:
 
     def find_unknown_area(self):
         '''
+        warning: No safe distance!!!!!
         input:
             none
         output:
@@ -383,6 +386,33 @@ class robot:
                 elif 0<=self.pos[0]-x<=self.mz.rangex and 0<=self.pos[1]-y<=self.mz.rangey and not self.mz[self.pos[0]-x][self.pos[1]-y]:
                     return self.pos[0]-x, self.pos[1]-y
         return 'all done!'
+   
+    def update_loc():
+        
+    
+    def combine_map_reader():
+        #讀檔,改self.mz
+        
+    def is_trapped():
+        #return bool
+        #判斷是否被困住
+    
+    def is_clear():
+        #確認地圖是否全部走過
+        #return bool
+
+
+def main():
+    mz = maze()
+    bot = robot(mz)
+    bot.combine_map_reader()
+    bot.left_navi()
+    while(not bot.is_clear):
+        bot.find_unknown_area()
+        bot.A()   ###TODO
+        bot.navi() ###TODO
+        bot.left_navi()
+
 
 if __name__ == "__main__":
     mz = maze(10, 10, 10)
