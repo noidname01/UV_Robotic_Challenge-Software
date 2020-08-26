@@ -1,7 +1,7 @@
 # In the output txt file,
 # 2 means the grid has been visited
-# 1 means the grid has been cleaned but not visited
-# 0 means the grid hasn't been visited or cleaned
+# 1 means the grid has been sterilized but not visited
+# 0 means the grid hasn't been visited or sterilized
 
 import numpy as np
 import cv2
@@ -10,35 +10,37 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 
 # set initial map info
 unit_width = 2  # grid width per unit (cm)
-x_size, y_size = 15, 15 # array size, size should be bigger than 2*unit_width+1 !
-odom_map1 = np.zeros((x_size, y_size), dtype = np.uint8) # odom_map for cleaned
-odom_map1 = cv2.line(odom_map1, (int(y_size*0.5), int(x_size*0.5)), (int(y_size*0.5), int(x_size*0.5)), 1, 2*unit_width) # set origin cleaned
+w_sterilized = 50 # maximum effective sterilization range (unit grids)
+x_size, y_size = 150, 150 # array size, size should be bigger than 2*w_sterilized+1 !
+odom_map1 = np.zeros((x_size, y_size), dtype = np.uint8) # odom_map for sterilized
+odom_map1 = cv2.circle(odom_map1, (int(y_size*0.5), int(x_size*0.5)), w_sterilized, 1, -1) # set origin sterilized
 odom_map2 = np.zeros((x_size, y_size), dtype = np.uint8) # odom_map for visited
 odom_map2[int(x_size*0.5)][int(y_size*0.5)] = 1 # set origin visited
 odom_map = odom_map1 + odom_map2
 
 # set variables for critical pts coordinate
-origin_set = False                           # whether (o_lx, o_ly) has been recorded
+origin_set = False                           # whether (o_lx, o_ly) has been recorded or not
 o_lx, o_ly = None, None                 # absolute location of the origin (initial position): float
 o_gx, o_gy = int(x_size*0.5), int(y_size*0.5)     # origin coordinate in odom_map: int
 last_x, last_y = o_gx, o_gy             # record the previous grid's coordinates: int
 
 # output initial odometry_path.txt
-np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")
+np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")  # write odometry array into file
 with open("odometry_path.txt", "a") as f:
-    f.write(str(o_gx)+' '+str(o_gy)+'\n' )
-    f.write(str(x_size)+' '+str(y_size)+'\n' )
+    f.write(str(o_gx)+' '+str(o_gy)+'\n' )          # write coordinates of origin into file (x,y)
+    f.write(str(x_size)+' '+str(y_size)+'\n' )     # write sizes of the odometry into file (x_size, y_size)
 
 def gen_img(file_name, arr):
     """ Generate image from given array.
+            visited points = white (254), sterilized points = gray (127), others = black (0)
             input: 
                     file_name: output jpg's name or location
                     arr:  np.array, source array
             output:
                     None
     """
-    odometry_map = 127*arr
-    cv2.imwrite (file_name, odometry_map) 
+    odometry_map = 127*arr    
+    cv2.imwrite (file_name, odometry_map)       
     
 def odom_path(x, y):
     """Update odometry_path.txt, connecting the new pt and the previous one.
@@ -49,31 +51,32 @@ def odom_path(x, y):
     """
     global o_lx, o_ly, o_gx, o_gy, origin_set, last_x, last_y,  x_size, y_size, odom_map1, odom_map2, odom_map
     if origin_set:
-        gx, gy = int(o_gx + ((x - o_lx)*100)//2), int(o_gy + ((y - o_ly)*100)//2)       # present grid coordinate in the array
+        gx, gy = int(o_gx + ((x - o_lx)*100)//unit_width), int(o_gy + ((y - o_ly)*100)//unit_width)       # present grid coordinate in the array
         #print(gx, gy)
         # check if the data would overflow (i.e.  array is too small)
-        if -1 < (gx-unit_width) and (gx+unit_width) < x_size:
+        # modifying x-axis
+        if -1 < (gx-w_sterilized) and (gx+w_sterilized) < x_size:
             pass
-        elif (gx-unit_width) < 0:
-            odom_map1 = np.pad(odom_map1, ((-gx+unit_width,0),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((-gx+unit_width,0),(0,0)),'constant',constant_values = (0,0))
-            o_gx,   last_x,    gx  =   o_gx - gx + unit_width,   last_x - gx + unit_width,     unit_width
+        elif (gx-w_sterilized) < 0:
+            odom_map1 = np.pad(odom_map1, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
+            odom_map2 = np.pad(odom_map2, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
+            o_gx,   last_x,    gx  =   o_gx - gx + w_sterilized,   last_x - gx + w_sterilized,     w_sterilized
         else:
-            odom_map1 = np.pad(odom_map1, ((0, gx + unit_width + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((0, gx + unit_width + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
-
-        if -1 < (gy-unit_width) and (gy+unit_width) < y_size:
+            odom_map1 = np.pad(odom_map1, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
+            odom_map2 = np.pad(odom_map2, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
+        # modifying y-axis
+        if -1 < (gy-w_sterilized) and (gy+w_sterilized) < y_size:
             pass
-        elif (gy-unit_width) < 0:
-            odom_map1 = np.pad(odom_map1, ((0,-gy+unit_width),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((0,-gy+unit_width),(0,0)),'constant',constant_values = (0,0))
-            o_gy,   last_y,    gy  =   o_gy - gy + unit_width,   last_y - gy + unit_width,     unit_width
+        elif (gy-w_sterilized) < 0:
+            odom_map1 = np.pad(odom_map1, ((0,-gy+w_sterilized),(0,0)),'constant',constant_values = (0,0))
+            odom_map2 = np.pad(odom_map2, ((0,-gy+w_sterilized),(0,0)),'constant',constant_values = (0,0))
+            o_gy,   last_y,    gy  =   o_gy - gy + w_sterilized,   last_y - gy + w_sterilized,     w_sterilized
         else:
-            odom_map1 = np.pad(odom_map1, ((0, 0),(0,gy + unit_width + 1 - y_size)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((0, 0),(0,gy + unit_width + 1 - y_size)),'constant',constant_values = (0,0))
+            odom_map1 = np.pad(odom_map1, ((0, 0),(0,gy + w_sterilized + 1 - y_size)),'constant',constant_values = (0,0))
+            odom_map2 = np.pad(odom_map2, ((0, 0),(0,gy + w_sterilized + 1 - y_size)),'constant',constant_values = (0,0))
 
         # update odometry path
-        odom_map1 = cv2.line(odom_map1,(last_y, last_x), (gy, gx), 1, 2*unit_width)
+        odom_map1 = cv2.line(odom_map1,(last_y, last_x), (gy, gx), 1, 2*w_sterilized)
         odom_map2 = cv2.line(odom_map2,(last_y, last_x), (gy, gx), 1)
         odom_map = odom_map1 + odom_map2
         x_size, y_size = len(odom_map), len(odom_map[0])
@@ -84,7 +87,7 @@ def odom_path(x, y):
         gen_img('odom.jpg', odom_map)
         last_x, last_y = gx, gy
         
-    else:
+    else:   # receive first data (set as origin)
         o_lx, o_ly = x, y
         origin_set = True
         gen_img('odom.jpg', odom_map)
@@ -100,17 +103,17 @@ def callback(data):
     print ('x:', data.pose.pose.position.x)
     print ('y:', data.pose.pose.position.y)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
-    print(np.count_nonzero(odom_map)) 
+    print('sterilized area (m*m):', 0.00004*np.count_nonzero(odom_map)) 
 
 def odom_odom():
     """  Main. 
-            Create a new node 'odometry',
-            Subscribe topic "/rtabmap/localization_pose"
+            Create a new node 'odometry'.
+            Subscribe topic "/rtabmap/localization_pose".
     """
     rospy.init_node('UVbot_odometry', anonymous = True)
     print('ready')
     rospy.Subscriber("/rtabmap/localization_pose", PoseWithCovarianceStamped, callback)
-    rospy.spin() # I refuse to leave.
+    rospy.spin() 
 
 def test():
     """ for testing."""
