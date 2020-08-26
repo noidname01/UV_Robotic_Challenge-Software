@@ -16,7 +16,12 @@ const Test = (props) => {
 
   const [lastScale, setLastScale] = useState(null);
   const [isOnNOff, setIsOnNOff] = useState(false);  // false means lights off, true means lights on
-
+  const [imgObject, setImgObject] = useState(
+    {
+      img_src : camera_stream,
+      img_hash: Date.now()
+    }
+  )
 
   let ros = new ROSLIB.Ros({
     url: "ws://0.0.0.0:9090",
@@ -190,6 +195,13 @@ const Test = (props) => {
     }
   };
 
+  setInterval( () => {
+    setImgObject({
+      img_src: camera_stream,
+      img_hash: Date.now()
+    })
+  },500)
+
   return (
     <div id="uvcbot" className="row">
       <div
@@ -202,7 +214,7 @@ const Test = (props) => {
           <div id="camera-stream" className="mx-auto">
             {/* for Realsense Camera D435 */}
             <img className="img-fluid" src={camera_stream} alt="camera_stream"/>
-            
+
           </div>
         </div>
       </div>
