@@ -8,6 +8,8 @@ import right from "./image/right.png";
 import lighton from "./image/lighton.png";
 import lightoff from "./image/lightoff.png";
 
+import camera_stream from "./image/camera_stream.jpg"
+
 let ROSLIB = require("roslib");
 
 const Test = (props) => {
@@ -17,7 +19,7 @@ const Test = (props) => {
 
 
   let ros = new ROSLIB.Ros({
-    url: "ws://0.0.0.0:9090",
+    url: "ws://192.168.0.203:8080",
   });
 
   ros.on("connection", () => {
@@ -199,6 +201,8 @@ const Test = (props) => {
           <div id="combined-map" className="mx-auto"></div>
           <div id="camera-stream" className="mx-auto">
             {/* for Realsense Camera D435 */}
+            <img className="img-fluid" src={camera_stream} alt="camera_stream"/>
+            
           </div>
         </div>
       </div>
