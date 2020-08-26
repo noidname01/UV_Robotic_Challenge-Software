@@ -3,7 +3,6 @@ import math
 import pyrealsense2 as rs
 import matplotlib.pyplot as plt
 import serial
-
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
 import yaml
 
