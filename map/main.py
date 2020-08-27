@@ -398,6 +398,60 @@ class robot:
                     return False
         return True
 
+class point:
+    def __init__(self,x = 0,y = 0, name = "path"):
+        self.x = x
+        self.y = y
+        self.weight = 0
+        self.path_weight = 0
+        self.have_search = False
+        self.name = name
+        self.part_path = [] 
+
+    def get_weight(self):
+        return self.weight
+
+    def set_weight(self,origin):
+        if isinstance(origin,point):
+            self.weight = round(((self.x-origin.x)**2+(self.y-origin.y)**2)**(0.5))
+        else:
+            self.weight = origin
+
+    def set_path_weight(self,weight):
+        self.path_weight = weight
+
+    def get_path_weight(self):
+        return self.path_weight
+
+    def get_have_search(self):
+        return self.have_search
+
+    def set_have_search(self,boo):
+        self.have_search = boo
+
+    def set_part_path(self,part_path):
+        self.part_path = part_path
+
+    def get_part_path(self):
+        return self.part_path
+
+class maze:
+    def __init__(self,maze_list):
+        self.maze = []
+        self.maze_list = maze_list
+
+    def create_maze(self):
+        # choose left top as origin
+
+        for y in range(len(self.maze_list)):
+            newlist = []
+            for x in range(len(self.maze_list[y])):
+                if(self.maze_list[y][x]):
+                    newlist.append(point(x = x,y = y))
+                else:
+                    newlist.append(point(name = "wall"))
+            self.maze.append(newlist)
+
 def main():
     mz = maze()
     bot = robot(mz)
