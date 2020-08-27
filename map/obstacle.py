@@ -5,12 +5,18 @@ import cv2
 import rospy
 
 def obstacle_node():
+    # Create a node and run function "make_obstacle_map()"
     rospy.init_node('UVbot_obstacle', anonymous=True)
     while not rospy.is_shutdown():
         make_obstacle_map()
 
 filename = None
 def pcd_exist():
+    '''
+    Check if there is any .pcd file in the directory. If there is, let the variable 'filename' be the name of one of the pcd files.
+    output:
+        A bool. True if there are pcd files in the directory.
+    '''
     global filename
     path = os.getcwd()
     name_list = os.listdir(path)
@@ -25,6 +31,10 @@ def pcd_exist():
     return False
 
 def make_obstacle_map():
+    '''
+    This function is to generate an obstacle map, and write it to a file 'obstacle_map'.
+    First, read a .pcd file, 
+    '''
     while pcd_exist():
         with open(filename, 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]

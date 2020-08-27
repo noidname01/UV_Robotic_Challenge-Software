@@ -37,6 +37,7 @@ class robot:
         direc: double (in degree), the initial direction of the robot
         '''
         self.mz = mz
+        self.astar_mz = mz
         self.pos = pos
         self.direc = direc
         self.size=size
@@ -376,6 +377,13 @@ class robot:
             for j in range(len(lines[0])):
                 mz[i].append(lines[i][j])
         self.mz = mz
+        for i in range(len(lines)):
+            for j in range(len(lines[0])):
+                if mz[i][j] == 3:
+                    mz[i][j] = 0
+                else:
+                    mz[i][j] = 1
+        self.astar_mz = mz
         
     def is_trapped(self):
         #return bool
