@@ -107,7 +107,7 @@ def callback(data):
     print ('x:', data.pose.pose.position.x)
     print ('y:', data.pose.pose.position.y)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
-    print('sterilized area (m*m):', 0.00004*np.count_nonzero(odom_map)) 
+    print('sterilized area (m*m):', 0.004*np.count_nonzero(odom_map)) 
 
 def odom_odom():
     """  Main. 
