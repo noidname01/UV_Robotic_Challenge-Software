@@ -39,6 +39,7 @@ class robot:
         '''
         self.mz = mz
         self.astar_mz = mz
+        self.safe_mz = mz
         self.pos = pos
         self.direc = direc
         self.a_direc = a_direc
@@ -363,7 +364,6 @@ class robot:
 
     def find_unknown_area(self):
         '''
-        warning: No safe distance!!!!!
         input:
             none
         output:
@@ -373,9 +373,9 @@ class robot:
         for d in range(1,self.mz.rangex+self.mz.rangey-1):   #d: distance(L1 norm) from robot
             for x in range(-d-1,d+1):              #x+y=d
                 y = d-abs(x)
-                if 0<=self.pos[0]+x<=self.mz.rangex and 0<=self.pos[1]+y<=self.mz.rangey and not self.mz[self.pos[0]+x][self.pos[1]+y]:
+                if 0<=self.pos[0]+x<=self.mz.rangex and 0<=self.pos[1]+y<=self.mz.rangey and not self.safe_mz[self.pos[0]+x][self.pos[1]+y]:
                     return self.pos[0]+x, self.pos[1]+y
-                elif 0<=self.pos[0]-x<=self.mz.rangex and 0<=self.pos[1]-y<=self.mz.rangey and not self.mz[self.pos[0]-x][self.pos[1]-y]:
+                elif 0<=self.pos[0]-x<=self.mz.rangex and 0<=self.pos[1]-y<=self.mz.rangey and not self.safe_mz[self.pos[0]-x][self.pos[1]-y]:
                     return self.pos[0]-x, self.pos[1]-y
         return 'all done!'
    
@@ -385,22 +385,43 @@ class robot:
             self.pos = (int(lines[-1].split()[0]), int(lines[-1].split()[1]))
 
     def combine_map_reader(self):
-        #read combine_map.txt, modify self.mz
-        # 0123 or 01
+        '''
+        read combine_map.txt, modify self.mz
+        self.mz: 0 for road, 1 for disinfected region, 2 for path, 3 for wall, 4 for road around wall
+        self.astar_mz: 0 for wall, 1 for road
+        '''
         with open('combine_map.txt', 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
-        mz = [[] for i in range(len(lines)-2)]
-        for i in range(len(lines)-2):
+        mz = [[] for i in range(len(lines)-3)]
+        self.rangex = len(lines)-3
+        self.rangey = len(lines[0])
+        for i in range(len(lines)-3):
             for j in range(len(lines[0])):
                 mz[i].append(lines[i][j])
         self.mz = mz
-        for i in range(len(lines)):
+        for i in range(len(lines)-3):
             for j in range(len(lines[0])):
-                if mz[i][j] == 3:
-                    mz[i][j] = 0
-                else:
-                    mz[i][j] = 1
+                for a in range(-5,5):
+                    for b in range(-5,5):
+                        try:
+                            if mz[i+a][j+b] == 3:
+                                mz[i][j] = 4
+                        except:
+                            pass
+        self.safe_mz = mz
+        for i in range(len(lines)-3):
+            for j in range(len(lines[0])):
+                mz[i][j] = 0
+                for a in range(-5,5):
+                    for b in range(-5,5):
+                        try:
+                            if mz[i+a][j+b] == 3:
+                                mz[i][j] = 1
+                        except:
+                            pass
         self.astar_mz = mz
+        
+        
         
     def is_trapped(self):
         #return bool

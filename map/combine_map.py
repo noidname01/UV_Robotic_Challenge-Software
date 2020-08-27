@@ -25,10 +25,12 @@ def combine_map():
 
     with open('odometry_path.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
-    odometry_range_x = int(lines[-1].split()[0])
-    odometry_range_y = int(lines[-1].split()[1])
-    odometry_origin_x = int(lines[-2].split()[0])
-    odometry_origin_y = int(lines[-2].split()[1])
+    odometry_range_x = int(lines[-2].split()[0])
+    odometry_range_y = int(lines[-2].split()[1])
+    odometry_origin_x = int(lines[-3].split()[0])
+    odometry_origin_y = int(lines[-3].split()[1])
+    now_loc_x = int(lines[-1].split()[0])
+    now_loc_y = int(lines[-1].split()[1])
     odometry = [[] for i in range(odometry_range_x)]
     for i in range(odometry_range_x):
         for j in range(odometry_range_y):
@@ -72,7 +74,8 @@ def combine_map():
                 f.write(str(combine[i][j]))
             f.write('\n')
         f.write(str(combine_origin_x)+' '+str(combine_origin_y)+'\n')
-        f.write(str(combine_range_x)+' '+str(combine_range_y))
+        f.write(str(combine_range_x)+' '+str(combine_range_y)+'\n')
+        f.write(str(now_loc_x)+' '+str(now_loc_y))
     
     map_to_jpg()
 
@@ -86,8 +89,8 @@ def map_to_jpg():
     '''
     with open('combine_map.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
-    range_x = int(lines[-1].split()[0])
-    range_y = int(lines[-1].split()[1])
+    range_x = int(lines[-2].split()[0])
+    range_y = int(lines[-2].split()[1])
     combine_map = [[] for i in range(range_x)]
     for i in range(range_x):
         for j in range(range_y):
