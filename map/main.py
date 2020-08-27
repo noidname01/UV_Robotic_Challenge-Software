@@ -28,22 +28,6 @@ with open('config/params.yaml') as F:
     point_split = params['robot']['point_split']
     height_check = params['robot']['height_check']
 
-class maze:
-    def __init__(self, length=10, width=10):
-        self.maze = [[[False for k in range(height)] for j in range(width)] for i in range(length)]
-        self.rangex = length
-        self.rangey = width
-    
-    def set_thing(self, loc):
-        x, y, z = loc[0], loc[1], loc[2]
-        a, b, c = x//2, y//2, z//2
-        self.maze[x][y][z] = True
-
-    def delete_thing(self, loc):
-        x, y, z = loc[0], loc[1], loc[2]
-        a, b, c = x//2, y//2, z//2
-        self.maze[a][b][c] = False
-
 
 class robot:
     def __init__(self, mz, pos=(0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
@@ -173,7 +157,7 @@ class robot:
         self.ser.write('\n')
         sleep(0.1)
         self.ser.read_until('c')
-        self.direc -= deg
+        self.direc += deg
 
     def turn_right(self, deg = 90):
         '''
@@ -187,7 +171,7 @@ class robot:
         self.ser.write('\n')
         sleep(0.1)
         self.ser.read_until('c')
-        self.direc += deg
+        self.direc -= deg
 
         
     def infinite_turn(self, direction):
@@ -203,13 +187,14 @@ class robot:
             self.ser.write('\n')
             while self.ser.in_waiting == 0:
                 angle = int(self.ser.read().decode('utf-8').rstrip)
+            self.direc -= angle
          elif direction == 'left':
             self.ser.write('l ')
             self.ser.write('i')
             self.ser.write('\n')
             while self.ser.in_waiting == 0:
                 angle = int(self.ser.read().decode('utf-8').rstrip)
-         self.direc -= angle
+            self.direc += angle
 
     def halt(self):
         '''
