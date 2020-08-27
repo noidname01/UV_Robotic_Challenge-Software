@@ -33,7 +33,7 @@ def callback(data):
     # array manipulation for data storage (see below)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
     # calculate the sterilized area and display it on the screen
-    print('sterilized area (m*m):', 0.00004*np.count_nonzero(odom_map)) 
+    print('sterilized area (m*m):', 0.004*np.count_nonzero(odom_map)) 
 ```
 
 Now, let us take a look at `odom_path()` function.  
