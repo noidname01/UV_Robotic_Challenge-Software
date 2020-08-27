@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # In the output txt file,
 # 2 means the grid has been visited
 # 1 means the grid has been sterilized but not visited
