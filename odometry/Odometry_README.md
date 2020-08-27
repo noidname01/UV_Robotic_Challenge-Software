@@ -78,4 +78,4 @@ with open("odometry_path.txt", "a") as f:
 
 By the way, we have a `test()` function that can manually enter coordinates for testing, and below is the screenshot of the odom_path.txt and odom.jpg.
 
-![screenshot](odometry/screenshot.png)
+![screenshot](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/odometry/screenshot.png)
