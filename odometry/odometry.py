@@ -31,7 +31,8 @@ np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")  # write odo
 with open("odometry_path.txt", "a") as f:
     f.write(str(o_gx)+' '+str(o_gy)+'\n' )          # write coordinates of origin into file (x,y)
     f.write(str(x_size)+' '+str(y_size)+'\n' )     # write sizes of the odometry into file (x_size, y_size)
-
+    f.write(str(o_gx)+' '+str(o_gy)+'\n' )          # write present coordinates into file (x,y)
+    
 def gen_img(file_name, arr):
     """ Generate image from given array.
             visited points = white (254), sterilized points = gray (127), others = black (0)
@@ -86,6 +87,7 @@ def odom_path(x, y):
         with open("odometry_path.txt", "a") as f:
             f.write(str(o_gx)+' '+str(o_gy)+'\n' )
             f.write(str(x_size)+' '+str(y_size)+'\n' )
+            f.write(str(gx)+' '+str(gy)+'\n' )          # write present coordinates into file (x,y)
         gen_img('odom.jpg', odom_map)
         last_x, last_y = gx, gy
         
