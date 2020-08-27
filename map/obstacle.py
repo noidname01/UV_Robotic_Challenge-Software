@@ -33,7 +33,11 @@ def pcd_exist():
 def make_obstacle_map():
     '''
     This function is to generate an obstacle map, and write it to a file 'obstacle_map'.
-    First, read a .pcd file, 
+    First, read a .pcd file, and get the pointcloud data of the map. Because the robot is only 1.6 meters tall, we just have to care about the obstacle shorter than 1.6 meters. The file 'obstacle_tmp.txt' records the obstacle that is shorter than 1.6 meters.
+    Second, read the file 'obstacle_tmp.txt' and find the range of the pointcloud. Construct an array representing the map, each of the element represented a 2cm*2cm space. The elements are denoted by the number of the points in their representing space.
+    Third, for every element, count how many points are around the representing space, and add the number to its own number. If the final number is larger than a variable (thres), denote the element by '3', otherwise denote it by '0'. This step intends to smooth the map and avoids errors.
+    Forth, from four sides of the map, denote elements by '3' until the element is '3' originally. This step intends to denote the space outside the wall (but not detected by the camera) to wall.
+    Finally, write the array to the file 'obstacle_smooth_fill.txt'. The two lines in the bottom of the file represent "the origin of the robot" and "the size of the room".
     '''
     while pcd_exist():
         with open(filename, 'r') as f:
@@ -103,8 +107,8 @@ def make_obstacle_map():
             d[0] = float(d[0]) - min_x
             d[1] = float(d[1]) - min_y
 
-        total_x = (max_x - min_x) * 10
-        total_y = (max_y - min_y) * 10
+        total_x = (max_x - min_x) * 50
+        total_y = (max_y - min_y) * 50
         range_x = int(total_x//1) + 1
         range_y = int(total_y//1) + 1
         #print(range_x, range_y)
