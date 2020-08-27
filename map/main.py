@@ -1,12 +1,18 @@
-from mpl_toolkits.mplot3d import Axes3D
+#!usr/bin/env python
 import math
 import pyrealsense2 as rs
-import matplotlib.pyplot as plt
 import serial
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
 import yaml
+import rospy
+from geometry_msgs.msg import PoseWithCovarianceStamped
 
 # Depth Field of View -- 86 * 57 * 94 (horizontal * vertical * diagonal)
+
+def main_node():
+    rospy.init_node('UVbot_main', anonymous=True)
+    while not rospy.is_shutdown():
+        main()
 
 pipeline = rs.pipeline()
 pipeline.start()
@@ -23,11 +29,10 @@ with open('config/params.yaml') as F:
     height_check = params['robot']['height_check']
 
 class maze:
-    def __init__(self, length=10, width=10, height=10):
+    def __init__(self, length=10, width=10):
         self.maze = [[[False for k in range(height)] for j in range(width)] for i in range(length)]
         self.rangex = length
         self.rangey = width
-        self.rangez = height
     
     def set_thing(self, loc):
         x, y, z = loc[0], loc[1], loc[2]
@@ -39,36 +44,12 @@ class maze:
         a, b, c = x//2, y//2, z//2
         self.maze[a][b][c] = False
 
-    def set_wall(self, a, b, c):
-        #set the wall ax+by+cz=1
-        pass
-
-    def draw_model(self):
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlabel('X-axis')
-        ax.set_ylabel('Y-axis')
-        ax.set_zlabel('Z-axis')
-        xs = list()
-        ys = list()
-        zs = list()
-        for i in range(self.rangex):
-            for j in range(self.rangey):
-                for k in range(self.rangez):
-                    if self.maze[i][j][k] == True:
-                        xs.append(i)
-                        ys.append(j)
-                        zs.append(k)
-        ax.scatter(xs, ys, zs)
-        plt.show()
-        
-
 
 class robot:
-    def __init__(self, mz, pos=(0, 0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
+    def __init__(self, mz, pos=(0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
         '''
         mz: the room model
-        pos: (double, double, double), the initial position of the robot
+        pos: (double, double), the initial position of the robot
         direc: double (in degree), the initial direction of the robot
         '''
         self.mz = mz
@@ -192,6 +173,7 @@ class robot:
         self.ser.write('\n')
         sleep(0.1)
         self.ser.read_until('c')
+        self.direc -= deg
 
     def turn_right(self, deg = 90):
         '''
@@ -205,6 +187,7 @@ class robot:
         self.ser.write('\n')
         sleep(0.1)
         self.ser.read_until('c')
+        self.direc += deg
 
         
     def infinite_turn(self, direction):
@@ -218,11 +201,16 @@ class robot:
             self.ser.write('r ')
             self.ser.write('i')
             self.ser.write('\n')
+            while self.ser.in_waiting == 0:
+                angle = int(self.ser.read().decode('utf-8').rstrip)
          elif direction == 'left':
             self.ser.write('l ')
             self.ser.write('i')
             self.ser.write('\n')
-            
+            while self.ser.in_waiting == 0:
+                angle = int(self.ser.read().decode('utf-8').rstrip)
+         self.direc -= angle
+
     def halt(self):
         '''
         HALT.
@@ -279,9 +267,8 @@ class robot:
 
         #check if any obstacle at these checkpoints
         for i in range(self.point_split*2):
-            for k in range(1,self.height_check):
-                if self.mz[loc_array[i][0],loc_array[i][1],k]:
-                    return True
+            if self.mz[loc_array[i][0],][loc_array[i][1]]:
+                return True
         return False
 
     def turn_check(self):
@@ -317,17 +304,17 @@ class robot:
         '''
         if direction == 'right':
             sp = self.specific_point_coord('right')
-            if self.mz[sp[0],sp[1],0]:
+            if self.mz[sp[0]][sp[1]]:
                 self.infinite_turn('right')
-            while  self.mz[sp[0],sp[1],0]:
+            while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('right')
             self.halt()
             return True
         elif direction == 'left':
             sp = self.specific_point_coord('left')
-            if self.mz[sp[0],sp[1],0]:
+            if self.mz[sp[0]][sp[1]]:
                 self.infinite_turn('left')
-            while  self.mz[sp[0],sp[1],0]:
+            while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('left')
             self.halt()
             return True
@@ -358,7 +345,7 @@ class robot:
             depth: float, the depth of the point
             
         '''
-        
+        pass
     
     def get_specific_distance(self):
         '''
@@ -387,20 +374,44 @@ class robot:
                     return self.pos[0]-x, self.pos[1]-y
         return 'all done!'
    
-    def update_loc():
-        
-    
-    def combine_map_reader():
-        #讀檔,改self.mz
-        
-    def is_trapped():
-        #return bool
-        #判斷是否被困住
-    
-    def is_clear():
-        #確認地圖是否全部走過
-        #return bool
+    def node_to_get_loc(self):
+        rospy.init_node('UVbot_loc', anonymous=True)
+        rospy.Subscriber('/rtabmap/localization_pose', PoseWithCovarianceStamped, self.update_loc)
+        rospy.spin()
 
+    def update_loc(self, data):
+        self.loc = (data.pose.pose.position.x, data.pose.pose.position.y)
+
+    def combine_map_reader(self):
+        #read combine_map.txt, modify self.mz
+        with open('combine_map.txt', 'r') as f:
+            lines = [line.strip().split() for line in f.readlines()]
+        mz = [[] for i in range(len(lines))]
+        for i in range(len(lines)):
+            for j in range(len(lines[0])):
+                mz[i].append(lines[i][j])
+        self.mz = mz
+        
+    def is_trapped(self):
+        #return bool
+        #determine whether the robot is trapped (when left_navi)
+        for i in range(self.pos[0]-1, self.pos[0]+2):
+            for j in range(self.pos[1]-1, self.pos[1]+2)
+                try:
+                    if mz[i][j] == 0 and i != self.pos[0] and j != self.pos[1]:
+                        return False
+                except:
+                    pass
+        return True
+    
+    def is_clear(self):
+        #Check if the robot has cleaned all the room
+        #return bool
+        for i in range(len(self.mz)):
+            for j in range(len(self.mz[0])):
+                if self.mz[i][j] == 0:
+                    return False
+        return True
 
 def main():
     mz = maze()
@@ -415,6 +426,4 @@ def main():
 
 
 if __name__ == "__main__":
-    mz = maze(10, 10, 10)
-    mz.set_thing((1, 6, 8))
-    mz.draw_model()
+    main_node()
