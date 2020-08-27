@@ -54,7 +54,7 @@ class robot:
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}                          #type:dict
         assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
         # open and set Serial
-        self.ser=serial.Serial(“/dev/ttyUSB0”,9600,timeout=None)
+        self.ser=serial.Serial("/dev/ttyUSB0",9600,timeout=None)
         self.ser.open()
 
     def get_pixel_set_maze(self, pixel, distance, direc):
@@ -141,7 +141,7 @@ class robot:
             r, theta = cv2.cartToPolar(path[i][0] - path[i-1][0], path[i][1] - path[i-1][1] , angleInDegrees=True)
             r, theta = int(r[0]), int(theta[0])
             d = theta - dire  # -359 ~ 359
-            if d = 0:
+            if d == 0:
                 self.go_straight(0.02*r)
             elif 0 < d <= 180:
                 self.turn_left(d)
@@ -338,7 +338,7 @@ class robot:
         assert direction in ['left','right'], 'direction(type:str) should be left or right'
         if direction=='left':
             return (round(self.pos[0]-(self.size[0]/2+self.safe_dist))\
-            ,round(self.pos[1]+(self.size[1]/2+self.safe_dist)*math.tan(90-self.vision_angle['hor']/2)))
+            ,round(self.pos[1]+(self.size[1]/2+self.safe_dist)*math.tan(90-self.vision_angle['hor']/2))
         elif direction=='right':
             return (round(self.pos[0]+(self.size[0]/2+self.safe_dist))\
             ,round(self.pos[1]+(self.size[1]/2+self.safe_dist)*math.tan(90-self.vision_angle['hor']/2)))
@@ -427,7 +427,7 @@ class robot:
         #return bool
         #determine whether the robot is trapped (when left_navi)
         for i in range(self.pos[0]-1, self.pos[0]+2):
-            for j in range(self.pos[1]-1, self.pos[1]+2)
+            for j in range(self.pos[1]-1, self.pos[1]+2):
                 try:
                     if mz[i][j] == 0 and i != self.pos[0] and j != self.pos[1]:
                         return False
