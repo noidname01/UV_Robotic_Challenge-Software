@@ -1,5 +1,6 @@
 #!usr/bin/env python
 import math
+import cv2
 import pyrealsense2 as rs
 import serial
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
@@ -28,18 +29,19 @@ with open('config/params.yaml') as F:
     point_split = params['robot']['point_split']
     height_check = params['robot']['height_check']
 
-
 class robot:
-    def __init__(self, mz, pos=(0, 0), direc=0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
+    def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=36., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
         '''
         mz: the room model
-        pos: (double, double), the initial position of the robot
-        direc: double (in degree), the initial direction of the robot
+        pos: (int, int), the initial position of the robot
+        direc: double (in degree), the initial direction of the robot  (for left_navi)
+        a_direc: double (in degree), the initial direction of the robot (for A*)
         '''
         self.mz = mz
         self.astar_mz = mz
         self.pos = pos
         self.direc = direc
+        self.a_direc = a_direc
         self.size=size
         self.r_detect=r_detect
         self.r2_detect = (self.r_detect+self.size[0]/2)/2
@@ -53,13 +55,13 @@ class robot:
         # open and set Serial
         self.ser=serial.Serial(“/dev/ttyUSB0”,9600,timeout=None)
         self.ser.open()
-        
 
     def get_pixel_set_maze(self, pixel, distance, direc):
         '''
         pixel: (int, int), the location of this pixel in the picture
         distance: double, the distance from the camera to the thing
-        direc: double (in degree), the direction of the robot
+        direc: double (in degree), the direction of the robot (for left_navi)
+        a_direc: double (in degree), the direction of the robot (for astar)
         '''
         loc = get_location(pixel, distance)
         abs_loc = get_absolute_location(self.pos, self.direc, loc)
@@ -78,7 +80,7 @@ class robot:
     def left_navi(self):
 
         while(not self.is_trapped()): # need to fix to follow the map
-            # update self.mz and self.loc
+            # update self.mz, self.astar_maze and self.loc
             self.combine_map_reader()
             self.update_loc()
             # step1. go straight until the following check return true
@@ -131,7 +133,24 @@ class robot:
                 # turn right and find the way to move forward
                 self.turn_to_find_path("right")
             
-        """  """
+    def navi(self, path):
+        """ Give instruction to robot to go along path """
+        for i in range(1,len(path)):
+            dire = self.a_direc %360
+            r, theta = cv2.cartToPolar(path[i][0] - path[i-1][0], path[i][1] - path[i-1][1] , angleInDegrees=True)
+            r, theta = int(r[0]), int(theta[0])
+            d = theta - dire  # -359 ~ 359
+            if d = 0:
+                self.go_straight(0.02*r)
+            elif 0 < d <= 180:
+                self.turn_left(d)
+            elif 180 < d <360:
+                self.turn_right(360 - d)
+            elif -180 <= d < 0:
+                self.turn_right(-d)
+            elif -360 < d < -180:
+                self.turn_left(360 - d)
+
 
     def go_straight(self, dist = 0.1):
         '''
@@ -159,6 +178,7 @@ class robot:
         sleep(0.1)
         self.ser.read_until('c')
         self.direc += deg
+        self.a_direc += deg
 
     def turn_right(self, deg = 90):
         '''
@@ -173,8 +193,8 @@ class robot:
         sleep(0.1)
         self.ser.read_until('c')
         self.direc -= deg
+        self.a_direc -= deg
 
-        
     def infinite_turn(self, direction):
         '''
         input:
@@ -189,6 +209,7 @@ class robot:
             while self.ser.in_waiting == 0:
                 angle = int(self.ser.read().decode('utf-8').rstrip)
             self.direc -= angle
+            self.a_direc -= angle
          elif direction == 'left':
             self.ser.write('l ')
             self.ser.write('i')
@@ -196,6 +217,7 @@ class robot:
             while self.ser.in_waiting == 0:
                 angle = int(self.ser.read().decode('utf-8').rstrip)
             self.direc += angle
+            self.a_direc += angle
 
     def halt(self):
         '''
@@ -205,8 +227,7 @@ class robot:
         self.ser.write('\n')
         sleep(0.1)
         self.ser.read_until('c')
-        
-        
+                
     def crush_check(self):
         '''
         description:
@@ -277,7 +298,6 @@ class robot:
 
         return not self.mz[x][y]
             
-
     def turn_to_find_path(self, direction):
         '''
         input:
@@ -304,8 +324,7 @@ class robot:
                 sp = self.specific_point_coord('left')
             self.halt()
             return True
-        
-  
+         
     def specific_point_coord(self, direction):
         '''
         input:
@@ -360,20 +379,18 @@ class robot:
                     return self.pos[0]-x, self.pos[1]-y
         return 'all done!'
    
-    def node_to_get_loc(self):
-        rospy.init_node('UVbot_loc', anonymous=True)
-        rospy.Subscriber('/rtabmap/localization_pose', PoseWithCovarianceStamped, self.update_loc)
-        rospy.spin()
-
-    def update_loc(self, data):
-        self.loc = (data.pose.pose.position.x, data.pose.pose.position.y)
+    def update_loc(self):
+        with open('combine_map.txt', 'r') as f:
+            lines = [line.strip().split() for line in f.readlines()]
+            self.pos = (int(lines[-1].split()[0]), int(lines[-1].split()[1]))
 
     def combine_map_reader(self):
         #read combine_map.txt, modify self.mz
+        # 0123 or 01
         with open('combine_map.txt', 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
-        mz = [[] for i in range(len(lines))]
-        for i in range(len(lines)):
+        mz = [[] for i in range(len(lines)-2)]
+        for i in range(len(lines)-2):
             for j in range(len(lines[0])):
                 mz[i].append(lines[i][j])
         self.mz = mz
@@ -406,6 +423,7 @@ class robot:
                     return False
         return True
 
+
 class point:
     def __init__(self,x = 0,y = 0, name = "path"):
         self.x = x
@@ -419,7 +437,7 @@ class point:
     def get_weight(self):
         return self.weight
 
-    def set_weight(self,origin):
+    def set_weight(self, origin):
         if isinstance(origin,point):
             self.weight = round(((self.x-origin.x)**2+(self.y-origin.y)**2)**(0.5))
         else:
@@ -460,15 +478,195 @@ class maze:
                     newlist.append(point(name = "wall"))
             self.maze.append(newlist)
 
+def print_point_list(l):
+    for i in l:
+        print(i.x,i.y)
+
+def search_neighbor(weight_maze, current_x, current_y):
+    try:
+        if (current_y - 1) >= 0: 
+            top_neighbor = weight_maze[current_y - 1][current_x]
+        else:
+            top_neighbor = None
+    except:
+        top_neighbor = None
+    
+    try:
+        bottom_neighbor = weight_maze[current_y + 1][current_x]
+    except:
+        bottom_neighbor = None
+
+    try:
+        if (current_x - 1) >= 0: 
+            left_neighbor = weight_maze[current_y][current_x - 1]
+        else:
+            left_neighbor = None
+    except:
+        left_neighbor = None
+
+    try:
+        right_neighbor = weight_maze[current_y][current_x + 1]
+    except:
+        right_neighbor = None
+
+
+    neighbors = [top_neighbor, left_neighbor, bottom_neighbor, right_neighbor]
+
+    # the next currentposition's candidate
+    next_candidate = []
+
+    for neighbor in neighbors:
+
+        # if this neighbor exists
+        if neighbor and neighbor.name != "wall":
+
+            if not neighbor.get_have_search():
+
+                
+                # set neighbor's path weight = currentpoint's path weight + 1
+                neighbor.set_path_weight(weight_maze[current_y][current_x].get_path_weight() + 1 )
+                # set this neighbor has been searched
+                neighbor.set_have_search(True)
+                # add into part path
+                
+                new_part_path = weight_maze[current_y][current_x].get_part_path()+[]
+                new_part_path.append(neighbor)
+                neighbor.set_part_path(new_part_path)
+                
+
+                if neighbor.name == "G":
+                    # if find Goal, return True
+                    return True,[]
+
+                else:
+                    # this neighbor isn't the goal, keep find and let it join the candidate
+                    next_candidate.append(neighbor)
+
+            
+            else:
+                # this neighbor has been searched, we skip it
+                continue
+
+        else:
+            # this neigbor doesn't exist, so skip
+            continue
+
+    return False, next_candidate
+
+def astar(maze,start,goal):
+    """
+    input:
+        start:
+            type:           point
+            description:    start point of astar
+        goal:
+            type:           point
+            description:    end point of astar
+
+    output:
+        the list of points that the shortest path will go through
+    """
+    #=============== params ===========#
+    start_x = start.x
+    start_y = start.y
+    goal_x = goal.x
+    goal_y = goal.y
+
+    current_x = start_x
+    current_y = start_y
+
+    neighbor_queue = []
+    
+    # the target path
+    path = []
+    #=============== params ===========#
+
+    #===============build weight_maze ===========#
+
+    for row in maze:
+        newlist = []
+        for column in row:
+            if(column):
+                column.set_weight(goal)
+            else:
+                column.set_weight(0)
+
+    weight_maze = maze
+
+    #===============build weight_maze ===========#
+
+    #================start search ===============#
+
+    # 1. set start/goal point:
+    weight_maze[start_y][start_x].name = "S"
+    weight_maze[start_y][start_x].set_have_search(True)
+    
+    new_part_path = weight_maze[start_y][start_x].get_part_path()
+    new_part_path.append(weight_maze[start_y][start_x])
+    weight_maze[start_y][start_x].set_part_path(new_part_path)
+    
+    weight_maze[goal_y][goal_x].name = "G"
+
+    # 2. while loop until found G
+    isG = False
+    while(not isG):
+        isG, nextCandidates = search_neighbor(weight_maze, current_x, current_y)
+
+        # add new candidate to old ones
+        neighbor_queue += nextCandidates
+        
+
+        # sort with path weight + weight, the least at first
+        neighbor_queue = sorted(neighbor_queue, key = lambda neighbor:neighbor.get_path_weight() + neighbor.get_weight())
+        
+        # get whose total weight is the least and let it be the next position
+        next_position = neighbor_queue.pop(0)
+    
+        current_x = next_position.x
+        current_y = next_position.y
+
+        # print(current_x,current_y)
+
+    path = weight_maze[goal_y][goal_x].get_part_path()
+    # print("x",current_x,"y",current_y)
+    return path
+
+def reduce_path(lst):
+    """ Delete redundant points through the straight line, 
+            only remains endpoints of the segment.
+
+            input:
+                    lst: (list of point) list of points
+            output:
+                    new_lst: (list of point) modified point list.
+    """
+    new_lst = [lst[0]]
+    for i in range(1, len(lst)-1):
+        if (lst[i+1].x - lst[i-1].x) * (lst[i+1].y - lst[i-1].y):
+            new_lst.append(lst[i])
+    new_lst.append(lst[-1])
+    return new_lst
+
 def main():
-    mz = maze()
+    mz = [[False for j in range(150)] for i in range(150)]
     bot = robot(mz)
     bot.combine_map_reader()
     bot.left_navi()
     while(not bot.is_clear):
-        bot.find_unknown_area()
-        bot.A()   ###TODO
-        bot.navi() ###TODO
+        # find the path to next unknown area
+        goal = bot.find_unknown_area()
+        bot.update_loc()
+        present = (bot.pos[0], bot.pos[1])
+        a = maze(bot.astar_mz)
+        a.create_maze()
+        a = a.maze
+        path = astar(m, point(present[0], present[1]), point(goal[0], goal[1]))
+        path = reduce_path(path)
+        path_lst = []
+        for pt in path:
+            path_lst.append((pt.x, pt.y))
+
+        bot.navi(path_lst)      
         bot.left_navi()
 
 
