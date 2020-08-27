@@ -76,6 +76,7 @@ with open("odometry_path.txt", "a") as f:
     gen_img('odom.jpg', odom_map)  # using cv2.imwrite()
 ```
 
-By the way, we have a `test()` function that can manually enter coordinates for testing, and below is the screenshot of the odom_path.txt and odom.jpg.
+By the way, we have a `test()` function that can manually enter coordinates for testing,   
+and below is the screenshot of the odometry_path.txt and odom.jpg.
 
 ![screenshot](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/odometry/screenshot.png)
