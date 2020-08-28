@@ -11,6 +11,33 @@ It controls 4 DC motors, a servo motor, and receives velocity data from the enco
 We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30cm" or "turn right 90 degrees", etc.), and the other with direction only (e.g. "move forward").
 
 The former returns a **confirm message "c"** to the Raspberry Pi when the motion is completed, while the latter returns **the distance/degree moved** before the robot receives a "halt" message.
+```C++
+// Upon finishing a movement with direction and distance/degree
+    if(clicks_left <= 0 && non_stop == 0){
+      non_stop = 1;
+      return 1;
+    }
+    else return 0;
+```
+```C++
+// called when finished moving an unspecified distance and returned the distance/degree
+double getDistOrDegree()
+  {
+    if(non_stop == 1){
+      if(curMovement == Forward || curMovement == Backward){
+        Serial.println(clicks_walked * 1.0 / distToClicks_s);
+        return clicks_walked * 1.0 / distToClicks_s;
+      }
+      else if(curMovement == LeftTurn || curMovement == RightTurn){
+        Serial.println(clicks_walked * 1.0 / distToClicks_r);
+        return clicks_walked * 1.0 / distToClicks_r;
+      }
+    }
+    else 
+      return 0;
+  }
+```
+
 ### servo_sweeper.h
 Since we rely on the main loop speed to obtain the correct encoder information, freezing up the processor when servo motor turns isn't an option. Therefore, we call the "Update" function on every loop to **update the servo motor position by a small amount**.
 
