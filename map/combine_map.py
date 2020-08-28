@@ -4,15 +4,28 @@ import numpy as np
 import cv2
 
 def combine_map_node():
+    '''
+    description:
+        Create a node and run the function "combine_map()"
+    input:
+        None
+    output:
+        None
+    '''
     rospy.init_node('UVbot_combine_map', anonymous=True)
     while not rospy.is_shutdown():
         combine_map()
 
 def combine_map():
     '''
-    Construct a file 'combine_map.txt' to represent the overall map. 
-    In "combine_map.txt", there is an x*y array, which means the room is divided by x*y spaces. Each space is a 2cm*2cm squares. Following the array are the origin location of the robot and the size of the map.
-    First, read the two files "obstacle_smooth_fill.txt" and "odometry_path.txt". Decide a minimal rectangle that can contain the two map, and stack the two map on it together. The origin location of the two map should be the same place. Finally, write the new map to the file "combine_map.txt".
+    description:
+        Construct a file 'combine_map.txt' to represent the overall map. 
+        In "combine_map.txt", there is an x*y array, which means the room is divided by x*y spaces. Each space is a 2cm*2cm squares. Following the array are the origin location of the robot and the size of the map.
+        First, read the two files "obstacle_smooth_fill.txt" and "odometry_path.txt". Decide a minimal rectangle that can contain the two map, and stack the two map on it together. The origin location of the two map should be the same place. Finally, write the new map to the file "combine_map.txt".
+    input:
+        None
+    output:
+        None
     '''
     with open('obstacle_smooth_fill.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
