@@ -9,8 +9,6 @@ but in our case, the position of our robot would be marked on the map of the roo
 ## Why 
 With the information of historical track, we can achieve **dynamic route planning** using A* algorithm, also **visualize the track and sterizing progress** for users to check in real time.
 
-
-
 ## How 
 First, we use `rospy`, the communication system in ROS, to capture the localization data message published from the camera.
     
@@ -33,10 +31,10 @@ def callback(data):
     # array manipulation for data storage (see below)
     odom_path(data.pose.pose.position.x, data.pose.pose.position.y)
     # calculate the sterilized area and display it on the screen
-    print('sterilized area (m*m):', 0.004*np.count_nonzero(odom_map)) 
+    print('sterilized area (m*m):', 0.00004*np.count_nonzero(odom_map)) 
 ```
 
-Now, let us take a look at `odom_path()` function.  
+Now, let us take a look at `odom_path()` function.
 
 This function generates an numpy array conprised of 0,1 and 2, where '2' represents that this grid has been visited,
 '1' for sterilized but not visited, and '0' the rest.
@@ -58,7 +56,9 @@ Below is the case for modifying x-size of array.
 
 ```
 
-Then, update the sterilized-map and visited-map by applying `cv2.line()`.
+The data we receive are discrete points. Since our robot does not move so fast and its track would not be curve, it is reasonable to assume that the real trajectory is the connection of two points, we can then update the sterilized-map and visited-map by applying `cv2.line()`.
+
+Three numpy.arrays are created, one records sterilized area, another for trajectory, and the other adds them up and overlaps the information.
 
 ```Python
 odom_map1 = cv2.line(odom_map1,(last_y, last_x), (gy, gx), 1, 2*w_sterilized)
@@ -66,17 +66,20 @@ odom_map2 = cv2.line(odom_map2,(last_y, last_x), (gy, gx), 1)
 odom_map = odom_map1 + odom_map2
 ```
 
-Lastly, output the txt file and jpg image file of the map.
+Lastly, output the txt file for further manipulation, and jpg image file which is for testing only (image including more information would be generated in other programs).
 
 ```Python
 np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")
 with open("odometry_path.txt", "a") as f:
     f.write(str(o_gx)+' '+str(o_gy)+'\n' )  # write origin's coordinate
     f.write(str(x_size)+' '+str(y_size)+'\n' )   # write the size of array
-    gen_img('odom.jpg', odom_map)  # using cv2.imwrite()
+    f.write(str(gx)+' '+str(gy)+'\n' )  # write present coordinate
+gen_img('odom.jpg', odom_map)  # using cv2.imwrite()
 ```
 
-By the way, we have a `test()` function that can manually enter coordinates for testing,   
-and below is the screenshot of the odometry_path.txt and odom.jpg.
+By the way, we have a `test()` function that can manually enter coordinates and output jpg image file using `cv2.imwrite()`, which is for testing only (image including more information would be generated in other programs).
+
+Below is the screenshot of the odom_path.txt and odom.jpg.
 
 ![screenshot](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/odometry/screenshot.png)
+
