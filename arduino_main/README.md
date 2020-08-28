@@ -12,8 +12,18 @@ We carry on checking if the distance of the TOF sensors are abnormal. If there i
 
 If every precautional sensor values are normal, we continue on receiving and parsing commands from Raspberry Pi, sweep the servo motor by a small angle, and update the encoder and TOF distance sensor value.
 
-To make the encoder work properly, we normaly have to keep the run time for one loop under 35ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder serveral times in the loop.
-
+To make the encoder work properly, we normaly have to keep the run time for one loop under 35ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder serveral times in the loop, after each proccess that takes a long time.
+```C++
+    UpdateEncoderR();
+    sweeper1.doSweep();
+    UpdateEncoderR();
+    readTOF_F();
+    UpdateEncoderR();
+    readTOF_R();
+    UpdateEncoderR();
+    readTOF_L();
+    UpdateEncoderR();
+```
 
 ### encoder_class.h
 We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30cm" or "turn right 90 degrees", etc.), and the other with direction only (e.g. "move forward").
@@ -27,6 +37,7 @@ The former returns a **confirm message "c"** to the Raspberry Pi when the motion
     }
 else return 0;
 ```
+
 When finished moving an unspecified distance and returned the distance/degree
 ```C++
 // called when finished moving an unspecified distance and returned the distance/degree
