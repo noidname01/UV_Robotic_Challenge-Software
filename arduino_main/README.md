@@ -16,6 +16,42 @@ Since we rely on the main loop speed to obtain the correct encoder information, 
 
 ### tof.h
 We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmit distance data via I2C protocal, which shares the "SCL" and "SDA" pins. In the "initTOF" function, we wake up three sensors one by one (by setting XSHUT pin high) and specify three unique addresses to properly boot the sensors.
+```C++
+// all reset
+  digitalWrite(SHT_LOX_F, LOW);    
+  digitalWrite(SHT_LOX_R, LOW);
+  digitalWrite(SHT_LOX_L, LOW);
+  delay(10);
+  // all unreset
+  digitalWrite(SHT_LOX_F, HIGH);    
+  digitalWrite(SHT_LOX_R, HIGH);
+  digitalWrite(SHT_LOX_L, HIGH);
+  delay(10);
+  ///////////////////////////////////////////////
+  // activating LOX1 and reseting LOX2
+  digitalWrite(SHT_LOX_F, HIGH);
+  digitalWrite(SHT_LOX_R, LOW);
+  digitalWrite(SHT_LOX_L, LOW);
+
+  // initing LOX1
+  if(!lox_F.begin(LOX_F_ADDRESS)) {
+    Serial.print(F("Failed to boot F VL53L0X at address "));
+    Serial.println(LOX_F_ADDRESS);
+  }
+  delay(10);
+  ///////////////////////////////////////////////
+  // activating LOX2
+  digitalWrite(SHT_LOX_R, HIGH);
+  delay(10);
+  
+  //initing LOX2
+  if(!lox_R.begin(LOX_R_ADDRESS)) {
+    Serial.println(F("Failed to boot R VL53L0X at address "));
+    Serial.println(LOX_R_ADDRESS);
+    delay(200);
+  }
+  delay(10);
+```
 
 ### track.h
 Defines functions("forward", "backward", "leftTurn", "rightTurn", "halt") to control movements. (Note: We emitted "rightShift" and "leftShift" to simplify the path finding algorithm)
