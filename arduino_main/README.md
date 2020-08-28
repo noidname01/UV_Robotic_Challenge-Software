@@ -6,32 +6,11 @@ It controls 4 DC motors, a servo motor, and receives velocity data from the enco
 
 ## Arduino source code files
 ### arduino_main.ino
-We check the pir sensors for presence of human first thing in the main loop.
-```C++
-  // Check the pir sensor for human presence first thing in the loop;
-  bool lastPeopleState = noPeople;
-  for(int i=0; i<4; i++){
-    if( !pirRead[i] ){
-      LightsOff();
-      halt();
-      // Turn UVC lamps off but keep warning light on
-      digitalWrite(Relay_1, LOW);
-      noPeople = 0;
-      break;
-    }
-    else{
-      noPeople = 1;
-    }
-  }
-  // Signal Raspberry Pi to stop sending commands
-  if(lastPeopleState == 1 && noPeople == 0){
-    Serial.println("Human");
-  }
-  // Signal Raspberry Pi to resume the proccess
-  else if(lastPeopleState == 0 && noPeople == 1){
-    Serial.println("Resume");
-  }
-```
+We check the pir sensors for presence of human first thing in the main loop. Sends a signal when presence of human is detected, and when people are cleared.
+
+We carry on checking if the distance of the TOF sensors are abnormal.
+
+
 
 ### encoder_class.h
 We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30cm" or "turn right 90 degrees", etc.), and the other with direction only (e.g. "move forward").
@@ -89,17 +68,6 @@ void Update()
 ### tof.h
 We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmit distance data via I2C protocal, which shares the "SCL" and "SDA" pins. In the "initTOF" function, we wake up three sensors one by one (by setting XSHUT pin high) and specify three unique addresses to properly boot the sensors.
 ```C++
-// all reset
-  digitalWrite(SHT_LOX_F, LOW);    
-  digitalWrite(SHT_LOX_R, LOW);
-  digitalWrite(SHT_LOX_L, LOW);
-  delay(10);
-  // all unreset
-  digitalWrite(SHT_LOX_F, HIGH);    
-  digitalWrite(SHT_LOX_R, HIGH);
-  digitalWrite(SHT_LOX_L, HIGH);
-  delay(10);
-  ///////////////////////////////////////////////
   // activating LOX1 and reseting LOX2
   digitalWrite(SHT_LOX_F, HIGH);
   digitalWrite(SHT_LOX_R, LOW);
