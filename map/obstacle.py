@@ -5,7 +5,14 @@ import cv2
 import rospy
 
 def obstacle_node():
-    # Create a node and run function "make_obstacle_map()"
+    '''
+    description: 
+        Create a node and run function "make_obstacle_map()
+    input:
+        None
+    output:
+        None
+    '''
     rospy.init_node('UVbot_obstacle', anonymous=True)
     while not rospy.is_shutdown():
         make_obstacle_map()
@@ -13,7 +20,10 @@ def obstacle_node():
 filename = None
 def pcd_exist():
     '''
-    Check if there is any .pcd file in the directory. If there is, let the variable 'filename' be the name of one of the pcd files.
+    description:
+        Check if there is any .pcd file in the directory. If there is, let the variable 'filename' be the name of one of the pcd files.
+    input:
+        None
     output:
         A bool. True if there are pcd files in the directory.
     '''
@@ -32,12 +42,17 @@ def pcd_exist():
 
 def make_obstacle_map():
     '''
-    This function is to generate an obstacle map, and write it to a file 'obstacle_map'.
-    First, read a .pcd file, and get the pointcloud data of the map. Because the robot is only 1.6 meters tall, we just have to care about the obstacle shorter than 1.6 meters. The file 'obstacle_tmp.txt' records the obstacle that is shorter than 1.6 meters.
-    Second, read the file 'obstacle_tmp.txt' and find the range of the pointcloud. Construct an array representing the map, each of the element represented a 2cm*2cm space. The elements are denoted by the number of the points in their representing space.
-    Third, for every element, count how many points are around the representing space, and add the number to its own number. If the final number is larger than a variable (thres), denote the element by '3', otherwise denote it by '0'. This step intends to smooth the map and avoids errors.
-    Forth, from four sides of the map, denote elements by '3' until the element is '3' originally. This step intends to denote the space outside the wall (but not detected by the camera) to wall.
-    Finally, write the array to the file 'obstacle_smooth_fill.txt'. The two lines in the bottom of the file represent "the origin of the robot" and "the size of the room".
+    description:
+        This function is to generate an obstacle map, and write it to a file 'obstacle_map'.
+        First, read a .pcd file, and get the pointcloud data of the map. Because the robot is only 1.6 meters tall, we just have to care about the obstacle shorter than 1.6 meters. The file 'obstacle_tmp.txt' records the obstacle that is shorter than 1.6 meters.
+        Second, read the file 'obstacle_tmp.txt' and find the range of the pointcloud. Construct an array representing the map, each of the element represented a 2cm*2cm space. The elements are denoted by the number of the points in their representing space.
+        Third, for every element, count how many points are around the representing space, and add the number to its own number. If the final number is larger than a variable (thres), denote the element by '3', otherwise denote it by '0'. This step intends to smooth the map and avoids errors.
+        Forth, from four sides of the map, denote elements by '3' until the element is '3' originally. This step intends to denote the space outside the wall (but not detected by the camera) to wall.
+        Finally, write the array to the file 'obstacle_smooth_fill.txt'. The two lines in the bottom of the file represent "the origin of the robot" and "the size of the room".
+    input:
+        None
+    output:
+        None
     '''
     while pcd_exist():
         with open(filename, 'r') as f:
