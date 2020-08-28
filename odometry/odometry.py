@@ -34,23 +34,27 @@ with open("odometry_path.txt", "a") as f:
     f.write(str(o_gx)+' '+str(o_gy)+'\n' )          # write present coordinates into file (x,y)
     
 def gen_img(file_name, arr):
-    """ Generate image from given array.
-            visited points = white (254), sterilized points = gray (127), others = black (0)
-            input: 
-                    file_name: output jpg's name or location
-                    arr:  np.array, source array
-            output:
-                    None
+    """ 
+    description: 
+        Generate image from given array.
+        visited points = white (254), sterilized points = gray (127), others = black (0)
+    input: 
+        file_name: output jpg's name or location
+        arr:  np.array, source array
+    output:
+        None
     """
     odometry_map = 127*arr    
     cv2.imwrite (file_name, odometry_map)       
     
 def odom_path(x, y):
-    """Update odometry_path.txt, connecting the new pt and the previous one.
-            input:
-                    newly visited point coordinate x, y (float, float)
-            output: 
-                    None
+    """
+    description:
+        Update odometry_path.txt, connecting the new pt and the previous one.
+    input:
+        Newly visited point coordinate x, y (float, float)
+    output: 
+        None
     """
     global o_lx, o_ly, o_gx, o_gy, origin_set, last_x, last_y,  x_size, y_size, odom_map1, odom_map2, odom_map
     if origin_set:
@@ -97,12 +101,14 @@ def odom_path(x, y):
         gen_img('odom.jpg', odom_map)
 
 def callback(data):
-    """ Callback function, executed whenever odometry node receives new data.
-            print(x,y), update two odometry file, then count visited grids.
-            input:
-                    data ("/rtabmap/localization_pose")
-            output:
-                    None
+    """ 
+    description: 
+        Callback function, executed whenever odometry node receives new data.
+        print(x,y), update two odometry file, then count visited grids.
+    input:
+        data ("/rtabmap/localization_pose")
+    output:
+        None
     """
     print ('x:', data.pose.pose.position.x)
     print ('y:', data.pose.pose.position.y)
@@ -110,9 +116,15 @@ def callback(data):
     print('sterilized area (m*m):', 0.004*np.count_nonzero(odom_map)) 
 
 def odom_odom():
-    """  Main. 
-            Create a new node 'UVbot_odometry'.
-            Subscribe topic "/rtabmap/localization_pose".
+    """  
+    description:
+        Main. 
+        Create a new node 'UVbot_odometry'.
+        Subscribe topic "/rtabmap/localization_pose".
+    input:
+        None
+    output:
+        None
     """
     rospy.init_node('UVbot_odometry', anonymous = True)
     print('ready')
