@@ -1,7 +1,7 @@
 # Arduino
 ## The role of Arduino
 We're using a Arduino Mega 2560 for this application. It's powered by the USB type B port which connects to our Raspberry Pi.
-It controls 4 DC motors, a servo motor, and receives velocity data from the encoder, and distance information from three TOF distance sensors.
+It controls 4 DC motors, a servo motor, and receives velocity/distance/degree data from the encoder, and distance information from three TOF distance sensors.
 ## Communication with Raspberry Pi
 We use the good old serial communication to talk to our Raspberry Pi.
 On the arduino end, we use "Serial.read()" to receive commands sent by the Raspberry Pi, and "Serial.print()" or "Serial.println()" to send messages across.
