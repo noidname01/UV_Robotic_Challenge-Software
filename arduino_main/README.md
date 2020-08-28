@@ -8,7 +8,9 @@ It controls 4 DC motors, a servo motor, and receives velocity data from the enco
 ### arduino_main.ino
 We check the pir sensors for presence of human first thing in the main loop. Sends a signal when presence of human is detected, and when people are cleared.
 
-We carry on checking if the distance of the TOF sensors are abnormal.
+We carry on checking if the distance of the TOF sensors are abnormal. If there is an obstacle or edge in front, then add an effective wall to the "obstacle.py" node.(not yet implemented)
+
+
 
 
 
