@@ -45,6 +45,7 @@ The former returns a **confirm message "c"** to the Raspberry Pi when the motion
     }
 else return 0;
 ```
+When finished moving an unspecified distance and returned the distance/degree
 ```C++
 // called when finished moving an unspecified distance and returned the distance/degree
 double getDistOrDegree()
