@@ -8,9 +8,13 @@ It controls 4 DC motors, a servo motor, and receives velocity data from the enco
 ### arduino_main.ino
 ### encoder_class.h
 An encoder is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (i.e. "move forward 30cm", or "turn right 90 degrees"), and the other with direction only.
-\nThe former returns a confirm message "c" to the Raspberry Pi when the motion is complete, while the latter returns the distance/degree moved before the robot receives a "halt" message.
+
+The former returns a confirm message "c" to the Raspberry Pi when the motion is complete, while the latter returns the distance/degree moved before the robot receives a "halt" message.
 ### servo_sweeper.h
+Since we rely on the main loop speed to obtain the correct encoder information, freezing up the processor when servo motor turns isn't an option. Therefore, we call the "Update" function on every loop to update the servo motor position by a small amount.
+
 ### tof.h
 ### track.h
+Defines functions("forward", "backward", "leftTurn", "rightTurn", "halt") to control movements. (Note: We emitted "rightShift" and "leftShift" to simplify the path finding algorithm)
 
 
