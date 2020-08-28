@@ -6,6 +6,32 @@ It controls 4 DC motors, a servo motor, and receives velocity data from the enco
 
 ## Arduino source code files
 ### arduino_main.ino
+We check the pir sensors for presence of human first thing in the main loop.
+```C++
+  // Check the pir sensor for human presence first thing in the loop;
+  bool lastPeopleState = noPeople;
+  for(int i=0; i<4; i++){
+    if( !pirRead[i] ){
+      LightsOff();
+      halt();
+      // Turn UVC lamps off but keep warning light on
+      digitalWrite(Relay_1, LOW);
+      noPeople = 0;
+      break;
+    }
+    else{
+      noPeople = 1;
+    }
+  }
+  // Signal Raspberry Pi to stop sending commands
+  if(lastPeopleState == 1 && noPeople == 0){
+    Serial.println("Human");
+  }
+  // Signal Raspberry Pi to resume the proccess
+  else if(lastPeopleState == 0 && noPeople == 1){
+    Serial.println("Resume");
+  }
+```
 
 ### encoder_class.h
 We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30cm" or "turn right 90 degrees", etc.), and the other with direction only (e.g. "move forward").
@@ -40,6 +66,24 @@ else
 
 ### servo_sweeper.h
 Since we rely on the main loop speed to obtain the correct encoder information, freezing up the processor when servo motor turns isn't an option. Therefore, we call the "Update" function on every loop to **update the servo motor position by a small amount**.
+```C++
+void Update()
+{
+  if((millis() - lastUpdate) > updateInterval)  // time to update
+  {
+    lastUpdate = millis();
+    pos += increment;
+    servo.write(pos);
+    //Serial.println(pos);
+    // Sweeps in a 120 degree angle
+    if ((pos >= 150) || (pos <= 30)) // end of sweep
+    {
+      // reverse direction
+      increment = -increment;
+    }
+  }
+}
+```
 
 ### tof.h
 We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmit distance data via I2C protocal, which shares the "SCL" and "SDA" pins. In the "initTOF" function, we wake up three sensors one by one (by setting XSHUT pin high) and specify three unique addresses to properly boot the sensors.
