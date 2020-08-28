@@ -12,30 +12,30 @@ We use a photo interrupter and a 3D printed disk to make an encoder, which is in
 
 The former returns a **confirm message "c"** to the Raspberry Pi when the motion is completed, while the latter returns **the distance/degree moved** before the robot receives a "halt" message.
 ```C++
-// Upon finishing a movement with direction and distance/degree
+    // Upon finishing a movement with direction and distance/degree
     if(clicks_left <= 0 && non_stop == 0){
       non_stop = 1;
       return 1;
     }
-    else return 0;
+else return 0;
 ```
 ```C++
 // called when finished moving an unspecified distance and returned the distance/degree
 double getDistOrDegree()
-  {
-    if(non_stop == 1){
-      if(curMovement == Forward || curMovement == Backward){
-        Serial.println(clicks_walked * 1.0 / distToClicks_s);
-        return clicks_walked * 1.0 / distToClicks_s;
-      }
-      else if(curMovement == LeftTurn || curMovement == RightTurn){
-        Serial.println(clicks_walked * 1.0 / distToClicks_r);
-        return clicks_walked * 1.0 / distToClicks_r;
-      }
-    }
-    else 
-      return 0;
+{
+if(non_stop == 1){
+  if(curMovement == Forward || curMovement == Backward){
+    Serial.println(clicks_walked * 1.0 / distToClicks_s);
+    return clicks_walked * 1.0 / distToClicks_s;
   }
+  else if(curMovement == LeftTurn || curMovement == RightTurn){
+    Serial.println(clicks_walked * 1.0 / distToClicks_r);
+    return clicks_walked * 1.0 / distToClicks_r;
+  }
+}
+else 
+  return 0;
+}
 ```
 
 ### servo_sweeper.h
