@@ -576,6 +576,19 @@ class maze:
             self.maze.append(newlist)
 
 def search_neighbor(weight_maze, current_x, current_y):
+    '''
+    description:
+        The function that use in search neighboring area, 
+        
+    input:
+        weight_maze: list, 2D array that points in map are all have been calculated its own weight
+        current_x: int, current x coordinate
+        current_y: int, current y coordinate
+        
+    output: 
+        isFindG: bool, true if find G
+        next_candidate, list, points that would be added to search queue
+    '''
     try:
         if (current_y - 1) >= 0: 
             top_neighbor = weight_maze[current_y - 1][current_x]
@@ -649,7 +662,9 @@ def search_neighbor(weight_maze, current_x, current_y):
 def astar(maze,start,goal):
     """
     description: 
-        
+        A* (pronounced "A-star") is a graph traversal and path search algorithm, 
+        which is often used in many fields of computer science due to its completeness, 
+        optimality, and optimal efficiency.
     input:
         start:
             type:           point
