@@ -8,16 +8,23 @@ import right from "./image/right.png";
 import lighton from "./image/lighton.png";
 import lightoff from "./image/lightoff.png";
 
+import camera_stream from "./image/camera_stream.jpg"
+
 let ROSLIB = require("roslib");
 
 const Test = (props) => {
 
   const [lastScale, setLastScale] = useState(null);
   const [isOnNOff, setIsOnNOff] = useState(false);  // false means lights off, true means lights on
-
+  const [imgObject, setImgObject] = useState(
+    {
+      img_src : camera_stream,
+      img_hash: Date.now()
+    }
+  )
 
   let ros = new ROSLIB.Ros({
-    url: "ws://0.0.0.0:9090",
+    url: "ws://192.168.0.203:8080",
   });
 
   ros.on("connection", () => {
@@ -49,6 +56,7 @@ const Test = (props) => {
 
 
   const robotAction = (e) => {
+    e.preventDefault()
     let action = e.target.name;
 
     // alert(action);
@@ -187,6 +195,13 @@ const Test = (props) => {
     }
   };
 
+  setInterval( () => {
+    setImgObject({
+      img_src: camera_stream,
+      img_hash: Date.now()
+    })
+  },500)
+
   return (
     <div id="uvcbot" className="row">
       <div
@@ -198,6 +213,8 @@ const Test = (props) => {
           <div id="combined-map" className="mx-auto"></div>
           <div id="camera-stream" className="mx-auto">
             {/* for Realsense Camera D435 */}
+            <img className="img-fluid" src={camera_stream} alt="camera_stream"/>
+
           </div>
         </div>
       </div>

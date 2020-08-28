@@ -67,14 +67,14 @@ set(uv_robot_ros_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(uv_robot_ros_SOURCE_PREFIX /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros)
-  set(uv_robot_ros_DEVEL_PREFIX /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel)
+  set(uv_robot_ros_SOURCE_PREFIX /home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros)
+  set(uv_robot_ros_DEVEL_PREFIX /home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel)
   set(uv_robot_ros_INSTALL_PREFIX "")
   set(uv_robot_ros_PREFIX ${uv_robot_ros_DEVEL_PREFIX})
 else()
   set(uv_robot_ros_SOURCE_PREFIX "")
   set(uv_robot_ros_DEVEL_PREFIX "")
-  set(uv_robot_ros_INSTALL_PREFIX /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install)
+  set(uv_robot_ros_INSTALL_PREFIX /home/pi/UV_Robotic_Challenge-Software/catkin_ws/install)
   set(uv_robot_ros_PREFIX ${uv_robot_ros_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(uv_robot_ros_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/include " STREQUAL " ")
+if(NOT "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/include " STREQUAL " ")
   set(uv_robot_ros_INCLUDE_DIRS "")
-  set(_include_dirs "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/include")
+  set(_include_dirs "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/include " S
         message(FATAL_ERROR "Project 'uv_robot_ros' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'uv_robot_ros' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'uv_robot_ros' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/${idir}'.  ${_report}")
     endif()
     _list_append_unique(uv_robot_ros_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/lib;/home/noidname/catkin_ws/devel/lib;/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/lib;/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

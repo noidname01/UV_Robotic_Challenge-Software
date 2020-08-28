@@ -1,5 +1,0 @@
-string cmdType
-float32 dist_or_deg
----
-bool isComplete
-string errorMsg

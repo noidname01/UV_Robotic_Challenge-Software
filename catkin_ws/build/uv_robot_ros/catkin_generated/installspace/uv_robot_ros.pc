@@ -1,4 +1,4 @@
-prefix=/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install
+prefix=/home/pi/UV_Robotic_Challenge-Software/catkin_ws/install
 
 Name: uv_robot_ros
 Description: Description of uv_robot_ros

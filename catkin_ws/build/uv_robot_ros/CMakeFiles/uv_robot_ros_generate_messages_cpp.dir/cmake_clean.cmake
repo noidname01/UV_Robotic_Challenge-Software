@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/uv_robot_ros_generate_messages_cpp"
-  "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/include/uv_robot_ros/cmdToRpi.h"
+  "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/include/uv_robot_ros/cmdToRpi.h"
 )
 
 # Per-language clean rules from dependency scanning.

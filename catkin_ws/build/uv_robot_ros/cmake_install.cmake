@@ -1,8 +1,8 @@
-# Install script for directory: /home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros
+# Install script for directory: /home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,53 +38,53 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/srv" TYPE FILE FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/srv/cmdToRpi.srv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/srv" TYPE FILE FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/srv/cmdToRpi.srv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/cmake" TYPE FILE FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/cmake" TYPE FILE FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/include/uv_robot_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/include/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/share/roseus/ros/uv_robot_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/share/roseus/ros/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/share/common-lisp/ros/uv_robot_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/share/common-lisp/ros/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/share/gennodejs/ros/uv_robot_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/share/gennodejs/ros/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/lib/python2.7/dist-packages/uv_robot_ros")
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/lib/python2.7/dist-packages/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/lib/python2.7/dist-packages/uv_robot_ros")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/lib/python2.7/dist-packages/uv_robot_ros")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/cmake" TYPE FILE FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/cmake" TYPE FILE FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_ros-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros/cmake" TYPE FILE FILES
-    "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_rosConfig.cmake"
-    "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_rosConfig-version.cmake"
+    "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_rosConfig.cmake"
+    "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build/uv_robot_ros/catkin_generated/installspace/uv_robot_rosConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros" TYPE FILE FILES "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/uv_robot_ros" TYPE FILE FILES "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/package.xml")
 endif()
 
