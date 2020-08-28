@@ -1,4 +1,4 @@
-# Odometry_README
+# Odometry
 
 ## What
 Odometry is a type of data that records the **track** of our robot.
@@ -7,7 +7,7 @@ Usually it is generated from motion sensors to help correct the error caused by 
 but in our case, the position of our robot would be marked on the map of the room, and since the map is generated from the camera (Intel RealSense Depth Camera D435), we choose to record our localization data from the camera, too.
 
 ## Why 
-With the information of historical track, we can achieve **dynamic route planning** using A* algorithm, also **visualize the track and sterizing progress** for users to check in real time.
+With the information of historical track, we can achieve **dynamic route planning** using A* algorithm, also **visualize the track and sterilizing progress** for users to check in real time.
 
 ## How 
 First, we use `rospy`, the communication system in ROS, to capture the localization data message published from the camera.
