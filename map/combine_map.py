@@ -1,5 +1,7 @@
 #!/usr/bin/env/python
 import rospy
+import numpy as np
+import cv2
 
 def combine_map_node():
     rospy.init_node('UVbot_combine_map', anonymous=True)
@@ -107,5 +109,8 @@ def map_to_jpg():
     cv2.imwrite('combine_map.jpg', combine_jpg)   
 
 if __name__ == '__main__':
-    try:
-        combine_map_node()
+    while True:
+        try:
+            combine_map_node()
+        except:
+            pass
