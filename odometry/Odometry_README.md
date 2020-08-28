@@ -46,13 +46,13 @@ Below is the case for modifying x-size of array.
 ```Python
  if -1 < (gx-w_sterilized) and (gx+w_sterilized) < x_size:
             pass
-        elif (gx-w_sterilized) < 0:
-            odom_map1 = np.pad(odom_map1, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
-            o_gx,   last_x,    gx  =   o_gx - gx + w_sterilized,  last_x - gx + w_sterilized,  w_sterilized
-        else:
-            odom_map1 = np.pad(odom_map1, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
-            odom_map2 = np.pad(odom_map2, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
+elif (gx-w_sterilized) < 0:
+    odom_map1 = np.pad(odom_map1, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
+    odom_map2 = np.pad(odom_map2, ((-gx+w_sterilized,0),(0,0)),'constant',constant_values = (0,0))
+    o_gx,   last_x,    gx  =   o_gx - gx + w_sterilized,  last_x - gx + w_sterilized,  w_sterilized
+else:
+    odom_map1 = np.pad(odom_map1, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
+    odom_map2 = np.pad(odom_map2, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
 
 ```
 
