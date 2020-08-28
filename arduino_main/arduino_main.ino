@@ -59,6 +59,16 @@ void LightsOff()
 
 }
 
+void UpdateEncoderR()
+{
+  // Sends confirm message "c" when finishes a movement with direction and distance/degree
+    if( EncoderR.report() ){
+      halt();
+      sweeper1.stopSweep();
+      Serial.println("c");
+    }
+}
+
 void setup(){
   Serial.begin(9600);
   pinMode(MotorLF_I1, OUTPUT);
@@ -95,35 +105,22 @@ void setup(){
 
 
 void loop() {
-  /*
-  forward(70);
-  delay(3000);
-  backward(70);
-  delay(3000);
-  leftturn(70);
-  delay(10000);
-  rightturn(70);
-  delay(10000);
- // leftspin(70);
- // delay(3000);
- // rightspin(70);
- // delay(3000);
-  MotorWriting(0, 0, 0, 0);
-  delay(2000);
-  */
 //  Serial.println('S');
 
+  
   bool pirRead[4];
   pirRead[0] = digitalRead(Pir_1);
   pirRead[1] = digitalRead(Pir_2);
   pirRead[2] = digitalRead(Pir_3);
   pirRead[3] = digitalRead(Pir_4);
-
+  
+  // Check the pir sensor for human presence first thing in the loop;
   bool lastPeopleState = noPeople;
   for(int i=0; i<4; i++){
     if( !pirRead[i] ){
       LightsOff();
       halt();
+      // Turn UVC lamps off but keep warning light on
       digitalWrite(Relay_1, LOW);
       noPeople = 0;
       break;
@@ -132,9 +129,11 @@ void loop() {
       noPeople = 1;
     }
   }
+  // Signal Raspberry Pi to stop sending commands
   if(lastPeopleState == 1 && noPeople == 0){
     Serial.println("Human");
   }
+  // Signal Raspberry Pi to resume the proccess
   else if(lastPeopleState == 0 && noPeople == 1){
     Serial.println("Resume");
   }
@@ -144,7 +143,7 @@ void loop() {
 
 
   
-  
+  // Continue the whole proccess only if nobody is around
   if(noPeople == 1)
   {
       
@@ -187,7 +186,7 @@ void loop() {
     //Serial.println('2');
   
   
-    
+    // Receive and parse Raspberry Pi commands
     if(Serial.available()){
         
       char movement = Serial.read();
@@ -195,7 +194,7 @@ void loop() {
       dist = atoi(Serial.readString().c_str());
       int clicks_s = round( dist*distToClicks_s );
       int clicks_r = round( dist*distToClicks_r );
-      
+
       switch(movement){
         case 'f':
           forward(100);
@@ -297,18 +296,23 @@ void loop() {
           break;
       }
     }
-    //Serial.println('3');
-    if( EncoderR.report() ){
-      halt();
-      sweeper1.stopSweep();
-      
-      Serial.println('c');
-    }
+
+    UpdateEncoderR();
     
-    //Serial.println('4');
     sweeper1.doSweep();
-  //  Serial.println('5');
-    //readTOFs();
-  //  Serial.println('E');
+    
+    UpdateEncoderR();
+    
+    readTOF_F();
+    
+    UpdateEncoderR();
+    
+    readTOF_R();
+    
+    UpdateEncoderR();
+
+    readTOF_L();
+    
+    UpdateEncoderR();
   }
 }

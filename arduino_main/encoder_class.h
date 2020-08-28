@@ -48,8 +48,6 @@ public:
     clicks_walked = 0;
     curMovement = Halt;
     
-
-    
   }
   
   // Called by the main loop in each loop
@@ -82,7 +80,8 @@ public:
       //Serial.println(omega*1000);
       prev_report = millis();
     }
-    
+
+    // Upon finishing a movement with direction and distance/degree
     if(clicks_left <= 0 && non_stop == 0){
       non_stop = 1;
       return 1;
@@ -112,7 +111,6 @@ public:
     clicks_walked = 0;
   }
 
-
   int getClicks()
   {
     return clicks_walked;
@@ -124,6 +122,7 @@ public:
     clicks_walked = 0;
   }
 
+  // called when finished moving an unspecified distance and returned the distance/degree
   double getDistOrDegree()
   {
     if(non_stop == 1){

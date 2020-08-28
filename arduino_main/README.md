@@ -112,5 +112,3 @@ We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmi
 
 ### track.h
 Defines functions("forward", "backward", "leftTurn", "rightTurn", "halt") to control movements. (Note: We emitted "rightShift" and "leftShift" to simplify the path finding algorithm)
-
-

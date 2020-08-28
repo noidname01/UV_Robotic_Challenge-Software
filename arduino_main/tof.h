@@ -51,41 +51,31 @@ void initTOF()
   digitalWrite(SHT_LOX_R, HIGH);
   digitalWrite(SHT_LOX_L, HIGH);
   delay(10);
-
+  ///////////////////////////////////////////////
   // activating LOX1 and reseting LOX2
   digitalWrite(SHT_LOX_F, HIGH);
   digitalWrite(SHT_LOX_R, LOW);
   digitalWrite(SHT_LOX_L, LOW);
 
-
-
   // initing LOX1
-  if(!lox_F.begin(LOX_F_ADDRESS) /*&& LOX_F_ADDRESS <= 0x7F*/) {
+  if(!lox_F.begin(LOX_F_ADDRESS)) {
     Serial.print(F("Failed to boot F VL53L0X at address "));
     Serial.println(LOX_F_ADDRESS);
-    //LOX_F_ADDRESS++;
   }
   delay(10);
+  ///////////////////////////////////////////////
   // activating LOX2
   digitalWrite(SHT_LOX_R, HIGH);
   delay(10);
-
-
-
+  
   //initing LOX2
-  while(!lox_R.begin(LOX_R_ADDRESS)/* && LOX_R_ADDRESS <= 0x7F*/) {
-    //if(LOX_R_ADDRESS == LOX_F_ADDRESS) continue;
-    
+  if(!lox_R.begin(LOX_R_ADDRESS)) {
     Serial.println(F("Failed to boot R VL53L0X at address "));
     Serial.println(LOX_R_ADDRESS);
-    //LOX_R_ADDRESS++;
     delay(200);
   }
   delay(10);
-
-
-
-  
+  ///////////////////////////////////////////////
   // activating LOX3
   digitalWrite(SHT_LOX_L, HIGH);
   delay(10);
@@ -103,11 +93,33 @@ void initTOF()
   }
 }
 
+void readTOF_F()
+{
+  lox_F.rangingTest(&measure_F, false);
+}
+
+void readTOF_R()
+{
+  lox_F.rangingTest(&measure_R, false);
+}
+
+void readTOF_L()
+{
+  lox_F.rangingTest(&measure_L, false);
+}
+
 void readTOFs() {
   //Serial.println("Enter readTOFs");
-  lox_F.rangingTest(&measure_F, false); // pass in 'true' to get debug data printout!
-  lox_R.rangingTest(&measure_R, false); // pass in 'true' to get debug data printout!
-  lox_L.rangingTest(&measure_L, false); // pass in 'true' to get debug data printout!
+
+  // Take turns to measure distance to reduce main loop time
+  if(myturn == 0)
+    lox_F.rangingTest(&measure_F, false); // pass in 'true' to get debug data printout!
+  else if(myturn == 1)
+    lox_R.rangingTest(&measure_R, false); // pass in 'true' to get debug data printout!
+  else if(myturn == 2)
+    lox_L.rangingTest(&measure_L, false); // pass in 'true' to get debug data printout!
+    
+  myturn = (myturn + 1) % 3;
 
   // print sensor F reading
                     #if (DEBUGTOF == 1)
@@ -156,32 +168,3 @@ void readTOFs() {
   Serial.println();
                     #endif
 }
-/*
-void setup() {
-  Serial.begin(115200);
-
-  // wait until serial port opens for native USB devices
-  while (! Serial) { delay(1); }
-
-  pinMode(SHT_LOX1, OUTPUT);
-  pinMode(SHT_LOX2, OUTPUT);
-
-  Serial.println("Shutdown pins inited...");
-
-  digitalWrite(SHT_LOX1, LOW);
-  digitalWrite(SHT_LOX2, LOW);
-
-  Serial.println("Both in reset mode...(pins are low)");
-  
-  
-  Serial.println("Starting...");
-  setID();
- 
-}
-
-void loop() {
-   
-  read_dual_sensors();
-  delay(100);
-}
-*/
