@@ -24,7 +24,7 @@ class robot:
             direc: float (in degree), the initial direction of the robot  (for left_navi system), left: degree++
             a_direc: float (in degree), the initial direction of the robot (for A* system), left: degree++
         '''
-        self.mz = mz  # comprised of 0, 1, 2, 3
+        self.mz = mz  # comprised of 0, 1, 2, 3, 4
         self.astar_mz = mz  # comprised of 0 and 1
         self.safe_mz = mz   # consider safety distance (obstacle thicken)
         self.pos = pos    #(int, int)
@@ -90,7 +90,8 @@ class robot:
 
     def infinite_turn(self, direction):
         '''
-        infinitely rotate (left or right), remember to halt !!!!
+        description:
+             infinitely rotate (left or right), remember to halt !!!!
         input:
             direction: string "left" or "right"
         output:
@@ -109,10 +110,12 @@ class robot:
 
     def halt(self, direc = 0):
         '''
-        HALT.
+        description:    HALT.
         input: 
                 direc: 0, 1 or -1. 
                 (0: forward before halt.    1: turning left before halt.    -1: turning right before halt)
+        output:
+                None
         '''
         self.ser.write('h')
         self.ser.write('\n')
@@ -166,28 +169,24 @@ class robot:
 
         #check if any obstacle at these checkpoints
         for i in range(self.point_split*2):
-            if self.mz[loc_array[i][0],][loc_array[i][1]]:
+            if self.mz[loc_array[i][0]][loc_array[i][1]]:
                 return True
         return False
 
     def turn_check(self):
         '''
         description:
-            turn_check is to check whether is the time to turn, prevents it from missing the right turning time.
-
-            It will track the ""specific"" point in the frame of depth camera, uses it to determine when to turn.
-
-            the specific point is the translation of the position of camera/robot, I think the coordinate of the 'specific point'should be 
-
+            turn_check is used to check whether is the time to turn, preventing it from missing the right turning time.
+            It will track the "specific point" to determine when to turn.
+            The specific point is the translation of the position of camera/robot, whose coordinate of the "specific point" should be 
             ( self.pos.x - ( robot-width / 2 + robot-safe-dist ) , self.pos.y + ( robot-width / 2 + robot-safe-dist ) * tan(90 - robot-vision-angle / 2) ) 
-            
             in cartesian coordinate system
-
-            when it found this point becoming empty, it will return true, which means that it can turn "" left ""
- 
+        input:
+                None
+        output:
+                bool, True if robot could turn left  (the specific point is empty)
         '''
         x,y = self.specific_point_coord('left')
-
         return not self.mz[x][y]
             
     def turn_to_find_path(self, direction):
@@ -247,6 +246,9 @@ class robot:
 
 # update function
     def update_loc(self):
+        """
+        description: update the present coordinate on the map.        
+        """
         with open('combine_map.txt', 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
             self.pos = (int(lines[-1].split()[0]), int(lines[-1].split()[1]))
@@ -291,7 +293,8 @@ class robot:
 # state function              
     def is_trapped(self):
         """
-        determine whether the robot is trapped (when left_navi)
+        description:    
+                determine whether the robot is trapped (when left_navi)
         input:
                 None
         output:
@@ -308,7 +311,8 @@ class robot:
     
     def is_clear(self):
         """
-        Check if the robot has cleaned all the room
+        description:
+                check if the robot has cleaned all the room
         input:
                 None
         output:
@@ -364,8 +368,7 @@ class robot:
 
                         #jump out the loop
                         break
-                
-                
+               
                 if shouldCrush:
                     #  jump out of loop
                     continue
@@ -394,6 +397,14 @@ class robot:
         return 'all done!'
 
     def find_route(self):
+        """
+        description:
+                find the next unknown area, then use A* algorithm to get the optimal path.
+        input:
+                None
+        output:
+                path_lst:  (list) list of tuples, the optimal path solution
+        """
         goal = self.find_unknown_area()
         self.update_loc()
         present = (self.pos[0], self.pos[1])
@@ -481,10 +492,6 @@ class maze:
                 else:
                     newlist.append(point(name = "wall"))
             self.maze.append(newlist)
-
-def print_point_list(l):
-    for i in l:
-        print(i.x,i.y)
 
 def search_neighbor(weight_maze, current_x, current_y):
     try:
@@ -651,6 +658,9 @@ def reduce_path(lst):
     new_lst.append(lst[-1])
     return new_lst
 
+def print_point_list(l):
+    for i in l:
+        print(i.x,i.y)
 
 # main
 def main():
