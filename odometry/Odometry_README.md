@@ -74,12 +74,11 @@ with open("odometry_path.txt", "a") as f:
     f.write(str(o_gx)+' '+str(o_gy)+'\n' )  # write origin's coordinate
     f.write(str(x_size)+' '+str(y_size)+'\n' )   # write the size of array
     f.write(str(gx)+' '+str(gy)+'\n' )  # write present coordinate
-gen_img('odom.jpg', odom_map)  # using cv2.imwrite()
 ```
 
 By the way, we have a `test()` function that can manually enter coordinates and output jpg image file using `cv2.imwrite()`, which is for testing only (image including more information would be generated in other programs).
 
-Below is the screenshot of the odom_path.txt and odom.jpg.
+Below is the screenshot of the testing odom_path.txt and odom.jpg.
 
 ![screenshot](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/odometry/screenshot.png)
 
