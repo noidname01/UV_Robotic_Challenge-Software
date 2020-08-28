@@ -24,12 +24,21 @@
 #define Relay_3         51
 #define Relay_4         53
 
+#define Pir_1 33
+#define Pir_2 35
+#define Pir_3 37
+#define Pir_4 39
+
 #include "track.h"
 #include "encoder_class.h"
 #include "servo_sweeper.h"
 #include "tof.h"
 
+
 Encoder EncoderR(EncoderR_pin, 10, 36);
+Sweeper sweeper1(1);
+
+bool noPeople = 0;
 
 void LightsOn()
 {
@@ -52,7 +61,6 @@ void LightsOff()
 
 void setup(){
   Serial.begin(9600);
-  Serial.println("hi");
   pinMode(MotorLF_I1, OUTPUT);
   pinMode(MotorLF_I2, OUTPUT);
   pinMode(MotorRF_I3, OUTPUT);
@@ -74,6 +82,11 @@ void setup(){
   pinMode(Relay_3, OUTPUT);
   pinMode(Relay_4, OUTPUT);
 
+  pinMode(Pir_1, OUTPUT);
+  pinMode(Pir_2, OUTPUT);
+  pinMode(Pir_3, OUTPUT);
+  pinMode(Pir_4, OUTPUT);
+  
   LightsOff();
 
   sweeper1.Attach(ServoPin);
@@ -99,171 +112,203 @@ void loop() {
   delay(2000);
   */
 //  Serial.println('S');
-  bool enc_state = digitalRead(EncoderR_pin);
-  //Serial.println(enc_state);
 
-//  Serial.println('1');
-  //Serial.print("Range Status:");
-  //Serial.println(measure_F.RangeStatus);
-  if(measure_F.RangeMilliMeter < 150){
-    
-    if(measure_F.RangeStatus != 4) {
-      //Serial.print("F too close\n");
-      //Serial.println(measure_F.RangeMilliMeter);
-      //halt();
+  bool pirRead[4];
+  pirRead[0] = digitalRead(Pir_1);
+  pirRead[1] = digitalRead(Pir_2);
+  pirRead[2] = digitalRead(Pir_3);
+  pirRead[3] = digitalRead(Pir_4);
+
+  bool lastPeopleState = noPeople;
+  for(int i=0; i<4; i++){
+    if( !pirRead[i] ){
+      LightsOff();
+      halt();
+      digitalWrite(Relay_1, LOW);
+      noPeople = 0;
+      break;
     }
-    else
-      Serial.print("F normal\n");
-  }
-  /*
-  else {
-    Serial.print("F normal\n");
-    Serial.println(measure_F.RangeMilliMeter);
-  }
-  */  
-  if(measure_R.RangeMilliMeter < 80 || measure_R.RangeMilliMeter > 120 ){
-    if(measure_R.RangeStatus != 4) {
-      //Serial.print("R too close or too Far!\n");
-      //Serial.println(measure_R.RangeMilliMeter);
-      //halt();
+    else{
+      noPeople = 1;
     }
-    else
-      Serial.print("R normal\n");
   }
-  
-  if(measure_L.RangeMilliMeter < 80 || measure_L.RangeMilliMeter > 120){
-    if(measure_L.RangeStatus != 4) {
-     // Serial.print("L too close or too Far!\n");
-     // Serial.println(measure_L.RangeMilliMeter);
-     // halt();
-    }
-    else
-      Serial.print("L normal\n");
+  if(lastPeopleState == 1 && noPeople == 0){
+    Serial.println("Human");
   }
-  
-  //Serial.println('2');
+  else if(lastPeopleState == 0 && noPeople == 1){
+    Serial.println("Resume");
+  }
+
+
+
 
 
   
-  if(Serial.available()){
+  
+  if(noPeople == 1)
+  {
       
-    char movement = Serial.read();
-    int dist = 0;
-    dist = atoi(Serial.readString().c_str());
-    int clicks_s = round( dist*1.0/ (PI*5.67)*36 );
-    int clicks_r = round( dist*0.68);
-    
-    switch(movement){
-      case 'f':
-        forward(100);
-        sweeper1.startSweep();
-        
-        if(dist != 0){
-          EncoderR.goStraight(clicks_s);
-        }
-        else  EncoderR.forrest_gump();
-        
-        break;
-        
-      case 'b':
-        backward(100);
-        sweeper1.stopSweep();
-        
-        if(dist != 0){
-          EncoderR.goStraight(clicks_s);
-        }
-        else  EncoderR.forrest_gump();
-        
-        break;
-        
-      case 'l':
-        leftturn(100);
-        sweeper1.startSweep();
-
-        if(dist != 0){
-          EncoderR.revolve(clicks_r);
-        }
-        else  EncoderR.forrest_gump();
-        
-        break;
-        
-      case 'r':
-        rightturn(100);        
-        sweeper1.startSweep();
-
-        if(dist != 0){
-          EncoderR.revolve(clicks_r);
-        }
-        else  EncoderR.forrest_gump();
-        
-        break;
-        
-      case 'm':
-        leftshift(100);
-        break;
-        
-      case 'n':
-        rightshift(100);
-        break;
-        
-      case '1':
-        MotorWriting(60, 0, 0, 0);
-        delay(100);
-        MotorWriting(0, 0, 0, 0);
-        break;
-        
-      case '2':
-        MotorWriting(0, 60, 0, 0);
-        delay(100);
-        MotorWriting(0, 0, 0, 0);
-        break;
-        
-      case '3':
-        MotorWriting(0, 0, 60, 0);
-        delay(100);
-        MotorWriting(0, 0, 0, 0);
-        break;
-        
-      case '4':
-        MotorWriting(0, 0, 0, 60);
-        delay(100);
-        MotorWriting(0, 0, 0, 0);
-        break;
-        
-      case 'h':
-        halt();
-        sweeper1.stopSweep();
-
-        EncoderR.reset_click();
-        
-        break;
-        
-      case 's': 
-        sweeper1.startSweep();
-        break;
-
-      case 'o':
-        LightsOn();
-        break;
-        
-      case 'k':
-        LightsOff();
-        break;
-        
-      default:
-        break;
+    bool enc_state = digitalRead(EncoderR_pin);
+    //Serial.println(enc_state);
+  
+  //  Serial.println('1');
+    //Serial.print("Range Status:");
+    //Serial.println(measure_F.RangeStatus);
+    if(measure_F.RangeMilliMeter < 150){
+      
+      if(measure_F.RangeStatus != 4) {
+        //Serial.print("F too close\n");
+        //Serial.println(measure_F.RangeMilliMeter);
+        //halt();
+      }
     }
-  }
-  //Serial.println('3');
-  if( EncoderR.report() ){
-    halt();
-    sweeper1.stopSweep();
+    /*
+    else {
+      Serial.print("F normal\n");
+      Serial.println(measure_F.RangeMilliMeter);
+    }
+    */  
+    if(measure_R.RangeMilliMeter < 80 || measure_R.RangeMilliMeter > 120 ){
+      if(measure_R.RangeStatus != 4) {
+        //Serial.print("R too close or too Far!\n");
+        //Serial.println(measure_R.RangeMilliMeter);
+        //halt();
+      }
+    }
     
-    Serial.println('c');
+    if(measure_L.RangeMilliMeter < 80 || measure_L.RangeMilliMeter > 120){
+      if(measure_L.RangeStatus != 4) {
+       // Serial.print("L too close or too Far!\n");
+       // Serial.println(measure_L.RangeMilliMeter);
+       // halt();
+      }
+    }
+    
+    //Serial.println('2');
+  
+  
+    
+    if(Serial.available()){
+        
+      char movement = Serial.read();
+      int dist = 0;
+      dist = atoi(Serial.readString().c_str());
+      int clicks_s = round( dist*distToClicks_s );
+      int clicks_r = round( dist*distToClicks_r );
+      
+      switch(movement){
+        case 'f':
+          forward(100);
+          sweeper1.startSweep();
+          
+          if(dist != 0){
+            EncoderR.goStraight(clicks_s);
+          }
+          else  EncoderR.forrest_gump( Forward );
+          
+          break;
+          
+        case 'b':
+          backward(100);
+          sweeper1.stopSweep();
+          
+          if(dist != 0){
+            EncoderR.goStraight(clicks_s);
+          }
+          else  EncoderR.forrest_gump( Backward );
+          
+          break;
+          
+        case 'l':
+          leftturn(100);
+          sweeper1.startSweep();
+  
+          if(dist != 0){
+            EncoderR.revolve(clicks_r);
+          }
+          else  EncoderR.forrest_gump( LeftTurn );
+          
+          break;
+          
+        case 'r':
+          rightturn(100);        
+          sweeper1.startSweep();
+  
+          if(dist != 0){
+            EncoderR.revolve(clicks_r);
+          }
+          else  EncoderR.forrest_gump( RightTurn );
+          
+          break;
+          
+        case 'm':
+          leftshift(100);
+          break;
+          
+        case 'n':
+          rightshift(100);
+          break;
+          
+        case '1':
+          MotorWriting(60, 0, 0, 0);
+          delay(100);
+          MotorWriting(0, 0, 0, 0);
+          break;
+          
+        case '2':
+          MotorWriting(0, 60, 0, 0);
+          delay(100);
+          MotorWriting(0, 0, 0, 0);
+          break;
+          
+        case '3':
+          MotorWriting(0, 0, 60, 0);
+          delay(100);
+          MotorWriting(0, 0, 0, 0);
+          break;
+          
+        case '4':
+          MotorWriting(0, 0, 0, 60);
+          delay(100);
+          MotorWriting(0, 0, 0, 0);
+          break;
+          
+        case 'h':
+          halt();
+          sweeper1.stopSweep();
+          EncoderR.getDistOrDegree();
+          EncoderR.reset_click();
+          
+          break;
+          
+        case 's': 
+          sweeper1.startSweep();
+          break;
+  
+        case 'o':
+          LightsOn();
+          break;
+          
+        case 'k':
+          LightsOff();
+          break;
+          
+        default:
+          break;
+      }
+    }
+    //Serial.println('3');
+    if( EncoderR.report() ){
+      halt();
+      sweeper1.stopSweep();
+      
+      Serial.println('c');
+    }
+    
+    //Serial.println('4');
+    sweeper1.doSweep();
+  //  Serial.println('5');
+    //readTOFs();
+  //  Serial.println('E');
   }
-  //Serial.println('4');
-  sweeper1.doSweep();
-//  Serial.println('5');
-  //readTOFs();
-//  Serial.println('E');
 }

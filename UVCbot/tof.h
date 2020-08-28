@@ -25,6 +25,9 @@ VL53L0X_RangingMeasurementData_t measure_F;
 VL53L0X_RangingMeasurementData_t measure_R;
 VL53L0X_RangingMeasurementData_t measure_L;
 
+
+int myturn = 0;
+
 /*
     Reset all sensors by setting all of their XSHUT pins low for delay(10), then set all XSHUT high to bring out of reset
     Keep sensor #1 awake by keeping XSHUT pin high
@@ -61,7 +64,6 @@ void initTOF()
     Serial.print(F("Failed to boot F VL53L0X at address "));
     Serial.println(LOX_F_ADDRESS);
     //LOX_F_ADDRESS++;
-    //while(1);
   }
   delay(10);
   // activating LOX2
@@ -71,13 +73,13 @@ void initTOF()
 
 
   //initing LOX2
-  if(!lox_R.begin(LOX_R_ADDRESS)/* && LOX_R_ADDRESS <= 0x7F*/) {
+  while(!lox_R.begin(LOX_R_ADDRESS)/* && LOX_R_ADDRESS <= 0x7F*/) {
     //if(LOX_R_ADDRESS == LOX_F_ADDRESS) continue;
     
-    Serial.println(F("Failed to boot R VL53L0X at address"));
+    Serial.println(F("Failed to boot R VL53L0X at address "));
     Serial.println(LOX_R_ADDRESS);
     //LOX_R_ADDRESS++;
-    while(1);
+    delay(200);
   }
   delay(10);
 
@@ -89,13 +91,13 @@ void initTOF()
   delay(10);
 
   //initing LOX3
-  if(!lox_L.begin(LOX_L_ADDRESS)) {
+  while(!lox_L.begin(LOX_L_ADDRESS)) {
     //if(LOX_L_ADDRESS == LOX_F_ADDRESS || LOX_L_ADDRESS == LOX_R_ADDRESS) continue;
     
-    Serial.println(F("Failed to boot L VL53L0X at address"));
+    Serial.println(F("Failed to boot L VL53L0X at address "));
     Serial.println(LOX_L_ADDRESS);
     //LOX_L_ADDRESS++;
-    while(1);
+    delay(200);
     
 
   }

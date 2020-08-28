@@ -1,5 +1,6 @@
 #include <Servo.h>
-     
+
+// Class for sweeping servo motor repeatedly
 class Sweeper
 {
   Servo servo;              // the servo
@@ -29,6 +30,7 @@ public:
     sweeping = 0;
   }
 
+  // called by the main loop in each loop
   void doSweep()
   {
     if(sweeping){
@@ -46,7 +48,8 @@ public:
   {
     servo.detach();
   }
-      
+
+  // rotate the servo by a small degree
   void Update()
   {
     if((millis() - lastUpdate) > updateInterval)  // time to update
@@ -55,7 +58,7 @@ public:
       pos += increment;
       servo.write(pos);
       //Serial.println(pos);
-      if ((pos >= 135) || (pos <= 45)) // end of sweep
+      if ((pos >= 150) || (pos <= 30)) // end of sweep
       {
         // reverse direction
         increment = -increment;
@@ -63,33 +66,9 @@ public:
     }
   }
 
+  // get current angle of the servo
   int get_pos()
   {
     return pos;
   }
 };
-     
-extern Sweeper sweeper1(1);
-/*
-void setup() 
-{ 
-  Serial.begin(9600);
-  sweeper1.Attach(9);
-  sweeper2.Attach(10);
-} 
-     
-     
-void loop() 
-{ 
-  sweeper1.Update();
-      
-  if(digitalRead(2) == HIGH)
-  {
-     sweeper2.Update();
-     led1.Update();
-  }
-      
-  led2.Update();
-  led3.Update();
-}
-*/
