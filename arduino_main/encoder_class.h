@@ -2,7 +2,7 @@
 #define ENCODER
 #define TIMEOUT 200
 
-#include "track.h"
+#include "motorControl.h"
 
 double distToClicks_s = 1.0/ (PI*5.67)*12;
 double distToClicks_r = 0.24;
@@ -12,7 +12,8 @@ enum Movement{
   Backward,
   RightTurn,
   LeftTurn,
-  Halt
+  Halt,
+  ReverseMov
 };
 
 class Encoder
@@ -124,12 +125,12 @@ public:
   void turnBack()
   {
     if(curMovement == RightTurn){
-      leftTurn(100);
-      revolve( RightTurn, clicks_walked );
+      leftturn(100);
+      revolve( ReverseMov, clicks_walked );
     }
     else if(curMovement == LeftTurn){
-      rightTurn(100);
-      revolve( LeftTurn, clicks_walked );
+      rightturn(100);
+      revolve( ReverseMov, clicks_walked );
     }
   }
 

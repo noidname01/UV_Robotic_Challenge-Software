@@ -59,8 +59,8 @@ void initTOF()
 
   // initing LOX1
   if(!lox_F.begin(LOX_F_ADDRESS)) {
-    Serial.print(F("Failed to boot F VL53L0X at address "));
-    Serial.println(LOX_F_ADDRESS);
+   // Serial.print(F("Failed to boot F VL53L0X at address "));
+   // Serial.println(LOX_F_ADDRESS);
   }
   delay(10);
   ///////////////////////////////////////////////

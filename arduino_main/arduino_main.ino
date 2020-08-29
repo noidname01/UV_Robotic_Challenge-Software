@@ -1,8 +1,6 @@
 #include <Servo.h>
 #include <string.h>
 
-//#include <SoftwareSerial.h>
-
 #define MotorLF_I1      28//I1（left back）
 #define MotorLF_I2      26//I2（left back）
 #define MotorRF_I3      24//I3（right back）
@@ -29,7 +27,7 @@
 #define Pir_3 37
 #define Pir_4 39
 
-#include "track.h"
+#include "motorControl.h"
 #include "encoder_class.h"
 #include "servo_sweeper.h"
 #include "tof.h"
@@ -108,7 +106,6 @@ void setup(){
 
 void loop() {
   //Serial.println('S');
-
   
   bool pirRead[4];
   pirRead[0] = digitalRead(Pir_1);
@@ -137,7 +134,26 @@ void loop() {
   }
   // Signal Raspberry Pi to resume the proccess
   else if(lastPeopleState == 0 && noPeople == 1){
+    
+    switch(EncoderR.curMovement)
+    {
+      case Forward:
+        forward(100);
+        break;
+      case Backward:
+        backward(100);
+        break;
+      case RightTurn:
+        rightturn(100);
+        break;
+      case LeftTurn:
+        leftturn(100);
+        break;
+      case Halt:
+        break;
+    }
     Serial.println("Resume");
+    
   }
 
 
@@ -150,6 +166,7 @@ void loop() {
   // Continue the whole proccess only if nobody is around
   if(/*noPeople == 1 */true)
   {
+    
       
     bool enc_state = digitalRead(EncoderR_pin);
     //Serial.println(enc_state);
@@ -172,33 +189,44 @@ void loop() {
     }
     */
     // If left wheel is close to a "cliff"
-    if(measure_R.RangeMilliMeter < 93 || measure_R.RangeMilliMeter > 116 ){
+    if(measure_R.RangeMilliMeter < 93 || measure_R.RangeMilliMeter > 114 ){
       //Serial.print("R too close or too Far!\n");
       //Serial.println(measure_R.RangeMilliMeter);
-      halt();
-      if(!overCliff)
+      
+      if(EncoderR.curMovement != ReverseMov)
+        halt();
+       
+      if(!overCliff){
         Serial.println("er");
+        overCliff = 1;
+      }
+        
 
       // move backwards if previously moving forward
-      if(EncoderR.curMovement == Forward){
+      if(EncoderR.curMovement == Forward || EncoderR.curMovement == Backward){
         backward(80);
-        EncoderR.goStraight(3.0*distToClicks_s);
+        EncoderR.goStraight(Backward, 8.0*distToClicks_s);
       }
       // turn back to the original position if previously turning
-      else 
+      else
         EncoderR.turnBack();
     }
     
     if(measure_L.RangeMilliMeter < 85 || measure_L.RangeMilliMeter > 106){
      // Serial.print("L too close or too Far!\n");
      // Serial.println(measure_L.RangeMilliMeter);
-      halt();
-      if(!overCliff)
-        Serial.println("el");
+     
+      if(EncoderR.curMovement != ReverseMov)
+        halt();
         
-      if(EncoderR.curMovement == Forward){
+      if(!overCliff){
+        Serial.println("el");
+        overCliff = 1;
+      }
+        
+      if(EncoderR.curMovement == Forward || EncoderR.curMovement == Backward){
         backward(80);
-        EncoderR.goStraight(3.0*distToClicks_s);
+        EncoderR.goStraight(Backward, 8.0*distToClicks_s);
       }
       else 
         EncoderR.turnBack();
@@ -300,7 +328,9 @@ void loop() {
           halt();
           sweeper1.stopSweep();
           EncoderR.getDistOrDegree();
+          EncoderR.curMovement = Halt;
           EncoderR.reset_click();
+          Serial.println("c");
           
           break;
           
