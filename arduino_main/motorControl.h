@@ -1,4 +1,6 @@
-//#include <SoftwareSerial.h>
+#ifndef MOTORCONTROL
+#define MOTORCONTROL
+
 #include <Wire.h>
 
 void MotorWriting(double vLF, double vRF, double vLB, double vRB){
@@ -86,3 +88,5 @@ void leftturn(double v){MotorWriting(v, -v);}
 void rightturn(double v){MotorWriting(-v, v);}
 void rotate(double v){MotorWriting(v, -v, v, -v);}
 */
+
+#endif
