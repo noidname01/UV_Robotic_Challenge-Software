@@ -17,7 +17,6 @@ with open('config/params.yaml') as F:
     height_check = params['robot']['height_check']      #(int): min height the robot can pass
     safe_dist = params['robot']['safe_dist']        #(int): min safe distance
 
-
 class robot:
     '''
     description: 
@@ -35,15 +34,16 @@ class robot:
         safe_dist: int, the safe distance between the robot and the obstacles.
         vision_angle: dict, the three dimensions view angle of the camera. 
                       None, default.
+        replan: bool, encounter tof obstacle and haven't replan
 
     attribute:
-        mz, pos, direc, a_direc, size, r_detect, angle, point_split, safe_dist, vision_angle
+        mz, pos, direc, a_direc, size, r_detect, angle, point_split, safe_dist, vision_angle, replan
         astar_mz: 2D array, the room model marking the obstacles.
         safe_mz: 2D array, the room model marking the obstacles and the region around the obstacles.
         r2_detect: float, the distance between the place the camera detection can reach and the center of the robot.
         split_angle: float, the angle of each of the sample points when detecting if there are obstacles around the robot.
     '''
-    def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=43., point_split=7, safe_dist=5, vision_angle=None):
+    def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=43., point_split=7, safe_dist=5, vision_angle=None, replan = False):
         
         self.mz = mz  # comprised of 0, 1, 2, 3, 4
         self.astar_mz = mz  # comprised of 0 and 1
@@ -60,9 +60,85 @@ class robot:
         self.safe_dist = safe_dist
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}       #type:dict
         assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
+        self.replan = replan
         # open and set Serial
         self.ser=serial.Serial("/dev/ttyUSB0",9600,timeout=None)
         self.ser.open()
+
+# serial command
+    def SerialWrite(self,output):
+        send = str(output).encode("utf-8")
+        self.ser.write(send)
+    
+    def SerialReadLine(self):
+        if self.ser.inWaiting():
+            rv = self.ser.readline().decode("utf-8") 
+            return rv
+        return ""
+
+# emergency check
+    def map_correct(self, x, y, direc, obs):
+        """
+        description:
+            receive obstacle error from tof, generate a txt file to pass the information to obstacle.py.
+        input:
+            x, y: (int, int) coordinate of robot when encountering tof obstacle
+            direc: (float) a_direc of robot when encountering tof obstacle
+            obs:  (int) 0, 1 or 2. (0: only left, 1: only right, 2: both)
+        output:
+            None
+        """
+        pt_list = []
+        theta = direc*math.pi/180
+        left = (x + round(7.3*math.cos(theta)-9.75*math.sin(theta)), \
+                y + round(7.3*math.sin(theta)+9.75*math.cos(theta)) )
+        right =(x + round(7.3*math.cos(theta)+9.75*math.sin(theta)), \
+                y + round(7.3*math.sin(theta)-9.75*math.cos(theta)) )
+        if obs == 0: # left only
+            pt_list.append(left)
+        elif obs == 1: # right only
+            pt_list.append(right)
+        elif obs == 2:
+            pt_list.append(left)
+            pt_list.append(right)
+        with open('tof.txt', 'w') as f:
+            f.write('\n'.join('%s %s' % x for x in pt_list))
+
+    def emergency_check(self):
+        """
+        description:
+            generally check if receives emergency msg (el, er, human)
+        input:
+            None
+        output:
+            msg: (str) if no emergency, return self.SerialReadLine()
+            None: if encounter human and then human left
+            True: if receive "tof error" ('el' or 'er') MUST PLAN AGAIN !
+        """
+        msg = self.SerialReadLine()
+        obs = None # obstacle position. (0: only left, 1: only right, 2: both)
+        if msg not in ['human', 'el', 'er']:
+            return msg
+
+        if msg == 'human':
+            sleep(0.2)
+            while not self.SerialReadLine() == 'resume':
+                pass
+            return None
+
+        elif msg == 'el':
+            obs = 0
+        elif msg == 'er':
+            obs = 1
+        # position stamp
+        pos_x, pos_y = self.pos
+        direc = self.a_direc
+        # wait for safety
+        while not self.SerialReadLine() == 'c':
+            if self.SerialReadLine() == 'er':
+                obs = 2
+        self.map_correct()
+        return True
 
 # basic motion command
     def go_straight(self, dist = 0.1):
@@ -74,11 +150,17 @@ class robot:
         output:
             None
         '''
-        self.ser.write('f ')
-        self.ser.write(dist)
-        self.ser.write('\n')
-        sleep(0.1)
-        self.ser.read_until('c')
+        self.emergency_check() # check human
+        self.SerialWrite('f ')
+        self.SerialWrite(dist)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
 
     def turn_left(self, deg = 90):
         '''
@@ -89,14 +171,20 @@ class robot:
         output:
             None
         '''
-        self.ser.write('l ')
-        self.ser.write(deg)
-        self.ser.write('\n')
-        sleep(0.1)
-        self.ser.read_until('c')
+        self.emergency_check() # check human
+        self.SerialWrite('l ')
+        self.SerialWrite(deg)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
         self.direc += deg
         self.a_direc += deg
-
+        
     def turn_right(self, deg = 90):
         '''
         description: 
@@ -106,55 +194,19 @@ class robot:
         output:
             None
         '''
-        self.ser.write('r ')
-        self.ser.write(deg)
-        self.ser.write('\n')
-        sleep(0.1)
-        self.ser.read_until('c')
+        self.emergency_check() # check human
+        self.SerialWrite('r ')
+        self.SerialWrite(dist)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
         self.direc -= deg
         self.a_direc -= deg
-
-    def infinite_turn(self, direction):
-        '''
-        description: 
-            Infinitely rotate (left or right), remember to halt !!!!
-        input:
-            direction: string "left" or "right"
-        output:
-            None
-        '''
-        assert direction in ['left','right'], 'direction(type:str) should be left or right'
-        if direction == 'right':
-            self.ser.write('r ')
-            self.ser.write(0)
-            self.ser.write('\n')
-
-        elif direction == 'left':
-            self.ser.write('l ')
-            self.ser.write(0)
-            self.ser.write('\n')
-
-    def halt(self, direc = 0):
-        '''
-        description: 
-            HALT the robot.
-        input: 
-            direc: 0, 1 or -1. 
-            (0: forward before halt.    1: turning left before halt.    -1: turning right before halt)
-        output:
-            None
-        '''
-        self.ser.write('h')
-        self.ser.write('\n')
-        sleep(0.1)
-        while self.ser.in_waiting > 0:
-            msg = self.ser.read().decode('utf-8').rstrip
-            if msg == 'c':
-                angle = 0
-           else:
-                angle = int(msg)
-        self.direc += angle*direc
-        self.a_direc += angle*direc
 
 # checking functions for left_navi
     def crush_check(self):
@@ -215,7 +267,46 @@ class robot:
         '''
         x,y = self.specific_point_coord('left')
         return not self.mz[x][y]
-            
+
+        
+    def infinite_turn(self, direction):
+        '''
+        description: 
+            Infinitely rotate (left or right), remember to halt !!!!
+        input:
+            direction: string "left" or "right"
+        output:
+            None
+        '''
+        assert direction in ['left','right'], 'direction(type:str) should be left or right'
+        if direction == 'right':
+            self.SerialWrite('r 0\n')
+        elif direction == 'left':
+            self.SerialWrite('l 0\n')
+
+    def halt(self, direc = 0):
+        '''
+        description: 
+            HALT the robot.
+        input: 
+            direc: 0, 1 or -1. 
+            (0: forward before halt.    1: turning left before halt.    -1: turning right before halt)
+        output:
+            None
+        '''
+        self.SerialWrite('h\n')
+        sleep(0.1)
+        while not self.ser.inWaiting():
+            pass
+        msg = self.SerialReadLine()
+        if msg == 'c':
+            angle = 0
+        else:
+            angle = int(msg)
+        self.direc += angle*direc
+        self.a_direc += angle*direc
+
+
     def turn_to_find_path(self, direction):
         '''
         description:
@@ -234,7 +325,6 @@ class robot:
             while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('right')
             self.halt(-1)
-            return True
         elif direction == 'left':
             sp = self.specific_point_coord('left')
             if self.mz[sp[0]][sp[1]]:
@@ -242,7 +332,7 @@ class robot:
             while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('left')
             self.halt(1)
-            return True
+        return True
 
 # specific value         
     def specific_point_coord(self, direction):
@@ -379,6 +469,7 @@ class robot:
             self.update_loc()
             # step1. go straight until the following check return true
             self.go_straight()
+            self.replan = False
 
             # check1. check if going to crush
             if self.crush_check():
@@ -492,6 +583,11 @@ class robot:
             elif -360 < d < -180:
                 self.turn_left(360 - d)
             self.go_straight(0.02*r)
+            
+            if self.replan:
+                path_lst = self.find_route()
+                self.replan = False
+                self.navi(path_lst)
 
 
 # class and functions for A* algorithm      
@@ -774,6 +870,7 @@ def main():
     mz = [[False for j in range(150)] for i in range(150)]
     bot = robot(mz)
     bot.combine_map_reader()
+    bot.update_loc()
     bot.left_navi()
     while(not bot.is_clear):
         # find the path to next unknown area
