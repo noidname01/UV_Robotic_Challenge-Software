@@ -1,0 +1,30 @@
+<launch>
+    
+    <!-- run SLAM with RealsenseCamera D435i -->
+    <include file="$(find realsense2_camera)/launch/opensource_tracking.launch" />
+
+    <!-- run Web server -->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+	<arg name="port" value="8080" />
+    </include>
+
+    <!-- run CvBrigde to generate stream image -->
+    <node pkg="uv_robot_ros" type="ros_image_to_jpg.py" name="camera_stream_listener" respawn="true"/>
+
+    <!-- run rpi to Arduino Server -->
+    <!-- <node pkg="uv_robot_ros" type="rpiToArduino.py" name="rpi_to_arduino" respawn="true"/> -->
+    <!-- auto move do not need tpiToArduino -->
+
+    <!-- combined map  -->
+    <node pkg="uv_robot_ros" type="combined_map.py" name="UVbot_combine_map" respawn="true"/>
+
+    <!-- odom map -->
+    <node pkg="uv_robot_ros" type="odometry.py" name="UVbot_odometry" respawn="true"/>
+    
+    <!-- obstacle map -->
+    <node pkg="uv_robot_ros" type="obstacle.py" name="UVbot_obstacle" respawn="True" />
+
+    <!-- run main.py -->
+    <node pkg="uv_robot_ros" type="main.py" name="UVbot_main" respawn="true"/>
+
+</launch>

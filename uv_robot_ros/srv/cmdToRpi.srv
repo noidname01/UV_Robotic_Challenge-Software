@@ -1,0 +1,5 @@
+string cmdType
+string dist_or_deg
+---
+bool isComplete
+string errorMsg
