@@ -57,11 +57,11 @@ odom_map2 = cv2.line(odom_map2,(last_y, last_x), (gy, gx), 1)
 odom_map = odom_map1 + odom_map2
 ```
 
-Lastly, output the txt file including odom_map array,the coordinates of origin point, map size, and present coordinates for further manipulation using `np.savetxt()` and `file.write()`.
+Finally, output the txt file including odom_map array,the coordinates of origin point, map size, and present coordinates for further manipulation using `np.savetxt()` and `file.write()`.
 
 By the way, we have a `test()` function that can manually enter coordinates and output jpg image file using `cv2.imwrite()`, which is for testing only (image including more information would be generated in other programs).
 
 Below is the screenshot of the testing odom_path.txt and odom.jpg.
 
-![screenshot](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/odometry/screenshot.png)
+![screenshot](./odometry/screenshot.png)
 

@@ -1,15 +1,62 @@
-# UV_Robotic_Challenge-Software
+# UV Robotic Challenge - G.L.A.M.O.U.R.o.U.S
+2020 UV robot contest.with Micron  
+  
+**G.L.A.M.O.U.R.o.U.S**  
+<em>Germicidal Long-life Autonomous (using Melodic ROS) Overpowered UVC Robot of Unrivaled Supremacy</em>  
+  
+A UV disinfection robot based on ROS.
 
-## About Map
-Following is the method of getting a 2d map of the room.
-* Open 3 terminals, and run these commands.  
-`roscore`  
-`roslaunch realsense2_camera opensource_tracking.launch`  
-`rosrun pcl_ros pointcloud_to_pcd input:=/rtabmap/cloud_map`  
+## Table of contents
+- [UV Robotic Challenge - G.L.A.M.O.U.R.o.U.S](#uv-robotic-challenge---glamourous)
+  - [Table of contents](#table-of-contents)
+  - [Features](#features)
+  - [Environment](#environment)
+  - [System architecture](#system-architecture)
+  - [Usage](#usage)
+  - [Map construction](#map-construction)
+  - [Workflow](#workflow)
+  - [Vision](#vision)
+  - [Mapping](#mapping)
+  - [Navigation](#navigation)
+  - [Miscellaneous Action](#miscellaneous-action)
+  - [Data Flow](#data-flow)
+  - [ROS package relationship](#ros-package-relationship)
+  - [Dependencies](#dependencies)
+
+## Features
+- SLAM based on depth camera (Intel Realsense D435)
+- Collision avoidance
+- A* seach for path planning
+- Human detection
+- Remote control by web interface
+
+## Environment
+- Raspberry Pi 4B (4G RAM) with Raspberry Pi OS (Debian 10 buster)
+- ROS melodic
+- Arduino Mega 2560
+
+## System architecture
+![Hardware connection](./doc/hardware_conn.png)
+
+## Usage
+Setup environment
+```
+$ source ./catkin_ws/devel/setup.sh
+```
+
+## Map construction
+Build a 2D map of the room.
+
+* Run the following commands respectively.  
+```bash
+$ roscore
+$ roslaunch realsense2_camera opensource_tracking.launch`  
+$ rosrun pcl_ros pointcloud_to_pcd input:=/rtabmap/cloud_map  
+```
 * Hold the camera and turn it around slowly.
-* Lots of .pcd files will be saved. We only need the newest one.
-* Use pcd_python.py to make the 3d pointcloud file become 2d.
-* Use pcd_to_pgm.py to make the 2d pcd file become a pgm file. 
+* Lots of `.pcd` files will be saved. We only need the lastest one.
+* Use `pcd_python.py` to convert 3D pointcloud file to 2D.
+* Use `pcd_to_pgm.py` to convert the 2D `.pcd` file to `.pgm` file. 
 
 ## Workflow
 TODO:流程圖
@@ -27,3 +74,12 @@ TODO:流程圖
 ## Miscellaneous Action
 
 ## Data Flow
+
+## ROS package relationship
+| Autonomous mode                           | Remote-controlled mode                      |
+| ----------------------------------------- | ------------------------------------------- |
+| <img width=400 src="./doc/auto_mode.png"> | <img width=400 src="./doc/remote_mode.png"> |
+
+## Dependencies
+- [ROS melodic](http://wiki.ros.org/melodic)
+- [librealsense](https://github.com/IntelRealSense/librealsense)
