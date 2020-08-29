@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/srv/cmdToRpi.srv"
+services_str = "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/srv/cmdToRpi.srv"
 pkg_name = "uv_robot_ros"
 dependencies_str = "std_msgs"
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

@@ -26,11 +26,11 @@
   (:init
    (&key
     ((:cmdType __cmdType) "")
-    ((:dist_or_deg __dist_or_deg) 0.0)
+    ((:dist_or_deg __dist_or_deg) "")
     )
    (send-super :init)
    (setq _cmdType (string __cmdType))
-   (setq _dist_or_deg (float __dist_or_deg))
+   (setq _dist_or_deg (string __dist_or_deg))
    self)
   (:cmdType
    (&optional __cmdType)
@@ -43,8 +43,8 @@
    (+
     ;; string _cmdType
     4 (length _cmdType)
-    ;; float32 _dist_or_deg
-    4
+    ;; string _dist_or_deg
+    4 (length _dist_or_deg)
     ))
   (:serialize
    (&optional strm)
@@ -52,16 +52,16 @@
               (make-string-output-stream (send self :serialization-length)))))
      ;; string _cmdType
        (write-long (length _cmdType) s) (princ _cmdType s)
-     ;; float32 _dist_or_deg
-       (sys::poke _dist_or_deg (send s :buffer) (send s :count) :float) (incf (stream-count s) 4)
+     ;; string _dist_or_deg
+       (write-long (length _dist_or_deg) s) (princ _dist_or_deg s)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
    (buf &optional (ptr- 0))
    ;; string _cmdType
      (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _cmdType (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
-   ;; float32 _dist_or_deg
-     (setq _dist_or_deg (sys::peek buf ptr- :float)) (incf ptr- 4)
+   ;; string _dist_or_deg
+     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _dist_or_deg (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
    ;;
    self)
   )
@@ -118,7 +118,7 @@
   :super ros::object
   :slots ())
 
-(setf (get uv_robot_ros::cmdToRpi :md5sum-) "4b2b21c7747f71f43af6626178a5bf39")
+(setf (get uv_robot_ros::cmdToRpi :md5sum-) "ab56ca80f4b06b7d4d8f78fb733348e9")
 (setf (get uv_robot_ros::cmdToRpi :datatype-) "uv_robot_ros/cmdToRpi")
 (setf (get uv_robot_ros::cmdToRpi :request) uv_robot_ros::cmdToRpiRequest)
 (setf (get uv_robot_ros::cmdToRpi :response) uv_robot_ros::cmdToRpiResponse)
@@ -126,22 +126,22 @@
 (defmethod uv_robot_ros::cmdToRpiRequest
   (:response () (instance uv_robot_ros::cmdToRpiResponse :init)))
 
-(setf (get uv_robot_ros::cmdToRpiRequest :md5sum-) "4b2b21c7747f71f43af6626178a5bf39")
+(setf (get uv_robot_ros::cmdToRpiRequest :md5sum-) "ab56ca80f4b06b7d4d8f78fb733348e9")
 (setf (get uv_robot_ros::cmdToRpiRequest :datatype-) "uv_robot_ros/cmdToRpiRequest")
 (setf (get uv_robot_ros::cmdToRpiRequest :definition-)
       "string cmdType
-float32 dist_or_deg
+string dist_or_deg
 ---
 bool isComplete
 string errorMsg
 
 ")
 
-(setf (get uv_robot_ros::cmdToRpiResponse :md5sum-) "4b2b21c7747f71f43af6626178a5bf39")
+(setf (get uv_robot_ros::cmdToRpiResponse :md5sum-) "ab56ca80f4b06b7d4d8f78fb733348e9")
 (setf (get uv_robot_ros::cmdToRpiResponse :datatype-) "uv_robot_ros/cmdToRpiResponse")
 (setf (get uv_robot_ros::cmdToRpiResponse :definition-)
       "string cmdType
-float32 dist_or_deg
+string dist_or_deg
 ---
 bool isComplete
 string errorMsg
@@ -150,6 +150,6 @@ string errorMsg
 
 
 
-(provide :uv_robot_ros/cmdToRpi "4b2b21c7747f71f43af6626178a5bf39")
+(provide :uv_robot_ros/cmdToRpi "ab56ca80f4b06b7d4d8f78fb733348e9")
 
 

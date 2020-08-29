@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::uv_robot_ros::cmdToRpi > {
   static const char* value()
   {
-    return "4b2b21c7747f71f43af6626178a5bf39";
+    return "ab56ca80f4b06b7d4d8f78fb733348e9";
   }
 
   static const char* value(const ::uv_robot_ros::cmdToRpi&) { return value(); }

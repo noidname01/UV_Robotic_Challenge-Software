@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/uv_robot_ros_generate_messages_nodejs"
-  "/home/pi/UV_Robotic_Challenge-Software/catkin_ws/devel/share/gennodejs/ros/uv_robot_ros/srv/cmdToRpi.js"
+  "/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/share/gennodejs/ros/uv_robot_ros/srv/cmdToRpi.js"
 )
 
 # Per-language clean rules from dependency scanning.

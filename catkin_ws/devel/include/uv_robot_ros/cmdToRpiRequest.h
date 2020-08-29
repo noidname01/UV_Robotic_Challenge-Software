@@ -25,11 +25,11 @@ struct cmdToRpiRequest_
 
   cmdToRpiRequest_()
     : cmdType()
-    , dist_or_deg(0.0)  {
+    , dist_or_deg()  {
     }
   cmdToRpiRequest_(const ContainerAllocator& _alloc)
     : cmdType(_alloc)
-    , dist_or_deg(0.0)  {
+    , dist_or_deg(_alloc)  {
   (void)_alloc;
     }
 
@@ -38,7 +38,7 @@ struct cmdToRpiRequest_
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _cmdType_type;
   _cmdType_type cmdType;
 
-   typedef float _dist_or_deg_type;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _dist_or_deg_type;
   _dist_or_deg_type dist_or_deg;
 
 
@@ -128,12 +128,12 @@ struct MD5Sum< ::uv_robot_ros::cmdToRpiRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "5b12a6073d39992539a74c9b99e2cd41";
+    return "9f1394a6d86922d90d018be9bd88aab6";
   }
 
   static const char* value(const ::uv_robot_ros::cmdToRpiRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x5b12a6073d399925ULL;
-  static const uint64_t static_value2 = 0x39a74c9b99e2cd41ULL;
+  static const uint64_t static_value1 = 0x9f1394a6d86922d9ULL;
+  static const uint64_t static_value2 = 0x0d018be9bd88aab6ULL;
 };
 
 template<class ContainerAllocator>
@@ -153,7 +153,7 @@ struct Definition< ::uv_robot_ros::cmdToRpiRequest_<ContainerAllocator> >
   static const char* value()
   {
     return "string cmdType\n"
-"float32 dist_or_deg\n"
+"string dist_or_deg\n"
 ;
   }
 
@@ -195,7 +195,7 @@ struct Printer< ::uv_robot_ros::cmdToRpiRequest_<ContainerAllocator> >
     s << indent << "cmdType: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.cmdType);
     s << indent << "dist_or_deg: ";
-    Printer<float>::stream(s, indent + "  ", v.dist_or_deg);
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.dist_or_deg);
   }
 };
 
