@@ -60,7 +60,8 @@ After getting an array with proper size and coordinate system, we can fill in th
             if odometry[i][j] == 1 or odometry[i][j] == 2:
                 combine[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = odometry[i][j]
 ```
-At last, generate the text file and jpg file using `np.savetxt()`, `file.write()` and `cv2.imwrite()`.
+At last, generate the text file and jpg file using `np.savetxt()`, `file.write()` and `cv2.imwrite()`.  
+Below is an example of combime_map.jpg
 
 ![combine_map.jpg](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/map/combine_map.jpg)
 
