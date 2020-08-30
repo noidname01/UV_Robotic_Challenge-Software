@@ -1,33 +1,50 @@
-#!/usr/bin/env python
+#!usr/bin/env python
 import math
 import cv2
-import os
 import serial
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
 import yaml
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
-from time import sleep
 
 # Load parameters
-
-# with open(os.getcwd()+'/src/config/param.yaml','r') as F:
-#     params = yaml.load(F, Loader=yaml.FullLoader)
-#     size = params['robot']['size']        #(float,float,float): robot's size given the unit of length = 2cm
-#     r_detect = params['robot']['r_detect']        #(float):  threshold distance of checking obstacle (unit length: 2cm)
-#     angle = params['robot']['angle']         #(float): the angle range of obstacle detection
-#     point_split = params['robot']['point_split']    #(int): num of checkpoint for obstacle detecting
-#     height_check = params['robot']['height_check']      #(int): min height the robot can pass
-#     safe_dist = params['robot']['safe_dist']        #(int): min safe distance
-
+with open('config/params.yaml') as F:
+    params = yaml.load(F, Loader=yaml.FullLoader)
+    size = params['robot']['size']        #(float,float,float): robot's size given the unit of length = 2cm
+    r_detect = params['robot']['r_detect']        #(float):  threshold distance of checking obstacle (unit length: 2cm)
+    angle = params['robot']['angle']         #(float): the angle range of obstacle detection
+    point_split = params['robot']['point_split']    #(int): num of checkpoint for obstacle detecting
+    height_check = params['robot']['height_check']      #(int): min height the robot can pass
+    safe_dist = params['robot']['safe_dist']        #(int): min safe distance
 
 class robot:
-    def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=86., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
-        '''mz: the room model, 2D array
-            pos: (int, int), the initial coordinates of the robot (according to the map)
-            direc: float (in degree), the initial direction of the robot  (for left_navi system), left: degree++
-            a_direc: float (in degree), the initial direction of the robot (for A* system), left: degree++
-        '''
+    '''
+    description: 
+        The robot object that handles all behaviors about the robot, including finding path, checking the map and delivering commands to arduino.
+
+    args:
+        mz: 2D array, the room model marking the obstacles, odometry and the disinfected area.
+        pos: (int, int), the initial coordinates of the robot (according to the map).
+        direc: float (in degree), the initial direction of the robot  (for left_navi system), degree increase when the robot turn left.
+        a_direc: float (in degree), the initial direction of the robot (for A* system), degree increase when the robot turn left.
+        size: (float, float, float), the size of the robot.
+        r_detect: float, the distance the camera detection can reach.
+        angle: float, the horizontal view angle of the camera.
+        point_split: int, the number of the sample points when detecting if there are obstacles around the robot.
+        safe_dist: int, the safe distance between the robot and the obstacles.
+        vision_angle: dict, the three dimensions view angle of the camera. 
+                      None, default.
+        replan: bool, encounter tof obstacle and haven't replan
+
+    attribute:
+        mz, pos, direc, a_direc, size, r_detect, angle, point_split, safe_dist, vision_angle, replan
+        astar_mz: 2D array, the room model marking the obstacles.
+        safe_mz: 2D array, the room model marking the obstacles and the region around the obstacles.
+        r2_detect: float, the distance between the place the camera detection can reach and the center of the robot.
+        split_angle: float, the angle of each of the sample points when detecting if there are obstacles around the robot.
+    '''
+    def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=43., point_split=7, safe_dist=5, vision_angle=None, replan = False):
+        
         self.mz = mz  # comprised of 0, 1, 2, 3, 4
         self.astar_mz = mz  # comprised of 0 and 1
         self.safe_mz = mz   # consider safety distance (obstacle thicken)
@@ -39,101 +56,172 @@ class robot:
         self.r2_detect = (self.r_detect+self.size[0]/2)/2
         self.angle=angle
         self.point_split=point_split
-        self.height_check=height_check
         self.split_angle = self.angle/((self.point_split-1)//2)
         self.safe_dist = safe_dist
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}       #type:dict
-        # assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
+        assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
+        self.replan = replan
         # open and set Serial
         self.ser=serial.Serial("/dev/ttyUSB0",9600,timeout=None)
-        # self.ser.open()
+        self.ser.open()
+
+# serial command
+    def SerialWrite(self,output):
+        send = str(output).encode("utf-8")
+        self.ser.write(send)
+    
+    def SerialReadLine(self):
+        if self.ser.inWaiting():
+            rv = self.ser.readline().decode("utf-8") 
+            return rv
+        return ""
+
+# emergency check
+    def map_correct(self, x, y, direc, obs):
+        """
+        description:
+            receive obstacle error from tof, generate a txt file to pass the information to obstacle.py.
+        input:
+            x, y: (int, int) coordinate of robot when encountering tof obstacle
+            direc: (float) a_direc of robot when encountering tof obstacle
+            obs:  (int) 0, 1 or 2. (0: only left, 1: only right, 2: both)
+        output:
+            None
+        """
+        pt_list = []
+        theta = direc*math.pi/180
+        if obs == 0: # left only
+            lf = (x + round((7.3+9.75*(3**0.5))*math.cos(theta)+2.5*math.sin(theta - math.pi/6)) ,\
+                  y + round((7.3+9.75*(3**0.5))*math.sin(theta)-2.5*math.cos(theta - math.pi/6)))
+            lb = (x + round((7.3-9.75*(3**0.5))*math.cos(theta) - 19.5*math.sin(theta)+2.5*math.sin(theta - math.pi/6)) ,\
+                  y + round((7.3-9.75*(3**0.5))*math.sin(theta) + 19.5*math.cos(theta)-2.5*math.cos(theta - math.pi/6)))
+            pt_list.append(lf)
+            pt_list.append(lb)
+        elif obs == 1: # right only
+            rf = (x + round((7.3+9.75*(3**0.5))*math.cos(theta)-2.5*math.cos(theta - math.pi/3)), \
+                  y + round((7.3+9.75*(3**0.5))*math.sin(theta)+2.5*math.cos(theta - math.pi/3)))
+            rb = (x + round((7.3-9.75*(3**0.5))*math.cos(theta) + 19.5*math.sin(theta)-2.5*math.cos(theta - math.pi/3)), \
+                  y + round((7.3-9.75*(3**0.5))*math.sin(theta) - 19.5*math.cos(theta)+2.5*math.cos(theta - math.pi/3)))
+            pt_list.append(rf)
+            pt_list.append(rb)
+        elif obs == 2:
+            tof_l = (x + round(7.3*math.cos(theta)-9.75*math.sin(theta)), \
+                     y + round(7.3*math.sin(theta)+9.75*math.cos(theta)) )
+            tof_r = (x + round(7.3*math.cos(theta)+9.75*math.sin(theta)), \
+                     y + round(7.3*math.sin(theta)-9.75*math.cos(theta)) )
+            pt_list.append(tof_l)
+            pt_list.append(tof_r)
+        with open('tof.txt', 'w') as f:
+            f.write('\n'.join('%s %s' % x for x in pt_list))
+
+    def emergency_check(self):
+        """
+        description:
+            generally check if receives emergency msg (el, er, human)
+        input:
+            None
+        output:
+            msg: (str) if no emergency, return self.SerialReadLine()
+            None: if encounter human and then human left
+            True: if receive "tof error" ('el' or 'er') MUST PLAN AGAIN !
+        """
+        msg = self.SerialReadLine()
+        obs = None # obstacle position. (0: only left, 1: only right, 2: both)
+        if msg not in ['human', 'el', 'er']:
+            return msg
+
+        if msg == 'human':
+            sleep(0.2)
+            while not self.SerialReadLine() == 'resume':
+                pass
+            return None
+
+        elif msg == 'el':
+            obs = 0
+        elif msg == 'er':
+            obs = 1
+        # position stamp
+        pos_x, pos_y = self.pos
+        direc = self.a_direc
+        # wait for safety
+        while not self.SerialReadLine() == 'c':
+            if self.SerialReadLine() == 'er':
+                obs = 2
+        self.map_correct()
+        return True
 
 # basic motion command
-    def go_straight(self, dist = 10):
+    def go_straight(self, dist = 0.1):
         '''
+        description: 
+            To command the robot to go straight.
         input:
-            dist: float (in centimeter), the distance you want the robot to move forward, it will keep move continuously in default
+            dist: float (in meter), the distance you want the robot to move forward, it will keep move continuously in default
         output:
             None
         '''
-        data = ('f '+str(dist)+'\n').encode()
-        self.ser.write(data)
-        sleep(0.1)
-        self.ser.read_until(b'c\n')
+        self.emergency_check() # check human
+        self.SerialWrite('f ')
+        self.SerialWrite(dist)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
 
     def turn_left(self, deg = 90):
         '''
+        description:
+            To command the robot to turn left.
         input:
             deg: float (in degree), the angle you want the robot to turn left, default = 90 degree
         output:
             None
         '''
-        data = ('l '+str(deg)+'\n').encode()
-        self.ser.write(data)
-        sleep(0.1)
-        self.ser.read_until(b'c\n')
+        self.emergency_check() # check human
+        self.SerialWrite('l ')
+        self.SerialWrite(deg)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
         self.direc += deg
         self.a_direc += deg
-
+        
     def turn_right(self, deg = 90):
         '''
+        description: 
+            To command the robot to turn right.
         input:
             deg: float (in degree), the angle you want the robot to turn right, default = 90 degree
         output:
             None
         '''
-        data = ('r '+str(deg)+'\n').encode()
-        self.ser.write(data)
-        sleep(0.1)
-        self.ser.read_until(b'c\n')
+        self.emergency_check() # check human
+        self.SerialWrite('r ')
+        self.SerialWrite(dist)
+        self.SerialWrite('\n')
+        while not self.emergency_check() == 'c':
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
         self.direc -= deg
         self.a_direc -= deg
-
-    def infinite_turn(self, direction):
-        '''
-        description:
-             infinitely rotate (left or right), remember to halt !!!!
-        input:
-            direction: string "left" or "right"
-        output:
-            None
-        '''
-        assert direction in ['left','right'], 'direction(type:str) should be left or right'
-        if direction == 'right':
-            data = ('r '+str(0)+'\n').encode()
-            self.ser.write(data)
-            sleep(0.1)
-
-        elif direction == 'left':
-            data = ('l '+str(0)+'\n').encode()
-            self.ser.write(data)
-            sleep(0.1)
-
-    def halt(self, direc = 0):
-        '''
-        description:    HALT.
-        input: 
-                direc: 0, 1 or -1. 
-                (0: forward before halt.    1: turning left before halt.    -1: turning right before halt)
-        output:
-                None
-        '''
-        data = ('h '+'\n').encode()
-        self.ser.write(data)
-        sleep(0.1)
-        while self.ser.in_waiting > 0:
-            msg = self.ser.read().decode('utf-8').rstrip
-            if msg == 'c':
-                angle = 0
-            else:
-                angle = int(msg)
-        self.direc += angle*direc
-        self.a_direc += angle*direc
 
 # checking functions for left_navi
     def crush_check(self):
         '''
-        description:
+        description: 
             crush_check is to used to check if the robot is about to crush on something.
             According to the map and some calculation, return True if there are obstacle too nearby (safety distance)
         input:
@@ -183,20 +271,68 @@ class robot:
             ( self.pos.x - ( robot-width / 2 + robot-safe-dist ) , self.pos.y + ( robot-width / 2 + robot-safe-dist ) * tan(90 - robot-vision-angle / 2) ) 
             in cartesian coordinate system
         input:
-                None
+            None
         output:
-                bool, True if robot could turn left  (the specific point is empty)
+            bool, True if robot could turn left  (the specific point is empty)
         '''
         x,y = self.specific_point_coord('left')
         return not self.mz[x][y]
-            
+
+        
+    def infinite_turn(self, direction):
+        '''
+        description: 
+            Infinitely rotate (left or right), remember to halt !!!!
+        input:
+            direction: string "left" or "right"
+        output:
+            None
+        '''
+        assert direction in ['left','right'], 'direction(type:str) should be left or right'
+        if direction == 'right':
+            self.SerialWrite('r 0\n')
+        elif direction == 'left':
+            self.SerialWrite('l 0\n')
+
+    def halt(self, direc = 0):
+        '''
+        description: 
+            HALT the robot.
+        input: 
+            direc: 0, 1 or -1. 
+            (0: forward before halt.    1: turning left before halt.    -1: turning right before halt)
+        output:
+            None
+        '''
+        self.SerialWrite('h\n')
+        sleep(0.1)
+
+            if self.emergency_check() == True: # encounter tof obstacle
+                self.replan = True
+                sleep(0.25)
+                self.combine_map_reader()
+                self.update_loc()
+                return None
+
+        while not self.ser.inWaiting():
+            pass
+        msg = self.emergency_check()
+        if msg == 'c':
+            angle = 0
+        elif: msg == ''
+        else:
+            angle = int(msg)
+        self.direc += angle*direc
+        self.a_direc += angle*direc
+
+
     def turn_to_find_path(self, direction):
         '''
         description:
             turn_to_find_path is to turn left or right to find the ""specific point"" of camera frame
             when it found this point becoming empty, it will return true, which means that it can "" go forward ""
         input:
-            direction: left or right, which will be applied to different check.
+            direction: String, 'left' or 'right', which will be applied to different check.
         output:
             None        
         '''
@@ -208,7 +344,6 @@ class robot:
             while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('right')
             self.halt(-1)
-            return True
         elif direction == 'left':
             sp = self.specific_point_coord('left')
             if self.mz[sp[0]][sp[1]]:
@@ -216,7 +351,7 @@ class robot:
             while  self.mz[sp[0]][sp[1]]:
                 sp = self.specific_point_coord('left')
             self.halt(1)
-            return True
+        return True
 
 # specific value         
     def specific_point_coord(self, direction):
@@ -224,7 +359,7 @@ class robot:
         description:
             it will return a tuple that indicate the coordintate of specific point
         input:
-            direction: str, 'left' or 'right'
+            direction: string, 'left' or 'right'
         output:
             coord: tuple (int, int), (x,y) of the specific point
         '''
@@ -238,6 +373,8 @@ class robot:
 
     def get_specific_distance(self):
         '''
+        description: 
+            To get the distance that the robot have to move forward before turning.
         input:
             None
         output:
@@ -248,7 +385,12 @@ class robot:
 # update function
     def update_loc(self):
         """
-        description: update the present coordinate on the map.        
+        description: 
+            Update the present coordinate on the map. Update self.pos.
+        input: 
+            None
+        output: 
+            None
         """
         with open('combine_map.txt', 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
@@ -256,9 +398,14 @@ class robot:
 
     def combine_map_reader(self):
         '''
-        read combine_map.txt, modify self.mz
-        self.mz: 0 for road, 1 for disinfected region, 2 for path, 3 for wall, 4 for road around wall
-        self.astar_mz: 0 for wall, 1 for road
+        description: 
+            Read combine_map.txt and update self.mz.
+            self.mz: 0 for road, 1 for disinfected region, 2 for path, 3 for wall, 4 for road around wall. 
+            self.astar_mz: 0 for wall, 1 for road. 
+        input:
+            None
+        output:
+            None
         '''
         with open('combine_map.txt', 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
@@ -295,11 +442,11 @@ class robot:
     def is_trapped(self):
         """
         description:    
-                determine whether the robot is trapped (when left_navi)
+            To determine whether the robot is trapped (when doing left_navi())
         input:
-                None
+            None
         output:
-                bool, True if trapped.
+            bool, True if trapped.
         """
         for i in range(self.pos[0]-1, self.pos[0]+2):
             for j in range(self.pos[1]-1, self.pos[1]+2):
@@ -313,11 +460,11 @@ class robot:
     def is_clear(self):
         """
         description:
-                check if the robot has cleaned all the room
+            Check if the robot has cleaned all the room
         input:
-                None
+            None
         output:
-                bool, True if clear
+            Bool, true if all the room is clear.
         """
         for i in range(len(self.mz)):
             for j in range(len(self.mz[0])):
@@ -327,12 +474,21 @@ class robot:
 
 # navigation 
     def left_navi(self):
+        """
+        description:
+            This method includes the algorithm to lead the robot move beside the obstacles, and keep the robot being right to the obstacles. If there is any area beside the robot hasn't been disinfected, the robot will keep disinfecting. Otherwise, the robot will stop and the end the method.
+        input:
+            None
+        output:  
+            None
+        """
         while(not self.is_trapped()): # need to fix to follow the map
             # update self.mz, self.astar_maze and self.loc
             self.combine_map_reader()
             self.update_loc()
             # step1. go straight until the following check return true
             self.go_straight()
+            self.replan = False
 
             # check1. check if going to crush
             if self.crush_check():
@@ -382,11 +538,13 @@ class robot:
 
     def find_unknown_area(self):
         '''
+        description:
+            Find if there is any area that hasn't been disinfected by the robot. If there is, select one the point that hasn't been disinfected and is the nearest to the robot, and return the coordinate of it.
         input:
-                None
+            None
         output:
-                (int,int),      the coor of the nearest point located in the unknown area
-                'all done!',  if the whole room is checked
+            Tuple (int,int), the coordinate of the nearest point located in the undisinfected area. (If there is area that hasn't been disinfected.)
+            String, 'all done!', if the whole room is checked to be disinfected.
         '''
         for d in range(1,self.rangex+self.rangey-1):   #d: distance(L1 norm) from robot
             for x in range(-d-1,d+1):              #x+y=d
@@ -400,11 +558,11 @@ class robot:
     def find_route(self):
         """
         description:
-                find the next unknown area, then use A* algorithm to get the optimal path.
+            Find the next unknown area, then use A* algorithm to get the optimal path.
         input:
-                None
+            None
         output:
-                path_lst:  (list) list of tuples, the optimal path solution
+            path_lst: (list) list of tuples, the optimal path solution
         """
         goal = self.find_unknown_area()
         self.update_loc()
@@ -420,7 +578,14 @@ class robot:
         return path_lst
 
     def navi(self, path):
-        """ Give instruction to robot to go along path """
+        """
+        description: 
+            Give instruction to robot to go along the path.
+        input: 
+            path: an array, each element is a coordinate of the point that on the path from the location of the robot now to the destination.
+        output:
+            None
+        """
         for i in range(1,len(path)):
             direc = self.a_direc %360
             r, theta = cv2.cartToPolar(path[i][0] - path[i-1][0], path[i][1] - path[i-1][1] , angleInDegrees=True)
@@ -437,10 +602,30 @@ class robot:
             elif -360 < d < -180:
                 self.turn_left(360 - d)
             self.go_straight(0.02*r)
+            
+            if self.replan:
+                path_lst = self.find_route()
+                self.replan = False
+                self.navi(path_lst)
 
 
 # class and functions for A* algorithm      
 class point:
+    '''
+    description:
+        The type of the points on the map when doing the A* algorithm.
+    
+    arg:
+        x: int, the x_coordinate of the point.
+        y: int, the y_coordinate of the point.
+        name: string, the name of the point.
+    
+    attribute:
+        x, y, name, 
+        weight: int, the weight of the point decided by the map.
+        path_weight: int, the weight of the point decided by the distance to the origin.
+        part_path: list, each element is a point on a distinct path.
+    '''
     def __init__(self,x = 0,y = 0, name = "path"):
         self.x = x
         self.y = y
@@ -478,6 +663,17 @@ class point:
         return self.part_path
 
 class maze:
+    '''
+    description:
+        The room model used in A* algorithm.
+        
+    arg:
+        maze_list: list, 2D array representing the map, each of the element is an integer.
+        
+    attribute: 
+        maze_list,  
+        maze: list, 2D array, each of the element is a point object.
+    '''
     def __init__(self,maze_list):
         self.maze = []
         self.maze_list = maze_list
@@ -495,6 +691,19 @@ class maze:
             self.maze.append(newlist)
 
 def search_neighbor(weight_maze, current_x, current_y):
+    '''
+    description:
+        The function that use in search neighboring area, 
+        
+    input:
+        weight_maze: list, 2D array that points in map are all have been calculated its own weight
+        current_x: int, current x coordinate
+        current_y: int, current y coordinate
+        
+    output: 
+        isFindG: bool, true if find G
+        next_candidate, list, points that would be added to search queue
+    '''
     try:
         if (current_y - 1) >= 0: 
             top_neighbor = weight_maze[current_y - 1][current_x]
@@ -567,6 +776,10 @@ def search_neighbor(weight_maze, current_x, current_y):
 
 def astar(maze,start,goal):
     """
+    description: 
+        A* (pronounced "A-star") is a graph traversal and path search algorithm, 
+        which is often used in many fields of computer science due to its completeness, 
+        optimality, and optimal efficiency.
     input:
         start:
             type:           point
@@ -576,7 +789,7 @@ def astar(maze,start,goal):
             description:    end point of astar
 
     output:
-        the list of points that the shortest path will go through
+        The list of points that the shortest path will go through.
     """
     #=============== params ===========#
     start_x = start.x
@@ -644,13 +857,13 @@ def astar(maze,start,goal):
     return path
 
 def reduce_path(lst):
-    """ Delete redundant points through the straight line, 
-            only remains endpoints of the segment.
-
-            input:
-                    lst: (list of point) list of points
-            output:
-                    new_lst: (list of point) modified point list.
+    """ 
+    description: 
+        Delete redundant points through the straight line; only remains endpoints of the segment.
+    input:
+        lst: (list of point) list of points
+    output:
+        new_lst: (list of point) modified point list.
     """
     new_lst = [lst[0]]
     for i in range(1, len(lst)-1):
@@ -665,28 +878,37 @@ def print_point_list(l):
 
 # main
 def main():
+    '''
+    description: 
+        The main function of the robot. Contains stage1 (left_navi) and stage2 (A* algorithm and left_navi).
+    input:
+        None
+    output:
+        None
+    '''
     mz = [[False for j in range(150)] for i in range(150)]
     bot = robot(mz)
-    while True:
-        bot.go_straight(15)
-    # bot.combine_map_reader()
-    # bot.left_navi()
-    # while(not bot.is_clear):
-    #     # find the path to next unknown area
-    #     path_lst = bot.find_route()
-    #     bot.navi(path_lst)      
-    #     bot.left_navi()
+    bot.combine_map_reader()
+    bot.update_loc()
+    bot.left_navi()
+    while(not bot.is_clear):
+        # find the path to next unknown area
+        path_lst = bot.find_route()
+        bot.navi(path_lst)      
+        bot.left_navi()
 
-# def main_node():
-#     """ Create ' UVbot_main ' node and start sterilize the entire room automatically. """
-#     rospy.init_node('UVbot_main', anonymous=True)
-#     while not rospy.is_shutdown():
-#         main()
+def main_node():
+    """
+    description: 
+        Create 'UVbot_main' node and start sterilize the entire room automatically. 
+    input: 
+        None
+    output: 
+        None
+    """
+    rospy.init_node('UVbot_main', anonymous=True)
+    while not rospy.is_shutdown():
+        main()
 
-# if __name__ == "__main__":
-#     main_node()
-
-rospy.init_node('UVbot_main', anonymous=True)
-while not rospy.is_shutdown():
-    main()
-rospy.spin()
+if __name__ == "__main__":
+    main_node()
