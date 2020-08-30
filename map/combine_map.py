@@ -27,6 +27,7 @@ def combine_map():
     output:
         None
     '''
+# read obstacle
     with open('obstacle_smooth_fill.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
     obstacle_range_x = int(lines[-1].split()[0])
@@ -38,6 +39,7 @@ def combine_map():
         for j in range(obstacle_range_y):
             obstacle[i].append(int(lines[i][j]))
 
+# read odometry
     with open('odometry_path.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
     odometry_range_x = int(lines[-2].split()[0])
@@ -51,75 +53,64 @@ def combine_map():
         for j in range(odometry_range_y):
             odometry[i].append(int(lines[i][j]))
 
+# determine size and coordinate system
     combine_range_x = max(obstacle_origin_x, odometry_origin_x) + max(obstacle_range_x-obstacle_origin_x, odometry_range_x-odometry_origin_x)
     combine_range_y = max(obstacle_origin_y, odometry_origin_y) + max(obstacle_range_y-obstacle_origin_y, odometry_range_y-odometry_origin_y)
     combine_origin_x = max(obstacle_origin_x, odometry_origin_x)
     combine_origin_y = max(obstacle_origin_y, odometry_origin_y)
-    combine = [[] for i in range(combine_range_x)]
-    for i in range(combine_range_x):
-        for j in range(combine_range_y):
-            combine[i].append(0)
-    '''
-    print('obs_r_x:', obstacle_range_x)
-    print('obs_r_y:', obstacle_range_y)
-    print('obs_o_x:', obstacle_origin_x)
-    print('obs_o_y:', obstacle_origin_y)
-    print('odom_r_x:', odometry_range_x)
-    print('odom_r_y:', odometry_range_y)
-    print('odom_o_x:', odometry_origin_x)
-    print('odom_o_y:', odometry_origin_y)
-    print('com_r_x:', combine_range_x)
-    print('com_r_y:', combine_range_y)
-    print('com_o_x:', combine_origin_x)
-    print('com_o_y:', combine_origin_y)
-    '''
-
-    for i in range(obstacle_range_x):
-        for j in range(obstacle_range_y):
-            if obstacle[i][j] == 3:
-                combine[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = 3
+    
+# for txt file
+    combine_to_txt = np.zeros((combine_range_x, combine_range_y), dtype = np.uint8)
     for i in range(odometry_range_x):
         for j in range(odometry_range_y):
             if odometry[i][j] == 1 or odometry[i][j] == 2:
-                combine[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = odometry[i][j]
-
+                combine_to_txt[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = odometry[i][j]
+    for i in range(obstacle_range_x):
+        for j in range(obstacle_range_y):
+            if obstacle[i][j] == 3:
+                combine_to_txt[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = 3
+    np.savetxt('combine_map.txt', combine_to_txt, fmt = '%d', delimiter="")
     with open('combine_map.txt', 'w') as f:
-        for i in range(combine_range_x):
-            for j in range(combine_range_y):
-                f.write(str(combine[i][j]))
-            f.write('\n')
         f.write(str(combine_origin_x)+' '+str(combine_origin_y)+'\n')
         f.write(str(combine_range_x)+' '+str(combine_range_y)+'\n')
         f.write(str(now_loc_x)+' '+str(now_loc_y))
     
-    map_to_jpg()
+# for jpg file
+    combine_to_jpg = np.zeros((combine_range_x, combine_range_y), dtype = np.uint8)
+    for i in range(obstacle_range_x):
+        for j in range(obstacle_range_y):
+            if obstacle[i][j] == 3:
+                combine_to_jpg[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = 3
+    for i in range(odometry_range_x):
+        for j in range(odometry_range_y):
+            if odometry[i][j] == 1 or odometry[i][j] == 2:
+                combine_to_jpg[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = odometry[i][j]
+    map_to_jpg(combine_to_jpg)
 
-def map_to_jpg():
+def map_to_jpg(arr):
     '''
     This function is to write a .jpg file. 
     Use black ([0, 0, 0]) to represent walls; 
     white ([255, 255, 255]) to represent region that haven't been disinfected; 
     yellow ([0, 255, 255)] to represent path; 
     purple ([255, 0, 0]) to represent the region that have been disinfected.
+
+    input:arr (np.array), the map array
     '''
-    with open('combine_map.txt', 'r') as f:
-        lines = [line.strip() for line in f.readlines()]
-    range_x = int(lines[-2].split()[0])
-    range_y = int(lines[-2].split()[1])
-    combine_map = [[] for i in range(range_x)]
+    range_x, range_y = len(arr), len(arr[0])
+    combine_jpg = np.zeros((range_x, range_y, 3),dtype = np.uint8)
     for i in range(range_x):
         for j in range(range_y):
-            if int(lines[i][j]) == 0:
-                combine_map[i].append([255, 255, 255])
-            elif int(lines[i][j]) == 1:
-                combine_map[i].append([255, 0, 0])
-            elif int(lines[i][j]) == 2:
-                combine_map[i].append([0, 255, 255])
-            elif int(lines[i][j]) == 3:
-                combine_map[i].append([0, 0, 0])
-
-    combine_jpg = np.array(combine_map)
+            if arr[i][j] == 0:
+                combine_jpg[i][j] = [255, 255, 255]
+            elif arr[i][j] == 1:
+                combine_jpg[i][j] = [255, 0, 0]
+            elif arr[i][j] == 2:
+                combine_jpg[i][j] = [0, 255, 255]
+            elif arr[i][j] == 3:
+                pass # [0, 0, 0]
     cv2.imwrite('combine_map.jpg', combine_jpg)   
+
 
 if __name__ == '__main__':
     while True:
@@ -127,3 +118,4 @@ if __name__ == '__main__':
             combine_map_node()
         except:
             pass
+
