@@ -6,7 +6,7 @@
 
 	<!-- <node pkg="uv_robot_ros" type="ros_image_to_jpg" name="camera_stream_listener" respawn="true" /> -->
 	<node pkg="uv_robot_ros" type="rpiToArduino.py" name="rpi_to_arduino" respawn="true" />
-	<!-- <node pkg="uv_robot_ros" type="combined_map.py" name="UVbot_combine_map" respawn="true" /> -->
+	<!-- <node pkg="uv_robot_ros" type="combine_map.py" name="UVbot_combine_map" respawn="true" /> -->
 	<!-- <node pkg="uv_robot_ros" type="odometry.py" name="UVbot_odometry" respawn="true"/> -->
 	<!-- <node pkg="uv_robot_ros" type="obstacle.py" name="UVbot_obstacle" respawn="true" /> -->
 	

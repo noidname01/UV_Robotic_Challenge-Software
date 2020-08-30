@@ -57,7 +57,8 @@ button:focus{
 
 }
 #uvcbot{
-    /* background-image: linear-gradient(150deg, #A0FFFB, #FFFFFF 80%); */
+    background-image: url(./image/YZ.png);
+    background-size: 110vw 100vh;
 }
 
 

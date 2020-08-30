@@ -11,7 +11,7 @@ import lightoff from "./image/lightoff.png";
 
 import camera_stream from "./image/XD_Color.png";
 import combined_map from "./image/combine_map.jpg";
-import Axios from "axios";
+// import Axios from "axios";
 
 let ROSLIB = require("roslib");
 
@@ -193,14 +193,14 @@ const Control = (props) => {
     }
   };
 
-  const updateImg = () => {
-    Axios.post("http://192.168.0.203/backend/updateImg.php",{}).then(
-      (data) => {
-        /* setCombinedMap(data.data.combined_img_path)
-        setCameraStream(data.data.camera_stream_img_path) */
-      }
-    )
-  }
+  // const updateImg = () => {
+  //   Axios.post("http://192.168.0.203/backend/updateImg.php",{}).then(
+  //     (data) => {
+  //       /* setCombinedMap(data.data.combined_img_path)
+  //       setCameraStream(data.data.camera_stream_img_path) */
+  //     }
+  //   )
+  // }
 
   // setInterval(()=>{
   //   updateImg()

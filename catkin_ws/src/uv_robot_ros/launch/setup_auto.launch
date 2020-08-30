@@ -20,7 +20,7 @@
     <!-- auto move do not need tpiToArduino -->
 
     <!-- combined map  -->
-    <node pkg="uv_robot_ros" type="combined_map.py" name="UVbot_combine_map" respawn="true" cwd="node"/>
+    <node pkg="uv_robot_ros" type="combine_map.py" name="UVbot_combine_map" respawn="true" cwd="node"/>
 
     <!-- odom map -->
     <node pkg="uv_robot_ros" type="odometry.py" name="UVbot_odometry" respawn="true" cwd="node"/>
