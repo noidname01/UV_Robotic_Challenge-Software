@@ -9,7 +9,8 @@ import lighton from "./image/lighton.png";
 import lightoff from "./image/lightoff.png";
 // import battery from "./image/battery.png";
 
-import camera_stream from "./image/camera_stream.jpg";
+import camera_stream from "./image/XD_Color.png";
+import combined_map from "./image/combine_map.jpg";
 import Axios from "axios";
 
 let ROSLIB = require("roslib");
@@ -195,15 +196,15 @@ const Control = (props) => {
   const updateImg = () => {
     Axios.post("http://192.168.0.203/backend/updateImg.php",{}).then(
       (data) => {
-        setCombinedMap(data.data.combined_img_path)
-        setCameraStream(data.data.camera_stream_img_path)
+        /* setCombinedMap(data.data.combined_img_path)
+        setCameraStream(data.data.camera_stream_img_path) */
       }
     )
   }
 
-  setInterval(()=>{
-    updateImg()
-  },1000)
+  // setInterval(()=>{
+  //   updateImg()
+  // },1000)
 
   return (
     <div id="uvcbot" className="row">
@@ -214,13 +215,13 @@ const Control = (props) => {
         <div className="d-flex flex-column justify-content-center col-12 mx-auto">
           {/* <canvas id="combined-map" className="mx-auto"></canvas> */}
           <div id="combined-map" className="mx-auto">
-            {combinedMap}
+            <img className="img-fluid" src={combined_map} alt="combine_map"/>
           </div>
           <div id="camera-stream" className="mx-auto">
             {/* for Realsense Camera D435 */}
             <img
               className="img-fluid"
-              src={cameraStream}
+              src={camera_stream}
               alt="camera_stream"
             />
           </div>

@@ -73,7 +73,7 @@ def combine_map():
             if obstacle[i][j] == 3:
                 combine_to_txt[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = 3
     np.savetxt('combine_map.txt', combine_to_txt, fmt = '%d', delimiter="")
-    with open('combine_map.txt', 'w') as f:
+    with open('combine_map.txt', 'a') as f:
         f.write(str(combine_origin_x)+' '+str(combine_origin_y)+'\n')
         f.write(str(combine_range_x)+' '+str(combine_range_y)+'\n')
         f.write(str(now_loc_x)+' '+str(now_loc_y))

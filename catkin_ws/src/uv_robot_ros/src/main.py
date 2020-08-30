@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import math
 import cv2
+import os
 import serial
 from utils.loc import get_location, get_absolute_location, degree_to_arc, polar_to_cartesian
 import yaml
@@ -9,16 +10,16 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 from time import sleep
 
 # Load parameters
-"""
-with open('/home/pi/UV_Robotic_Challenge-Software/catkin_ws/src/uv_robot_ros/src/config/param.yaml','r') as F:
-    params = yaml.load(F, Loader=yaml.FullLoader)
-    size = params['robot']['size']        #(float,float,float): robot's size given the unit of length = 2cm
-    r_detect = params['robot']['r_detect']        #(float):  threshold distance of checking obstacle (unit length: 2cm)
-    angle = params['robot']['angle']         #(float): the angle range of obstacle detection
-    point_split = params['robot']['point_split']    #(int): num of checkpoint for obstacle detecting
-    height_check = params['robot']['height_check']      #(int): min height the robot can pass
-    safe_dist = params['robot']['safe_dist']        #(int): min safe distance
-"""
+
+# with open(os.getcwd()+'/src/config/param.yaml','r') as F:
+#     params = yaml.load(F, Loader=yaml.FullLoader)
+#     size = params['robot']['size']        #(float,float,float): robot's size given the unit of length = 2cm
+#     r_detect = params['robot']['r_detect']        #(float):  threshold distance of checking obstacle (unit length: 2cm)
+#     angle = params['robot']['angle']         #(float): the angle range of obstacle detection
+#     point_split = params['robot']['point_split']    #(int): num of checkpoint for obstacle detecting
+#     height_check = params['robot']['height_check']      #(int): min height the robot can pass
+#     safe_dist = params['robot']['safe_dist']        #(int): min safe distance
+
 
 class robot:
     def __init__(self, mz, pos=(0, 0), direc=-90, a_direc = 0, size=[20.,20.,80.], r_detect=20., angle=86., point_split=7, height_check=90, safe_dist=5, vision_angle=None):
@@ -44,22 +45,21 @@ class robot:
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}       #type:dict
         # assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
         # open and set Serial
-        self.ser=serial.Serial("/dev/tty54",9600,timeout=None)
-        #self.ser.open()
+        self.ser=serial.Serial("/dev/ttyUSB0",9600,timeout=None)
+        # self.ser.open()
 
 # basic motion command
-    def go_straight(self, dist = 0.1):
+    def go_straight(self, dist = 10):
         '''
         input:
-            dist: float (in meter), the distance you want the robot to move forward, it will keep move continuously in default
+            dist: float (in centimeter), the distance you want the robot to move forward, it will keep move continuously in default
         output:
             None
         '''
-        self.ser.write('f ')
-        self.ser.write(dist)
-        self.ser.write('\n')
+        data = ('f '+str(dist)+'\n').encode()
+        self.ser.write(data)
         sleep(0.1)
-        self.ser.read_until('c')
+        self.ser.read_until(b'c\n')
 
     def turn_left(self, deg = 90):
         '''
@@ -68,11 +68,10 @@ class robot:
         output:
             None
         '''
-        self.ser.write('l ')
-        self.ser.write(deg)
-        self.ser.write('\n')
+        data = ('l '+str(deg)+'\n').encode()
+        self.ser.write(data)
         sleep(0.1)
-        self.ser.read_until('c')
+        self.ser.read_until(b'c\n')
         self.direc += deg
         self.a_direc += deg
 
@@ -83,11 +82,10 @@ class robot:
         output:
             None
         '''
-        self.ser.write('r ')
-        self.ser.write(deg)
-        self.ser.write('\n')
+        data = ('r '+str(deg)+'\n').encode()
+        self.ser.write(data)
         sleep(0.1)
-        self.ser.read_until('c')
+        self.ser.read_until(b'c\n')
         self.direc -= deg
         self.a_direc -= deg
 
@@ -102,14 +100,14 @@ class robot:
         '''
         assert direction in ['left','right'], 'direction(type:str) should be left or right'
         if direction == 'right':
-            self.ser.write('r ')
-            self.ser.write(0)
-            self.ser.write('\n')
+            data = ('r '+str(0)+'\n').encode()
+            self.ser.write(data)
+            sleep(0.1)
 
         elif direction == 'left':
-            self.ser.write('l ')
-            self.ser.write(0)
-            self.ser.write('\n')
+            data = ('l '+str(0)+'\n').encode()
+            self.ser.write(data)
+            sleep(0.1)
 
     def halt(self, direc = 0):
         '''
@@ -120,8 +118,8 @@ class robot:
         output:
                 None
         '''
-        self.ser.write('h')
-        self.ser.write('\n')
+        data = ('h '+'\n').encode()
+        self.ser.write(data)
         sleep(0.1)
         while self.ser.in_waiting > 0:
             msg = self.ser.read().decode('utf-8').rstrip
@@ -669,13 +667,15 @@ def print_point_list(l):
 def main():
     mz = [[False for j in range(150)] for i in range(150)]
     bot = robot(mz)
-    bot.combine_map_reader()
-    bot.left_navi()
-    while(not bot.is_clear):
-        # find the path to next unknown area
-        path_lst = bot.find_route()
-        bot.navi(path_lst)      
-        bot.left_navi()
+    while True:
+        bot.go_straight(15)
+    # bot.combine_map_reader()
+    # bot.left_navi()
+    # while(not bot.is_clear):
+    #     # find the path to next unknown area
+    #     path_lst = bot.find_route()
+    #     bot.navi(path_lst)      
+    #     bot.left_navi()
 
 # def main_node():
 #     """ Create ' UVbot_main ' node and start sterilize the entire room automatically. """
@@ -687,4 +687,6 @@ def main():
 #     main_node()
 
 rospy.init_node('UVbot_main', anonymous=True)
-main()
+while not rospy.is_shutdown():
+    main()
+rospy.spin()
