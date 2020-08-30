@@ -8,6 +8,9 @@ It controls 4 DC motors, a servo motor, and receives velocity/distance/degree da
 We apply serial communication (UART) over USB to communicate with Raspberry Pi.
 
 ## Schematics
+Systems architecture:
+![Systems architecture](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/System%20architecture%20diagram.png)
+A very detailed schematic
 ![Detailed schematic](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/Module%20wiring%20map.png)
 ## Arduino source code
 
