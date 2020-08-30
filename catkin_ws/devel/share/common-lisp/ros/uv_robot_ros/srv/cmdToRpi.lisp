@@ -15,8 +15,8 @@
    (dist_or_deg
     :reader dist_or_deg
     :initarg :dist_or_deg
-    :type cl:float
-    :initform 0.0))
+    :type cl:string
+    :initform ""))
 )
 
 (cl:defclass cmdToRpi-request (<cmdToRpi-request>)
@@ -44,11 +44,12 @@
     (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
   (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'cmdType))
-  (cl:let ((bits (roslisp-utils:encode-single-float-bits (cl:slot-value msg 'dist_or_deg))))
-    (cl:write-byte (cl:ldb (cl:byte 8 0) bits) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 8) bits) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 16) bits) ostream)
-    (cl:write-byte (cl:ldb (cl:byte 8 24) bits) ostream))
+  (cl:let ((__ros_str_len (cl:length (cl:slot-value msg 'dist_or_deg))))
+    (cl:write-byte (cl:ldb (cl:byte 8 0) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 8) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 16) __ros_str_len) ostream)
+    (cl:write-byte (cl:ldb (cl:byte 8 24) __ros_str_len) ostream))
+  (cl:map cl:nil #'(cl:lambda (c) (cl:write-byte (cl:char-code c) ostream)) (cl:slot-value msg 'dist_or_deg))
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <cmdToRpi-request>) istream)
   "Deserializes a message object of type '<cmdToRpi-request>"
@@ -60,12 +61,14 @@
       (cl:setf (cl:slot-value msg 'cmdType) (cl:make-string __ros_str_len))
       (cl:dotimes (__ros_str_idx __ros_str_len msg)
         (cl:setf (cl:char (cl:slot-value msg 'cmdType) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
-    (cl:let ((bits 0))
-      (cl:setf (cl:ldb (cl:byte 8 0) bits) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 8) bits) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 16) bits) (cl:read-byte istream))
-      (cl:setf (cl:ldb (cl:byte 8 24) bits) (cl:read-byte istream))
-    (cl:setf (cl:slot-value msg 'dist_or_deg) (roslisp-utils:decode-single-float-bits bits)))
+    (cl:let ((__ros_str_len 0))
+      (cl:setf (cl:ldb (cl:byte 8 0) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 8) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 16) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:ldb (cl:byte 8 24) __ros_str_len) (cl:read-byte istream))
+      (cl:setf (cl:slot-value msg 'dist_or_deg) (cl:make-string __ros_str_len))
+      (cl:dotimes (__ros_str_idx __ros_str_len msg)
+        (cl:setf (cl:char (cl:slot-value msg 'dist_or_deg) __ros_str_idx) (cl:code-char (cl:read-byte istream)))))
   msg
 )
 (cl:defmethod roslisp-msg-protocol:ros-datatype ((msg (cl:eql '<cmdToRpi-request>)))
@@ -76,20 +79,20 @@
   "uv_robot_ros/cmdToRpiRequest")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<cmdToRpi-request>)))
   "Returns md5sum for a message object of type '<cmdToRpi-request>"
-  "4b2b21c7747f71f43af6626178a5bf39")
+  "ab56ca80f4b06b7d4d8f78fb733348e9")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'cmdToRpi-request)))
   "Returns md5sum for a message object of type 'cmdToRpi-request"
-  "4b2b21c7747f71f43af6626178a5bf39")
+  "ab56ca80f4b06b7d4d8f78fb733348e9")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<cmdToRpi-request>)))
   "Returns full string definition for message of type '<cmdToRpi-request>"
-  (cl:format cl:nil "string cmdType~%float32 dist_or_deg~%~%~%"))
+  (cl:format cl:nil "string cmdType~%string dist_or_deg~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'cmdToRpi-request)))
   "Returns full string definition for message of type 'cmdToRpi-request"
-  (cl:format cl:nil "string cmdType~%float32 dist_or_deg~%~%~%"))
+  (cl:format cl:nil "string cmdType~%string dist_or_deg~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <cmdToRpi-request>))
   (cl:+ 0
      4 (cl:length (cl:slot-value msg 'cmdType))
-     4
+     4 (cl:length (cl:slot-value msg 'dist_or_deg))
 ))
 (cl:defmethod roslisp-msg-protocol:ros-message-to-list ((msg <cmdToRpi-request>))
   "Converts a ROS message object to a list"
@@ -160,10 +163,10 @@
   "uv_robot_ros/cmdToRpiResponse")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<cmdToRpi-response>)))
   "Returns md5sum for a message object of type '<cmdToRpi-response>"
-  "4b2b21c7747f71f43af6626178a5bf39")
+  "ab56ca80f4b06b7d4d8f78fb733348e9")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'cmdToRpi-response)))
   "Returns md5sum for a message object of type 'cmdToRpi-response"
-  "4b2b21c7747f71f43af6626178a5bf39")
+  "ab56ca80f4b06b7d4d8f78fb733348e9")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<cmdToRpi-response>)))
   "Returns full string definition for message of type '<cmdToRpi-response>"
   (cl:format cl:nil "bool isComplete~%string errorMsg~%~%~%~%"))

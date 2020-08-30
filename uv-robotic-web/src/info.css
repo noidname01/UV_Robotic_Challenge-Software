@@ -1,0 +1,127 @@
+#battery{
+
+    width: calc(var(--battery-width) * var(--battery-size));
+    height: calc(var(--battery-height) * var(--battery-size));
+
+    margin-top: calc(var(--battery-margin-top) * var(--battery-size));
+
+    background-image: url(./image/battery.png);
+    background-size: calc(var(--battery-width) * var(--battery-size)) calc(var(--battery-height) * var(--battery-size));
+    background-repeat: no-repeat;
+    
+
+}
+
+#battery-capacity{
+
+    width: calc(var(--battery-capacity-size) * var(--battery-capacity-width) * var(--battery-size));
+    height: calc(var(--battery-capacity-height) * var(--battery-size));
+
+    border-radius: 10px;
+
+    margin-left: calc(var(--battery-capacity-marginleft) * var(--battery-size));
+    margin-top: calc(var(--battery-capacity-margintop) * var(--battery-size));
+
+    background-color: #4dbe86;
+
+    transition: all 0.5s;
+
+}
+
+#battery-capacity-text{
+
+    font-size: var(--battery-capacity-fontsize);
+    font-weight: bold;
+
+}
+
+#record{
+
+    height: var(--record-height);
+
+    border-radius: 10px;
+
+    background-color: #e6e6e6;
+
+}
+
+@media screen and (min-width: 300px){
+    :root{
+
+        --battery-width: 12.5rem;
+        --battery-height: 5.5rem;
+
+        --battery-margin-top: 5rem;
+
+        --battery-capacity-width: 9.5rem; 
+        --battery-capacity-height: 4.5rem;
+
+        --battery-capacity-marginleft: 0.5rem;
+        --battery-capacity-margintop: 0.5rem;
+
+        --battery-capacity-size: 0.5;
+
+        --battery-size: 1;
+
+        --battery-capacity-fontsize: 1.5rem;
+
+        --record-height: calc(100vh - var(--battery-size) * (var(--battery-height) + var(--battery-margin-top) + 2 * var(--battery-capacity-margintop) + 5rem));
+    }
+    
+}
+
+@media screen and (min-width: 400px){
+    :root{
+        --battery-size: 1.1;
+    }
+}
+
+@media screen and (min-width: 500px){
+    :root{
+        --battery-size: 1.2;
+    }
+        
+}
+
+@media screen and (min-width: 600px){
+    :root{
+        --battery-size: 1.3;
+    }
+}
+
+@media screen and (min-width: 700px){
+    :root{
+        
+
+    }
+}
+
+@media screen and (min-width: 800px){
+    :root{
+        
+    }
+}
+
+@media screen and (min-width: 900px){
+    :root{
+        
+    }
+}
+
+@media screen and (min-width: 1000px){
+    :root{
+        --battery-size: 1.5;
+    }
+}
+
+@media screen and (min-width: 1100px){
+    :root{
+        
+    }
+}
+
+@media screen and (min-width: 1500px){
+    :root{
+        
+    }
+}

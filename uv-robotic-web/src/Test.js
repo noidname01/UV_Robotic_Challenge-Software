@@ -28,15 +28,15 @@ const Test = (props) => {
   });
 
   ros.on("connection", () => {
-    alert("Connected to websocket server.");
+   console.log("Connected to websocket server.");
   });
 
   ros.on("error", (error) => {
-    alert("Error connecting to websocket server: ", error);
+   console.log("Error connecting to websocket server: ", error);
   });
 
   ros.on("close", () => {
-    alert("Connection to websocket server closed.");
+   console.log("Connection to websocket server closed.");
   });
 
   let cmdVel = new ROSLIB.Service({
@@ -195,12 +195,12 @@ const Test = (props) => {
     }
   };
 
-  setInterval( () => {
-    setImgObject({
-      img_src: camera_stream,
-      img_hash: Date.now()
-    })
-  },500)
+//  setInterval( () => {
+//    setImgObject({
+//      img_src: camera_stream,
+//      img_hash: Date.now()
+//    })
+//  },1500)
 
   return (
     <div id="uvcbot" className="row">

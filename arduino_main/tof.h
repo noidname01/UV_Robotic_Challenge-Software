@@ -1,4 +1,4 @@
-#define DEBUGTOF 0
+#define DEBUGTOF 1
 #include "Adafruit_VL53L0X.h"
 
 // address we will assign if dual sensor is present
@@ -59,8 +59,8 @@ void initTOF()
 
   // initing LOX1
   if(!lox_F.begin(LOX_F_ADDRESS)) {
-    Serial.print(F("Failed to boot F VL53L0X at address "));
-    Serial.println(LOX_F_ADDRESS);
+   // Serial.print(F("Failed to boot F VL53L0X at address "));
+   // Serial.println(LOX_F_ADDRESS);
   }
   delay(10);
   ///////////////////////////////////////////////
@@ -100,12 +100,12 @@ void readTOF_F()
 
 void readTOF_R()
 {
-  lox_F.rangingTest(&measure_R, false);
+  lox_R.rangingTest(&measure_R, false);
 }
 
 void readTOF_L()
 {
-  lox_F.rangingTest(&measure_L, false);
+  lox_L.rangingTest(&measure_L, false);
 }
 
 void readTOFs() {

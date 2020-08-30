@@ -35,7 +35,7 @@ class cmdToRpiRequest {
         this.dist_or_deg = initObj.dist_or_deg
       }
       else {
-        this.dist_or_deg = 0.0;
+        this.dist_or_deg = '';
       }
     }
   }
@@ -45,7 +45,7 @@ class cmdToRpiRequest {
     // Serialize message field [cmdType]
     bufferOffset = _serializer.string(obj.cmdType, buffer, bufferOffset);
     // Serialize message field [dist_or_deg]
-    bufferOffset = _serializer.float32(obj.dist_or_deg, buffer, bufferOffset);
+    bufferOffset = _serializer.string(obj.dist_or_deg, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -56,13 +56,14 @@ class cmdToRpiRequest {
     // Deserialize message field [cmdType]
     data.cmdType = _deserializer.string(buffer, bufferOffset);
     // Deserialize message field [dist_or_deg]
-    data.dist_or_deg = _deserializer.float32(buffer, bufferOffset);
+    data.dist_or_deg = _deserializer.string(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
     let length = 0;
     length += object.cmdType.length;
+    length += object.dist_or_deg.length;
     return length + 8;
   }
 
@@ -73,14 +74,14 @@ class cmdToRpiRequest {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '5b12a6073d39992539a74c9b99e2cd41';
+    return '9f1394a6d86922d90d018be9bd88aab6';
   }
 
   static messageDefinition() {
     // Returns full string definition for message
     return `
     string cmdType
-    float32 dist_or_deg
+    string dist_or_deg
     
     `;
   }
@@ -102,7 +103,7 @@ class cmdToRpiRequest {
       resolved.dist_or_deg = msg.dist_or_deg;
     }
     else {
-      resolved.dist_or_deg = 0.0
+      resolved.dist_or_deg = ''
     }
 
     return resolved;
@@ -205,6 +206,6 @@ class cmdToRpiResponse {
 module.exports = {
   Request: cmdToRpiRequest,
   Response: cmdToRpiResponse,
-  md5sum() { return '4b2b21c7747f71f43af6626178a5bf39'; },
+  md5sum() { return 'ab56ca80f4b06b7d4d8f78fb733348e9'; },
   datatype() { return 'uv_robot_ros/cmdToRpi'; }
 };

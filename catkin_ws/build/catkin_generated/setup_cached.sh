@@ -7,4 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PWD='/home/pi/UV_Robotic_Challenge-Software/catkin_ws/build'
+export PWD='/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build'

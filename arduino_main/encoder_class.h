@@ -2,15 +2,18 @@
 #define ENCODER
 #define TIMEOUT 200
 
-double distToClicks_s = 1.0/ (PI*5.67)*36;
-double distToClicks_r = 0.68;
+#include "motorControl.h"
+
+double distToClicks_s = 1.0/ (PI*5.67)*12;
+double distToClicks_r = 0.24;
 
 enum Movement{
   Forward = 0,
   Backward,
   RightTurn,
   LeftTurn,
-  Halt
+  Halt,
+  ReverseMov
 };
 
 class Encoder
@@ -24,13 +27,18 @@ class Encoder
   //bool undetected;
   
   bool prev_state;
-  
-  int clicks_left;
+
+  int tarClicks;
+ // int clicks_left;
   bool non_stop;
   int clicks_walked;
-  Movement curMovement;
+
   
 public:
+  Movement curMovement;
+
+
+
   Encoder(int p, int t, int n)
   :pin(p), report_interval(t), slotNum(n)
   {
@@ -43,7 +51,7 @@ public:
     
     //attachInterrupt(digitalPinToInterrupt(pin), isr, RISING);
     
-    clicks_left = 0;
+    //clicks_left = 0;
     non_stop = 1;
     clicks_walked = 0;
     curMovement = Halt;
@@ -63,10 +71,15 @@ public:
       prev_time[1] = prev_time[0];
       prev_time[0] = timeout_timer = millis();
       //undetected = 0;
-      if(clicks_left > 0 && non_stop == 0)
-        clicks_left--;
-      else if(non_stop == 1)
+    //  if(clicks_left > 0 && non_stop == 0)
+    //    clicks_left--;
+    
+      if(non_stop == 0){
         clicks_walked++;
+      }
+      else if(non_stop == 1){
+        clicks_walked++;
+      }
     }
     
     prev_state = digitalRead(pin);
@@ -82,7 +95,7 @@ public:
     }
 
     // Upon finishing a movement with direction and distance/degree
-    if(clicks_left <= 0 && non_stop == 0){
+    if(clicks_walked >= tarClicks && non_stop == 0){
       non_stop = 1;
       return 1;
     }
@@ -90,23 +103,42 @@ public:
   }
 
   
-  void goStraight(int d)
+  void goStraight( Movement m, int d)
   {
+    curMovement = m;
     non_stop = 0;
-    clicks_left = d;
+   // clicks_left = d;
+    clicks_walked = 0;
+    tarClicks = d;
   }
+
   
-  void revolve(int d)
+  void revolve(  Movement m, int d)
   {
+    curMovement = m;
     non_stop = 0;
-    clicks_left = d;
+   // clicks_left = d;
+    clicks_walked = 0;
+    tarClicks = d;
+  }
+
+  void turnBack()
+  {
+    if(curMovement == RightTurn){
+      leftturn(100);
+      revolve( ReverseMov, clicks_walked );
+    }
+    else if(curMovement == LeftTurn){
+      rightturn(100);
+      revolve( ReverseMov, clicks_walked );
+    }
   }
 
   // move in the specified direction for an indefinite distance/degree
   void forrest_gump( Movement m )
   {
     curMovement = m;
-    clicks_left = 0;
+    //clicks_left = 0;
     non_stop = 1;
     clicks_walked = 0;
   }
@@ -118,7 +150,7 @@ public:
 
   void reset_click()
   {
-    clicks_left = 0;
+   // clicks_left = 0;
     clicks_walked = 0;
   }
 

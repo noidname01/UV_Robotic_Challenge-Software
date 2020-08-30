@@ -1,21 +1,27 @@
-# Arduino
+# Arduino firmware
+
 ## The role of Arduino
-We're using a Arduino Mega 2560 for this application. It's powered by the USB type B port which connects to our Raspberry Pi.
+We use a Arduino Mega 2560 for this application. It's powered by the USB type B port connected to our Raspberry Pi.
 It controls 4 DC motors, a servo motor, and receives velocity/distance/degree data from the encoder, and distance information from three TOF distance sensors.
+
 ## Communication with Raspberry Pi
-We use the good old serial communication to talk to our Raspberry Pi.
-On the arduino end, we use "Serial.read()" to receive commands sent by the Raspberry Pi, and "Serial.print()" or "Serial.println()" to send messages across.
+We apply serial communication (UART) over USB to communicate with Raspberry Pi.
+
 ## Schematics
+Systems architecture:
+![Systems architecture](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/System%20architecture%20diagram.png)
+A very detailed schematic
+![Detailed schematic](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/Module%20wiring%20map.png)
+## Arduino source code
 
-## Arduino source code files
 ### arduino_main.ino
-We check the pir sensors for presence of human first thing in the main loop. Sends a signal when presence of human is detected, and when people are cleared.
+We check the pir sensors for the presence of human first thing in the main loop. Sends a signal when the presence of human is detected, and when people are cleared.
 
-We carry on checking if the distance of the TOF sensors are abnormal. If there is an obstacle or edge in front, then add an effective wall to the "obstacle.py" node. (not yet implemented)
+We carry on checking if the distance of the TOF sensors are abnormal. If there is an obstacle or edge in front, then add an effective wall to the `obstacle.py` node. (not yet implemented)
 
 If every precautional sensor values are normal, we continue on receiving and parsing commands from Raspberry Pi, sweep the servo motor by a small angle, and update the encoder and TOF distance sensor value.
 
-To make the encoder work properly, we normaly have to keep the run time for one loop under 53ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder serveral times in the loop, after each proccess that takes a relatively long time.
+To make the encoder work properly, we normally have to keep the run time for one loop under 53 ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder several times in the loop, after each process that takes a relatively long time.
 ```C++
     UpdateEncoderR();
     sweeper1.doSweep();
@@ -29,7 +35,7 @@ To make the encoder work properly, we normaly have to keep the run time for one 
 ```
 
 ### encoder_class.h
-We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path finding algorith request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30cm" or "turn right 90 degrees", etc.), and the other with direction only (e.g. "move forward").
+We use a photo interrupter and a 3D printed disk to make an encoder, which is installed on the left front wheel of the robot. The path searching algorithm request that the robot has two types of movements: one with specified direction and distance (e.g. "move forward 30 cm" or "turn right 90 degrees", etc.), and another with direction only (e.g. "move forward").
 
 The former returns a **confirm message "c"** to the Raspberry Pi when the motion is completed, while the latter returns **the distance/degree moved** before the robot receives a "halt" message.
 ```C++
@@ -83,7 +89,7 @@ void Update()
 ```
 
 ### tof.h
-We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmit distance data via I2C protocal, which shares the "SCL" and "SDA" pins. In the "initTOF" function, we wake up three sensors one by one (by setting XSHUT pin high) and specify three unique addresses to properly boot the sensors.
+We use three TOF distance sensors (VL53L0X-V2) to measure distance; the sensors share I2C bus. In the `initTOF` function, we wake up three sensors one by one (by pulling `XSHUT` pin high) and specify three unique addresses to properly boot the sensors.
 ```C++
   // activating LOX1 and reseting LOX2
   digitalWrite(SHT_LOX_F, HIGH);
@@ -111,4 +117,4 @@ We use three TOF distance sensors (VL53L0X-V2) to measure distance; they transmi
 ```
 
 ### track.h
-Defines functions("forward", "backward", "leftTurn", "rightTurn", "halt") to control movements. (Note: We emitted "rightShift" and "leftShift" to simplify the path finding algorithm)
+Defines functions (`forward`, `backward`, `leftTurn`, `rightTurn`, `halt`) to control movements. (Note: We omitted `rightShift` and `leftShift` to simplify the path finding algorithm)
