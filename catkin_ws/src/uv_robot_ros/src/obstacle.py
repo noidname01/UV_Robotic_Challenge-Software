@@ -250,9 +250,9 @@ def make_obstacle_map():
 #========= test ============
 
 
-# rospy.init_node('UVbot_obstacle', anonymous=True)
+rospy.init_node('UVbot_obstacle', anonymous=True)
 while not rospy.is_shutdown():
     make_obstacle_map()
-# rospy.spin()
+rospy.spin()
 
 

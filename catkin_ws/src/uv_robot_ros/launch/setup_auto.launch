@@ -26,7 +26,7 @@
     <node pkg="uv_robot_ros" type="odometry.py" name="UVbot_odometry" respawn="true" cwd="node"/>
     
     <!-- obstacle map -->
-    <node pkg="uv_robot_ros" type="obstacle.py" name="obstacle" respawn="true" cwd="node"/>
+    <node pkg="uv_robot_ros" type="obstacle.py" name="UVbot_obstacle" respawn="true" cwd="node"/>
 
     <!-- run main.py -->
     <node pkg="uv_robot_ros" type="main.py" name="UVbot_main" respawn="false" cwd="node"/>

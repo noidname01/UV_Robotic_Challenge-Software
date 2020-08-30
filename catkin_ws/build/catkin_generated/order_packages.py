@@ -2,4 +2,4 @@
 source_root_dir = '/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src'
 whitelisted_packages = ''.split(';') if '' != '' else []
 blacklisted_packages = ''.split(';') if '' != '' else []
-underlay_workspaces = '/home/noidname/catkin_ws/devel;/opt/ros/melodic'.split(';') if '/home/noidname/catkin_ws/devel;/opt/ros/melodic' != '' else []
+underlay_workspaces = '/home/noidname/catkin_ws/devel;/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel;/opt/ros/melodic'.split(';') if '/home/noidname/catkin_ws/devel;/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel;/opt/ros/melodic' != '' else []
