@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 import rospy
 import numpy as np
 import cv2
@@ -17,8 +17,6 @@ def combine_map_node():
     while not rospy.is_shutdown():
         combine_map()
 
-    rospy.spin()
-
 def combine_map():
     '''
     description:
@@ -31,7 +29,7 @@ def combine_map():
         None
     '''
 # read obstacle
-    with open('obstacle_smooth.txt', 'r') as f:
+    with open('obstacle_smooth_fill.txt', 'r') as f:
         lines = [line.strip() for line in f.readlines()]
     obstacle_range_x = int(lines[-1].split()[0])
     obstacle_range_y = int(lines[-1].split()[1])
@@ -79,40 +77,27 @@ def combine_map():
         f.write(str(now_loc_x)+' '+str(now_loc_y))
     
 # for jpg file
-    combine_to_jpg = np.zeros((combine_range_x, combine_range_y), dtype = np.uint8)
+    combine = np.full((combine_range_x, combine_range_y, 3), 255 ,dtype = np.uint8)
+    # white = [255, 255, 255], haven't been disinfected (0)
+    black = [0, 0, 0]       # wall(3)
+    yellow = [0, 255, 255]  # path(2)
+    # purple = [255, 0, 0], disinfected(1), transparent on image
+    # array without disinfected area
     for i in range(obstacle_range_x):
         for j in range(obstacle_range_y):
             if obstacle[i][j] == 3:
-                combine_to_jpg[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = 3
+                combine[i+combine_origin_x-obstacle_origin_x][j+combine_origin_y-obstacle_origin_y] = black
     for i in range(odometry_range_x):
         for j in range(odometry_range_y):
-            if odometry[i][j] == 1 or odometry[i][j] == 2:
-                combine_to_jpg[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = odometry[i][j]
-    map_to_jpg(combine_to_jpg)
-
-def map_to_jpg(arr):
-    '''
-    This function is to write a .jpg file. 
-    Use black ([0, 0, 0]) to represent walls; 
-    white ([255, 255, 255]) to represent region that haven't been disinfected; 
-    yellow ([0, 255, 255)] to represent path; 
-    purple ([255, 0, 0]) to represent the region that have been disinfected.
-
-    input:arr (np.array), the map array
-    '''
-    range_x, range_y = len(arr), len(arr[0])
-    combine_jpg = np.zeros((range_x, range_y, 3),dtype = np.uint8)
-    for i in range(range_x):
-        for j in range(range_y):
-            if arr[i][j] == 0:
-                combine_jpg[i][j] = [255, 255, 255]
-            elif arr[i][j] == 1:
-                combine_jpg[i][j] = [255, 0, 0]
-            elif arr[i][j] == 2:
-                combine_jpg[i][j] = [0, 255, 255]
-            elif arr[i][j] == 3:
-                pass # [0, 0, 0]
-    cv2.imwrite(os.getcwd()+'/combine_map.jpg', combine_jpg)   
-
+            if odometry[i][j] == 2:
+                combine[i+combine_origin_x-odometry_origin_x][j+combine_origin_y-odometry_origin_y] = yellow
+    # array for disinfected area (transparent)
+    for i in range(odometry_range_x):
+        for j in range(odometry_range_y):
+            if odometry[i][j] == 1:
+                x = i+combine_origin_x-odometry_origin_x
+                y = j+combine_origin_y-odometry_origin_y
+                combine[x][y] = np.floor(combine[x][y]*0.7) + [76, 0, 0]  # 0.7*origin + 0.3*[255,0,0]
+    cv2.imwrite(os.getcwd()+'/combine_map.jpg', combine)
 
 combine_map_node()
