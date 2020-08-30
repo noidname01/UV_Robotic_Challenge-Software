@@ -13,7 +13,7 @@ A UV disinfection robot based on ROS.
   - [Environment](#environment)
   - [System architecture](#system-architecture)
   - [Usage](#usage)
-  - [Map construction](#map-construction)
+    - [Map construction](#map-construction)
   - [Workflow](#workflow)
   - [Vision](#vision)
   - [Mapping](#mapping)
@@ -24,10 +24,11 @@ A UV disinfection robot based on ROS.
   - [Dependencies](#dependencies)
 
 ## Features
-- SLAM based on depth camera (Intel Realsense D435)
+- SLAM and navigation based on depth camera (Intel Realsense D435)
 - Collision avoidance
-- A* seach for path planning
 - Human detection
+- Voice prompts
+- A* seach for path planning
 - Remote control by web interface
 
 ## Environment
@@ -44,7 +45,7 @@ Setup environment
 $ source ./catkin_ws/devel/setup.sh
 ```
 
-## Map construction
+### Map construction
 Build a 2D map of the room.
 
 * Run the following commands respectively.  
@@ -67,7 +68,7 @@ TODO:流程圖
 
 ## Navigation
 (TODO:left_navi流程圖)  
-* To ensure the UV robot work properly, users have to place it at a corner of the room. The robot will firstly adjust its direction so that the wall is on the left of itself, and then start to move. The navigation stategy in step1 basicly is to walk along the wall(or the area the robot has sterilized) while simultaneously recording the area the robot can't enter(ex: obstacles), the path the robot has walk through, and the area the robot has sterilized on the map array. The robot will finally stop at a certain position in the room.
+* To ensure the UV robot work properly, users have to place it at a corner of the room. The robot will firstly adjust its direction so that the wall is on the left of itself, and then start to move. The navigation stategy in step1 basicly is to walk along the wall(or the area the robot has sterilized) while simultaneously recording the area the robot can't enter (ex: obstacles), the path the robot has walk through, and the area the robot has sterilized on the map array. The robot will finally stop at a certain position in the room.
 * In the step2 the robot will check if there's any area unsterilized on the map array, and then will navigate to the nearest part to sterilized it. The navigatation method in this step is to find the best path with A* algorithm. After entering the unsterilized area, the robot will move in the same manner with that in step1. 
 * The robot will perform step1 and step2 alternately until almost every part of the room is sterilized.
 
