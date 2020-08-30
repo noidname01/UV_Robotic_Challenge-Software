@@ -1,7 +1,7 @@
 # Arduino firmware
 
 ## The role of Arduino
-We use a Arduino Mega 2560 for this application. It's powered by the USB type B port connects to our Raspberry Pi.
+We use a Arduino Mega 2560 for this application. It's powered by the USB type B port connected to our Raspberry Pi.
 It controls 4 DC motors, a servo motor, and receives velocity/distance/degree data from the encoder, and distance information from three TOF distance sensors.
 
 ## Communication with Raspberry Pi
