@@ -10,8 +10,6 @@ import cv2
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
-
-
 # set initial map info
 unit_width = 2  # grid width per unit (cm)
 w_sterilized = 50 # maximum effective sterilization range (unit grids)
@@ -27,6 +25,7 @@ origin_set = False                           # whether (o_lx, o_ly) has been rec
 o_lx, o_ly = None, None                 # absolute location of the origin (initial position): float
 o_gx, o_gy = int(x_size*0.5), int(y_size*0.5)     # origin coordinate in odom_map: int
 last_x, last_y = o_gx, o_gy             # record the previous grid's coordinates: int
+history_pt = []
 
 # output initial odometry_path.txt
 np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")  # write odometry array into file
@@ -58,9 +57,9 @@ def odom_path(x, y):
     global o_lx, o_ly, o_gx, o_gy, origin_set, last_x, last_y,  x_size, y_size, odom_map1, odom_map2, odom_map
     if origin_set:
         gx, gy = int(o_gx + ((x - o_lx)*100)//unit_width), int(o_gy + ((y - o_ly)*100)//unit_width)       # present grid coordinate in the array
-        #print(gx, gy)
-        # check if the data would overflow (i.e.  array is too small)
-        # modifying x-axis
+    #print(gx, gy)
+    # check if the data would overflow (i.e.  array is too small)
+    # modifying x-axis
         if -1 < (gx-w_sterilized) and (gx+w_sterilized) < x_size:
             pass
         elif (gx-w_sterilized) < 0:
@@ -70,20 +69,27 @@ def odom_path(x, y):
         else:
             odom_map1 = np.pad(odom_map1, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
             odom_map2 = np.pad(odom_map2, ((0, gx + w_sterilized + 1 - x_size),(0,0)),'constant',constant_values = (0,0))
-        # modifying y-axis
+    # modifying y-axis
         if -1 < (gy-w_sterilized) and (gy+w_sterilized) < y_size:
             pass
         elif (gy-w_sterilized) < 0:
             odom_map1 = np.pad(odom_map1, ((0,0),(-gy+w_sterilized,0)),'constant',constant_values = (0,0))
             odom_map2 = np.pad(odom_map2, ((0,0),(-gy+w_sterilized,0)),'constant',constant_values = (0,0))
-            o_gy,   last_y,    gy  =   o_gy - gy + w_sterilized,   last_y - gy + w_sterilized,     w_sterilized
+            o_gy,  last_y,   gy  =   o_gy - gy + w_sterilized,  last_y - gy + w_sterilized,   w_sterilized
         else:
             odom_map1 = np.pad(odom_map1, ((0, 0),(0,gy + w_sterilized + 1 - y_size)),'constant',constant_values = (0,0))
             odom_map2 = np.pad(odom_map2, ((0, 0),(0,gy + w_sterilized + 1 - y_size)),'constant',constant_values = (0,0))
 
-        # update odometry path
-        odom_map1 = cv2.line(odom_map1,(last_y, last_x), (gy, gx), 1, 2*w_sterilized)
+    # update odometry path
+    # update odom_map1 (lagged)
+        if len(history_pt)<10:
+        else:
+            odom_map1 = cv2.line(odom_map1,history_pt[0], history_pt[1], 1, 2*w_sterilized)
+            del history_pt[0]
+        history_pt.append((gy, gx)) # x and y reversed! (for cv2.line())
+    # update odom_map2
         odom_map2 = cv2.line(odom_map2,(last_y, last_x), (gy, gx), 1)
+    
         odom_map = odom_map1 + odom_map2
         x_size, y_size = len(odom_map), len(odom_map[0])
         np.savetxt('odometry_path.txt', odom_map, fmt = '%d', delimiter="")
