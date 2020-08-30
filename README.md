@@ -73,9 +73,8 @@ $ rosrun pcl_ros pointcloud_to_pcd input:=/rtabmap/cloud_map
 
 ## Miscellaneous Action
 
-## Data Flow
+## Data Flow (ROS package relationship)
 
-## ROS package relationship
 | Autonomous mode                           | Remote-controlled mode                      |
 | ----------------------------------------- | ------------------------------------------- |
 | <img width=400 src="./doc/auto_mode.png"> | <img width=400 src="./doc/remote_mode.png"> |
