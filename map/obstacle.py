@@ -44,7 +44,7 @@ def make_obstacle_map():
     '''
     description:
         This function is to generate an obstacle map, and write it to a file 'obstacle_map'.
-        First, read a .pcd file, and get the pointcloud data of the map. Because the robot is only 1.6 meters tall, we just have to care about the obstacle shorter than 1.6 meters. The file 'obstacle_tmp.txt' records the obstacle that is shorter than 1.6 meters.
+        First, read a .pcd file, and get the pointcloud data of the map. Because the robot is only 1.8 meters tall, we just have to care about the obstacle shorter than 1.8 meters. The file 'obstacle_tmp.txt' records the obstacle that is shorter than 1.8 meters.
         Second, read the file 'obstacle_tmp.txt' and find the range of the pointcloud. Construct an array representing the map, each of the element represented a 2cm*2cm space. The elements are denoted by the number of the points in their representing space.
         Third, for every element, count how many points are around the representing space, and add the number to its own number. If the final number is larger than a variable (thres), denote the element by '3', otherwise denote it by '0'. This step intends to smooth the map and avoids errors.
         Forth, from four sides of the map, denote elements by '3' until the element is '3' originally. This step intends to denote the space outside the wall (but not detected by the camera) to wall.
