@@ -22,11 +22,11 @@ const Control = (props) => {
   const [cameraStream, setCameraStream] = useState("");
 
   let ros = new ROSLIB.Ros({
-    url: "ws://192.168.0.203:8080",
+    url: "ws://192.168.0.201:9090",
   });
 
   ros.on("connection", () => {
-    // alert("Connected to websocket server.");
+    alert("Connected to websocket server.");
   });
 
   ros.on("error", (error) => {
@@ -57,12 +57,12 @@ const Control = (props) => {
     let action = e.target.name;
 
     // alert(action);
-    let request = createRequest("h","0");
+    /* let request = createRequest("h","0");
     cmdVel.callService(request, (result) => {
       if (!result.isComplete) {
         alert(result.errorMsg)
       } 
-    })
+    }) */
 
     if (action === "forward") {
       let request = createRequest("f", "0");
@@ -200,6 +200,10 @@ const Control = (props) => {
       }
     )
   }
+
+  setInterval(()=>{
+    updateImg()
+  },1000)
 
   return (
     <div id="uvcbot" className="row">

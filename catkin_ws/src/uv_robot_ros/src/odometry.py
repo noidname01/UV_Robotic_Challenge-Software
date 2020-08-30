@@ -10,6 +10,8 @@ import cv2
 import rospy
 from geometry_msgs.msg import PoseWithCovarianceStamped
 
+
+
 # set initial map info
 unit_width = 2  # grid width per unit (cm)
 w_sterilized = 50 # maximum effective sterilization range (unit grids)
@@ -33,6 +35,7 @@ with open("odometry_path.txt", "a") as f:
     f.write(str(x_size)+' '+str(y_size)+'\n' )     # write sizes of the odometry into file (x_size, y_size)
     f.write(str(o_gx)+' '+str(o_gy)+'\n' )          # write present coordinates into file (x,y)
     
+
 def gen_img(file_name, arr):
     """ Generate image from given array.
             visited points = white (254), sterilized points = gray (127), others = black (0)
@@ -127,6 +130,5 @@ def test():
     print (x_size, y_size)
     print(np.count_nonzero(odom_map))
 
-if __name__ == "__main__":
-    odom_odom()
+odom_odom()
     

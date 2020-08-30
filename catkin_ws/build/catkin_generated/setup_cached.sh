@@ -7,4 +7,7 @@
 # new environment variables
 
 # modified environment variables
+export CMAKE_PREFIX_PATH="/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel:$CMAKE_PREFIX_PATH"
 export PWD='/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/build'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/noidname/UV_Robotic_Challenge-Software/catkin_ws/src:$ROS_PACKAGE_PATH"

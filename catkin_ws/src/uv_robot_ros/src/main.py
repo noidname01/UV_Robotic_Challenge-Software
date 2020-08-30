@@ -44,8 +44,8 @@ class robot:
         self.vision_angle = vision_angle if vision_angle else {'hor':86.,'ver':57.,'dia':94.}       #type:dict
         # assert type(vision_angle)=='dict', 'the type of vision_angle should be dict'
         # open and set Serial
-        self.ser=serial.Serial("COM3",9600,timeout=None)
-        self.ser.open()
+        self.ser=serial.Serial("/dev/tty54",9600,timeout=None)
+        #self.ser.open()
 
 # basic motion command
     def go_straight(self, dist = 0.1):
@@ -677,11 +677,14 @@ def main():
         bot.navi(path_lst)      
         bot.left_navi()
 
-def main_node():
-    """ Create ' UVbot_main ' node and start sterilize the entire room automatically. """
-    rospy.init_node('UVbot_main', anonymous=True)
-    while not rospy.is_shutdown():
-        main()
+# def main_node():
+#     """ Create ' UVbot_main ' node and start sterilize the entire room automatically. """
+#     rospy.init_node('UVbot_main', anonymous=True)
+#     while not rospy.is_shutdown():
+#         main()
 
-if __name__ == "__main__":
-    main_node()
+# if __name__ == "__main__":
+#     main_node()
+
+rospy.init_node('UVbot_main', anonymous=True)
+main()

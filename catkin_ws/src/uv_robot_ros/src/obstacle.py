@@ -4,11 +4,6 @@ import numpy as np
 import cv2
 import rospy
 
-def obstacle_node():
-    # Create a node and run function "make_obstacle_map()"
-    rospy.init_node('UVbot_obstacle', anonymous=True)
-    while not rospy.is_shutdown():
-        make_obstacle_map()
 
 filename = None
 def pcd_exist():
@@ -19,15 +14,20 @@ def pcd_exist():
     '''
     global filename
     path = os.getcwd()
+    rospy.loginfo(path)
     name_list = os.listdir(path)
     for name in name_list:
+        
         try:
+            rospy.loginfo(name)
             if name[-3:] == 'pcd': 
                 filename = name
+                print(True,name)
                 return True
 
         except:
             pass
+    print(False)
     return False
 
 def make_obstacle_map():
@@ -40,6 +40,7 @@ def make_obstacle_map():
     Finally, write the array to the file 'obstacle_smooth_fill.txt'. The two lines in the bottom of the file represent "the origin of the robot" and "the size of the room".
     '''
     while pcd_exist():
+        rospy.loginfo("Reading {} ...!!!!!!".format(filename))
         with open(filename, 'r') as f:
             lines = [line.strip().split() for line in f.readlines()]
         os.remove(filename)
@@ -242,5 +243,16 @@ def make_obstacle_map():
 #/fill
         #print('done')
 
-if __name__ == '__main__':
-    obstacle_node()
+#========= test ============
+# if __name__ == '__main__':
+#     while True:
+#         make_obstacle_map()
+#========= test ============
+
+
+# rospy.init_node('UVbot_obstacle', anonymous=True)
+while not rospy.is_shutdown():
+    make_obstacle_map()
+# rospy.spin()
+
+

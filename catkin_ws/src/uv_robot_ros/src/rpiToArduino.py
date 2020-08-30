@@ -12,7 +12,7 @@ from uv_robot_ros.srv import cmdToRpi, cmdToRpiResponse
 #HOST_PORT = 8888
 
 
-COM_PORT = '/dev/ttyUSB0' 
+COM_PORT = '/dev/tty54' 
 BAUD_RATES = 9600
 ser = serial.Serial(COM_PORT, BAUD_RATES, timeout = 5) 
 
