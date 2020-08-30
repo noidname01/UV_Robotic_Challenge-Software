@@ -8,17 +8,20 @@ It controls 4 DC motors, a servo motor, and receives velocity/distance/degree da
 We apply serial communication (UART) over USB to communicate with Raspberry Pi.
 
 ## Schematics
+Systems architecture:
+![Systems architecture](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/System%20architecture%20diagram.png)
+A very detailed schematic
 ![Detailed schematic](https://github.com/noidname01/UV_Robotic_Challenge-Software/blob/master/arduino_main/Module%20wiring%20map.png)
 ## Arduino source code
 
 ### arduino_main.ino
-We check the pir sensors for presence of human first thing in the main loop. Sends a signal when presence of human is detected, and when people are cleared.
+We check the pir sensors for the presence of human first thing in the main loop. Sends a signal when the presence of human is detected, and when people are cleared.
 
 We carry on checking if the distance of the TOF sensors are abnormal. If there is an obstacle or edge in front, then add an effective wall to the `obstacle.py` node. (not yet implemented)
 
 If every precautional sensor values are normal, we continue on receiving and parsing commands from Raspberry Pi, sweep the servo motor by a small angle, and update the encoder and TOF distance sensor value.
 
-To make the encoder work properly, we normaly have to keep the run time for one loop under 53 ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder serveral times in the loop, after each proccess that takes a relatively long time.
+To make the encoder work properly, we normally have to keep the run time for one loop under 53 ms. Since this is nearly impossible if we update the TOF distance sensor on every loop, we decide to update the encoder several times in the loop, after each process that takes a relatively long time.
 ```C++
     UpdateEncoderR();
     sweeper1.doSweep();
