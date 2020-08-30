@@ -82,3 +82,4 @@ $ rosrun pcl_ros pointcloud_to_pcd input:=/rtabmap/cloud_map
 ## Dependencies
 - [ROS melodic](http://wiki.ros.org/melodic)
 - [librealsense](https://github.com/IntelRealSense/librealsense)
+- [SLAM with D435i](https://github.com/IntelRealSense/realsense-ros/wiki/SLAM-with-D435i)
