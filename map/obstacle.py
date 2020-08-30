@@ -68,7 +68,7 @@ def make_obstacle_map():
                 is_data = True
                 continue
             if is_data == True:
-                if float(line[2]) < 1.6:
+                if float(line[2]) < 1.8:
                     line[2] = str(0)
                     newlines.append(line)
         count = len(newlines)

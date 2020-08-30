@@ -8,32 +8,32 @@ The integrated information is critical because our goal is to clean the entire r
 
 
 ## How
-We first create a node for launching program in  `ROS`, and run the main`combine_node()` function.
+We first create a node for launching program in  `ROS`, and run the main `combine_node()` function.
 ```python
 def combine_map_node():
     rospy.init_node('UVbot_combine_map', anonymous=True)
     while not rospy.is_shutdown():
         combine_map()
 ```
-`combine_map()` generates an numpy array conprised of 0, 1, 2 and 3, where  
+`combine_map()` generates a numpy array conprised of 0, 1, 2 and 3, where  
 '3' indicates obstacles;   
 '2' represents that this grid has been visited;  
 '1' for disinfected but not visited;  
 '0' the rest. 
 
-Then it will output a text file including the array and related information, and a jpg file according to the array, where  
+Then it will output a text file including the array, related information, and a jpg file according to the array, where  
 black ([0, 0, 0]) represents obstacles;  
 yellow ([0, 255, 255]) represents path;  
 purple ([255, 0, 0]) for region that have been disinfected;  
 white ([255, 255, 255]) for region that haven't been disinfected.
 
-Following is how we achieve it.
+Following is how we achieved it.
 
 First, read the text files generated from odometry.py and obstacle.py, then store the data we need respectively: 
-1.  the map array 
+1. the map array 
 2. the origin (initial point) coordinates in the array
 3. x and y size of the array
-4. the present coordinates in the array
+4. the present coordinate in the array
 
 Since the data transmitted is the minimum array, the size and coordinates of the two arrays might not be identical.  
 Thus, to integrate the arrays, we overlap the origin points and adjust the size of the array.
@@ -48,7 +48,7 @@ Thus, to integrate the arrays, we overlap the origin points and adjust the size 
         for j in range(combine_range_y):
             combine[i].append(0)
 ```
-After getting an array with proper size and coordinate system, we can fill in the value for each grids with some translation.
+After getting an array with proper size and coordinate system, we can fill in the value for each grid with some translation.
 
 ```python
     for i in range(obstacle_range_x):
