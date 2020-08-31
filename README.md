@@ -72,6 +72,7 @@ After dealing with the two topics, we need to **integrate** them. We have a prog
 Finally, we get the array with all the information we want, so we can move on to the next part, while the map is simultaneously and continuously updated.
 
 Following is an example visualization image for the combined map, where black indicates obstacles, yellow for path, purple for disinfected area, and white the rest.
+
 ![combined_map](map+odom/combine_map.jpg)
 
 ## Navigation 
